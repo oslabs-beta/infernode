@@ -9,7 +9,7 @@
     "copy-assets": "cp -R ./src/assets ./dist/",
     "build": "tsc && npm run copy-assets",
     "test": "jest",
-    "dev": "mkdir -p ./dist && touch ./dist/index.js && concurrently \"npx tsc --watch\" \"nodemon dist/index.js\""
+    "dev": "mkdir -p ./dist && touch ./dist/index.js && tsc && concurrently \"npx tsc --watch\" \"nodemon dist/index.js\""
   },
   "jest": {
     "globalSetup": "./jest-setup.js",
@@ -22,13 +22,15 @@
   "nodemonConfig": {
     "watch": [
       "./src/assets",
-      "./dist/index.js",
-      "./src/__tests__",
-      "**/**.test.[jt]s[x]",
-      "**/**.spec.[jt]s[x]"
+      "./dist/**/*.js"
     ],
     "ignore": [
-      "./dist/bundle.js"
+      "./src/__tests__",
+      "**/**.test.[jt]s[x]",
+      "**/**.spec.[jt]s[x]",
+      "./dist/bundle.js",
+      "./dist/assets",
+      "./dist/public"
     ],
     "events": {
       "restart": "npm run copy-assets"
