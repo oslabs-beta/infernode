@@ -1,6 +1,10 @@
 # infernode
 Flamegraph tool for node.js
 
+## Developing
+1. Clone this repository
+1. `npm install` in the repo directory
+1. `npm run dev` to run the server with on-save recompile/reload
 
 
 
