@@ -8,7 +8,7 @@
     "clean": "rm -rf ./dist",
     "copy-assets": "cp -R ./src/assets ./dist/",
     "build": "tsc && npm run copy-assets",
-    "test": "jest",
+    "test": "tsc && npm run copy-assets && jest --coverage",
     "dev": "mkdir -p ./dist && touch ./dist/index.js && tsc && concurrently \"npx tsc --watch\" \"nodemon --ext js,json,html,css dist/index.js\""
   },
   "jest": {

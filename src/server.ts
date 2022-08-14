@@ -49,7 +49,6 @@ export class Server {
     routes.forEach((router) => this.app.use(this.apiPath, router));
   }
 
-
   public listen() {
     this.app.listen(this.port, () => {
       console.log(

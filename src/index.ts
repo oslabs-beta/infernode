@@ -11,4 +11,5 @@ const port: number = Number(process.env.EXPRESS_PORT) || 3000;
 const server = new Server(port, [], HealthRouter);
 
 /* Start server, export for use with Jest setup/teardown */
-export default server.listen();
+const listener = server.listen();
+export default listener;

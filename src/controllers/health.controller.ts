@@ -94,7 +94,7 @@ export class HealthController {
   /* Middleware for /{health}/started requests */
   public getStarted (req: Request, res: Response) {
     this.checkStarted();
-    this.started.status === 'STARTED' ? res.status(200) : res.status(500);
+    this.started.status === 'STARTED' ? res.status(200) : res.status(503);
 
     // If client accepts HTML and not JSON, return pretty-printed HTML, otherwise return JSON
     if (req.headers.accept?.match(/text\/html/g) && !req.headers.accept?.match(/application\/json/g)) {
@@ -107,7 +107,7 @@ export class HealthController {
   /* Middleware for /{health}/live requests */
   public getLiveliness (req: Request, res: Response) {
     this.checkLiveliness();
-    this.liveliness.status === 'LIVE' ? res.status(200) : res.status(500);
+    this.liveliness.status === 'LIVE' ? res.status(200) : res.status(503);
 
     // If client accepts HTML and not JSON, return pretty-printed HTML, otherwise return JSON
     if (req.headers.accept?.match(/text\/html/g) && !req.headers.accept?.match(/application\/json/g)) {
@@ -120,7 +120,7 @@ export class HealthController {
   /* Middleware for /{health}/ready requests */
   public getReadiness (req: Request, res: Response) {
     this.checkReadiness();
-    this.readiness.status === 'READY' ? res.status(200) : res.status(500);
+    this.readiness.status === 'READY' ? res.status(200) : res.status(503);
     // If client accepts HTML and not JSON, return pretty-printed HTML, otherwise return JSON
     if (req.headers.accept?.match(/text\/html/g) && !req.headers.accept?.match(/application\/json/g)) {
       return res.send(`<pre>${JSON.stringify( this.readiness, null, 4)}</pre>`);
@@ -132,7 +132,7 @@ export class HealthController {
   /* Middleware for /{health}/ requests */
   getHealthiness(req: Request, res: Response) {
     this.checkHealthiness();
-    this.healthiness.status === 'OK' ? res.status(200) : res.status(500);
+    this.healthiness.status === 'OK' ? res.status(200) : res.status(503);
     // If client accepts HTML and not JSON, return pretty-printed HTML, otherwise return JSON
     if (req.headers.accept?.match(/text\/html/g) && !req.headers.accept?.match(/application\/json/g)) {
       return res.send(`<pre>${JSON.stringify( this.healthiness, null, 4)}</pre>`);
