@@ -1,5 +1,10 @@
-import {Request, Response} from 'express';
-import {HealthCheckResponse, StartedCheckResponse, LivelinessCheckResponse, ReadinessCheckResponse} from '../interfaces/health.interface';
+import { Request, Response } from 'express';
+import {
+  HealthCheckResponse,
+  StartedCheckResponse,
+  LivelinessCheckResponse,
+  ReadinessCheckResponse,
+} from '../interfaces/health.interface';
 import process from 'node:process';
 
 /**
@@ -14,7 +19,7 @@ export class HealthController {
   private liveliness: LivelinessCheckResponse;
   private readiness: ReadinessCheckResponse;
   private healthiness: HealthCheckResponse;
-  constructor (
+  constructor(
     initStarted: string,
     initLiveliness: string,
     initReadiness: string,
@@ -32,29 +37,29 @@ export class HealthController {
         total_cpu_usage: process.cpuUsage(),
         curr_mem_usage: process.memoryUsage(),
       },
-    }
+    };
     this.liveliness = {
       name: 'LivenessCheck',
       status: initLiveliness,
       data: {
         api_self_check: 'not implemented',
       },
-    }
+    };
     this.readiness = {
       name: 'ReadinessCheck',
       status: initReadiness,
       data: {
         db_connected: false,
-        db_version: 'n/a'
+        db_version: 'n/a',
       },
-    }
+    };
     this.healthiness = {
       name: 'HealthinessCheck',
       status: initHealthiness,
-      checks: [ this.started, this.liveliness, this.readiness],
-    }
+      checks: [this.started, this.liveliness, this.readiness],
+    };
   }
-  
+
   /* Checks if the process has started and has available metrics */
   private checkStarted() {
     try {
@@ -82,48 +87,59 @@ export class HealthController {
     this.checkStarted();
     this.checkLiveliness();
     this.checkReadiness();
-    if (this.started.status === 'STARTED' &&
-        this.liveliness.status === 'LIVE' &&
-        this.readiness.status === 'READY') {
-          this.healthiness.status = 'OK'
-        } else {
-          this.healthiness.status = 'UNHEALTHY'
-        }
+    if (
+      this.started.status === 'STARTED' &&
+      this.liveliness.status === 'LIVE' &&
+      this.readiness.status === 'READY'
+    ) {
+      this.healthiness.status = 'OK';
+    } else {
+      this.healthiness.status = 'UNHEALTHY';
+    }
   }
 
   /* Middleware for /{health}/started requests */
-  public getStarted (req: Request, res: Response) {
+  public getStarted(req: Request, res: Response) {
     this.checkStarted();
     this.started.status === 'STARTED' ? res.status(200) : res.status(503);
 
     // If client accepts HTML and not JSON, return pretty-printed HTML, otherwise return JSON
-    if (req.headers.accept?.match(/text\/html/g) && !req.headers.accept?.match(/application\/json/g)) {
-      return res.send(`<pre>${JSON.stringify( this.started, null, 4)}</pre>`);
+    if (
+      req.headers.accept?.match(/text\/html/g) &&
+      !req.headers.accept?.match(/application\/json/g)
+    ) {
+      return res.send(`<pre>${JSON.stringify(this.started, null, 4)}</pre>`);
     } else {
       return res.json(this.started);
     }
   }
 
   /* Middleware for /{health}/live requests */
-  public getLiveliness (req: Request, res: Response) {
+  public getLiveliness(req: Request, res: Response) {
     this.checkLiveliness();
     this.liveliness.status === 'LIVE' ? res.status(200) : res.status(503);
 
     // If client accepts HTML and not JSON, return pretty-printed HTML, otherwise return JSON
-    if (req.headers.accept?.match(/text\/html/g) && !req.headers.accept?.match(/application\/json/g)) {
-      return res.send(`<pre>${JSON.stringify( this.liveliness, null, 4)}</pre>`);
+    if (
+      req.headers.accept?.match(/text\/html/g) &&
+      !req.headers.accept?.match(/application\/json/g)
+    ) {
+      return res.send(`<pre>${JSON.stringify(this.liveliness, null, 4)}</pre>`);
     } else {
       return res.json(this.liveliness);
     }
   }
 
   /* Middleware for /{health}/ready requests */
-  public getReadiness (req: Request, res: Response) {
+  public getReadiness(req: Request, res: Response) {
     this.checkReadiness();
     this.readiness.status === 'READY' ? res.status(200) : res.status(503);
     // If client accepts HTML and not JSON, return pretty-printed HTML, otherwise return JSON
-    if (req.headers.accept?.match(/text\/html/g) && !req.headers.accept?.match(/application\/json/g)) {
-      return res.send(`<pre>${JSON.stringify( this.readiness, null, 4)}</pre>`);
+    if (
+      req.headers.accept?.match(/text\/html/g) &&
+      !req.headers.accept?.match(/application\/json/g)
+    ) {
+      return res.send(`<pre>${JSON.stringify(this.readiness, null, 4)}</pre>`);
     } else {
       return res.json(this.readiness);
     }
@@ -134,8 +150,13 @@ export class HealthController {
     this.checkHealthiness();
     this.healthiness.status === 'OK' ? res.status(200) : res.status(503);
     // If client accepts HTML and not JSON, return pretty-printed HTML, otherwise return JSON
-    if (req.headers.accept?.match(/text\/html/g) && !req.headers.accept?.match(/application\/json/g)) {
-      return res.send(`<pre>${JSON.stringify( this.healthiness, null, 4)}</pre>`);
+    if (
+      req.headers.accept?.match(/text\/html/g) &&
+      !req.headers.accept?.match(/application\/json/g)
+    ) {
+      return res.send(
+        `<pre>${JSON.stringify(this.healthiness, null, 4)}</pre>`
+      );
     } else {
       return res.json(this.healthiness);
     }

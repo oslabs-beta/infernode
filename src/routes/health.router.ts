@@ -3,20 +3,20 @@ import { healthController } from '../controllers/controllers.module';
 
 const healthRouter = Router();
 
-healthRouter.get('/', 
+healthRouter.get('/',
   (req: Request, res: Response) => healthController.getHealthiness(req, res)
 )
 
-healthRouter.get('/started', 
+healthRouter.get('/started',
   (req: Request, res: Response) => healthController.getStarted(req, res)
 )
 
-healthRouter.get('/live', 
+healthRouter.get('/live',
   (req: Request, res: Response) => healthController.getLiveliness(req, res)
 )
 
 healthRouter.get('/ready',
-  (req: Request, res, Response) => healthController.getReadiness(req, res)
+  (req: Request, res: Response) => healthController.getReadiness(req, res)
 )
 
 export default healthRouter;
