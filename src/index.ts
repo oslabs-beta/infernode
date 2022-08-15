@@ -1,16 +1,15 @@
-import dotenv from 'dotenv';
-import express, { Express, Request, Response } from 'express';
-import path from 'path';
+import dotenv from 'dotenv'; // Used for runtime config (listener port, secrets, debug logging)
+import { Server } from './server';
+import HealthRouter from './routes/health.router';
 
 dotenv.config();
 
-const app: Express = express();
-const PORT = process.env.EXPRESS_PORT;
+/* If the environment variable EXPRESS_PORT is set, use that port, otherwise use 3000. */
+const port: number = Number(process.env.EXPRESS_PORT) || 3000;
 
-app.get('/', (req: Request, res: Response) => {
-  res.sendFile(path.resolve(__dirname, './assets/index.html'));
-});
+/* Instantiate a Server with the port, an array of middleware, and the HealthRouter. */
+const server = new Server(port, [], HealthRouter);
 
-module.exports = app.listen(PORT, () => {
-  console.log(`🔥 INFERNOde listening on port ${PORT} 🔥`);
-});
+/* Start server, export for use with Jest setup/teardown */
+const listener = server.listen();
+export default listener;
