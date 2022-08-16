@@ -20,6 +20,7 @@ export const App: React.FC = () => {
           <Route path="capture" element={<CapturePage/>} />
           <Route path="manage" element={<ManagePage/>} />
           <Route path="help" element={<HelpPage/>}>
+            <Route index element={<HelpPages.HelpPage1/>} />
             <Route path="page1" element={<HelpPages.HelpPage1/>}/>
             <Route path="page2" element={<HelpPages.HelpPage2/>}/>
             <Route path="page3" element={<HelpPages.HelpPage3/>}/>
