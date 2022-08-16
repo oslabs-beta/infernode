@@ -2,14 +2,29 @@
 
 Flamegraph tool for node.js
 
+## Usage
+
+Coming soon...
+
+## Architecture
+
+### Tech Stack
+
+#### Back End
+
+- 
+
+### Diagram
+
+![infernode architecture diagram](/docs/images/app-diagram.png)
+
+## Interface
+
 ## Developing
 
 1. Clone this repository
 1. `npm install` in the repo directory
 1. `npm run dev` to run the server with on-save recompile/reload
-
-
-
 
 ## Contributing
 
