@@ -15,6 +15,6 @@ export class NotFoundController {
       <h1>404: Page Not Found</h1>
       Your ${req.method} request to ${req.protocol}://${req.hostname}${req.url} was not found.
       </body>
-    `)
+    `);
   }
 }

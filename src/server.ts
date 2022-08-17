@@ -1,4 +1,4 @@
-import express, { Application, Router } from 'express';
+import express, { Application, NextFunction, Router, ErrorRequestHandler } from 'express';
 import path from 'path';
 
 /**
@@ -7,6 +7,7 @@ import path from 'path';
  * @param {express.Router[]} routes - /api/* Routers
  * @param {express.Router} healthRouter - /health endpoint Router
  * @param {express.Router} notFoundRouter - 404 handler Router
+ * @param {ErrorRequestHandler} globalErrorHandler - Error-first handler for request/response errors
  */
 export class Server {
   public app: Application;
@@ -14,14 +15,20 @@ export class Server {
   public assetPath: string = './assets/';
   public healthPath: string = '/health';
 
-  constructor(private port: number, routes: Router[], healthRouter: Router, notFoundRouter: Router) {
+  constructor(
+    private port: number,
+    routes: Router[],
+    healthRouter: Router,
+    notFoundRouter: Router,
+    globalErrorHandler: ErrorRequestHandler,
+  ) {
     /* Setup app and functional route handlers */
     this.app = express();
     this.static(this.assetPath);
     this.health(healthRouter);
     this.routes(routes);
     this.notFound(notFoundRouter);
-
+    this.globalError(globalErrorHandler);
 
     /* Setup middleware for all requests */
     this.app.use(express.json());
@@ -54,6 +61,7 @@ export class Server {
 
   /**
    * Configure 404 error handling
+   * @param {express.Router} router - Router that handles requests for non-existent pages
    */
   private notFound(route: Router) {
     this.app.use(route);
@@ -61,10 +69,11 @@ export class Server {
 
   /**
    * Configure global error handler
+   * @param {ErrorRequestHandler} handler - Error-first handler for request/response errors
    */
-  // private globalError() {
-  //   this.app.use();
-  // }
+  private globalError(handler: ErrorRequestHandler) {
+    this.app.use(handler);
+  }
 
   public listen() {
     this.app.listen(this.port, () => {
