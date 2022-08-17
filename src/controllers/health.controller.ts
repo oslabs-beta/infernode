@@ -86,7 +86,7 @@ export class HealthController {
     // try {
     //   // todo: clean up test inserts after successful read to avoid ever-expanding DB
     //   captureDB.run(
-    //     `INSERT INTO capture VALUES (1, 'Test capture', '8/16/2022', 'Dzidupe', 'Test app', 0)`, 
+    //     `INSERT INTO capture VALUES (1, 'Test capture', '8/16/2022', 'Dzidupe', 'Test app', 0)`,
     //     (err) => {
     //       if (err) {
     //         throw err;

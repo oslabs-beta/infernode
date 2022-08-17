@@ -2,7 +2,8 @@ import sqlite3, { Database } from 'sqlite3';
 import path from 'path';
 import fs from 'fs';
 
-//Captures stack traces when handling queries. Makes it easier to debug errors resulting from bad queries.
+//Captures stack traces when handling queries. Makes it easier to debug errors resulting from 
+//bad queries.
 sqlite3.verbose();
 
 const dbPath: string = path.resolve(__dirname, '../../database/captureDB.db')
@@ -18,15 +19,19 @@ let dbExists: boolean = fs.existsSync(dbPath);
 //https://github.com/TryGhost/node-sqlite3/wiki/API
 
 //Creating a new instance of the sqlite database
-captureDB = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
-  //Console logs to confirm connection to the database
-  if (err) {
-    console.log("Error occurred when connecting to the database: ", err);
+captureDB = new sqlite3.Database(
+  dbPath, 
+  sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, 
+  (err) => {
+    //Console logs to confirm connection to the database
+    if (err) {
+      console.log("Error occurred when connecting to the database: ", err);
+    }
+    else {
+      console.log('Connected to database');
+    }
   }
-  else {
-    console.log('Connected to database');
-  }
-});
+);
 
 //If the db was just created, create a table for the capture information
 if (!dbExists) {
