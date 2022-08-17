@@ -6,6 +6,7 @@ import path from 'path';
  * @param {number} port - The server listening port
  * @param {express.Router[]} routes - /api/* Routers
  * @param {express.Router} healthRouter - /health endpoint Router
+ * @param {express.Router} notFoundRouter - 404 handler Router
  */
 export class Server {
   public app: Application;
@@ -13,12 +14,14 @@ export class Server {
   public assetPath: string = './assets/';
   public healthPath: string = '/health';
 
-  constructor(private port: number, routes: Router[], healthRouter: Router) {
+  constructor(private port: number, routes: Router[], healthRouter: Router, notFoundRouter: Router) {
     /* Setup app and functional route handlers */
     this.app = express();
     this.static(this.assetPath);
     this.health(healthRouter);
     this.routes(routes);
+    this.notFound(notFoundRouter);
+
 
     /* Setup middleware for all requests */
     this.app.use(express.json());
@@ -48,6 +51,20 @@ export class Server {
   private routes(routes: Router[]) {
     routes.forEach((router) => this.app.use(this.apiPath, router));
   }
+
+  /**
+   * Configure 404 error handling
+   */
+  private notFound(route: Router) {
+    this.app.use(route);
+  }
+
+  /**
+   * Configure global error handler
+   */
+  // private globalError() {
+  //   this.app.use();
+  // }
 
   public listen() {
     this.app.listen(this.port, () => {
