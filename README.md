@@ -6,25 +6,48 @@ Flamegraph tool for node.js
 
 Coming soon...
 
-## Architecture
-
-### Tech Stack
-
-#### Back End
-
-- 
-
-### Diagram
-
-![infernode architecture diagram](/docs/images/app-diagram.png)
-
-## Interface
-
 ## Developing
 
 1. Clone this repository
 1. `npm install` in the repo directory
 1. `npm run dev` to run the server with on-save recompile/reload
+
+## Architecture
+
+### Backend Tech Stack
+
+- TypeScript
+- Node.js
+- Express.js
+- SQLite3
+- Jest
+
+### Frontend Tech Stack
+
+- TypeScript
+- React
+- React-Router
+- React-Bootstrap
+
+### High Level Diagram
+
+![infernode architecture diagram](/docs/images/app-diagram.png)
+
+## Interface
+
+### Overview
+
+![ui overview](/docs/images/layout-overview.png)
+
+### General Page Layout
+
+![generic page layout](/docs/images/layout-draft.png)
+
+### Page Wireframes
+![history page](/docs/images/history-page.png)
+![capture page](/docs/images/capture-page.png)
+![manage page](/docs/images/manage-page.png)
+![help page](/docs/images/help-page.png)
 
 ## Contributing
 
