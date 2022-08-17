@@ -38,7 +38,9 @@ captureDB = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (err) => {
 
 if (!dbExists) {
   console.log('Creating capture table in newly created DB');
-  const createTableSQL: string = 'CREATE TABLE capture(id, capture_name, date, creator, app_name, data)';
+  //JSON can be stored as text in SQLite. Currently requiring data field, so if no data is needed, we can always convert an empt JSON object to a string
+  //If it turns out we don't really need the data field, we can also get rid of it. 
+  const createTableSQL: string = 'CREATE TABLE capture(id INT NOT NULL , capture_name TEXT NOT NULL, date, creator TEXT NOT NULL, app_name TEXT NOT NULL, data TEXT NOT NULL)';
   captureDB.run(createTableSQL, (err) => {
     if (err) {
       console.log('Error occurred when creating a table in the database.');
