@@ -21,6 +21,7 @@ let dbExists: boolean = fs.existsSync(dbPath);
 //Creating a new instance of the sqlite database
 captureDB = new sqlite3.Database(
   dbPath, 
+  // tslint:disable-next-line:no-bitwise
   sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, 
   (err) => {
     //Console logs to confirm connection to the database
