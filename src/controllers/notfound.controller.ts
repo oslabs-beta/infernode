@@ -6,7 +6,7 @@ export class NotFoundController {
   }
 
   public info(req: Request, res: Response) {
-    res.status(404).send(`
+    return res.status(404).send(`
       <html>
       <head>
         <title>Not Found</title>
