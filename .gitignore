@@ -104,5 +104,10 @@ dist
 .tern-port
 .DS_Store
 
-#database files
-./database
+# perf, svg, and db files
+database/captures/**
+database/SVGs/**
+database/*.db
+
+# include .gitkeep files
+!.gitkeep
