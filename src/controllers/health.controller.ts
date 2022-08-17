@@ -83,29 +83,32 @@ export class HealthController {
     console.log('Checking readiness...');
     this.readiness.status = 'READY';
     this.readiness.data.db_connected = true;
-    // try {
-    //   // todo: clean up test inserts after successful read to avoid ever-expanding DB
-    //   captureDB.run(`INSERT INTO capture VALUES (1, 'Test capture', '8/16/2022', 'Dzidupe', 'Test app', 0)`, (err) => {
-    //     if (err) {
-    //       throw err;
-    //     }
-    //   });
-    //   captureDB.all(`SELECT * FROM capture`, (err, rows) => {
-    //     rows.forEach(el => {
-    //       console.log(el);
-    //     })
-    //   });
-    //   captureDB.all(`select sqlite_version();`, (err, rows) => {
-    //     this.readiness.data.db_version = rows[0];
-    //   });
-    //   this.readiness.data.db_connected = true;
-    //   console.log('Readiness check succeeded!')
-    //   this.readiness.status = 'READY';
-    // }
-    // catch {
-    //   console.log('Readiness check failed!')
-    //   this.readiness.status = 'NOT READY';
-    // }
+    try {
+      // todo: clean up test inserts after successful read to avoid ever-expanding DB
+      captureDB.run(
+        `INSERT INTO capture VALUES (1, 'Test capture', '8/16/2022', 'Dzidupe', 'Test app', 0)`, 
+        (err) => {
+          if (err) {
+            throw err;
+          }
+        }
+      );
+      captureDB.all(`SELECT * FROM capture`, (err, rows) => {
+        rows.forEach(el => {
+          console.log(el);
+        })
+      });
+      captureDB.all(`select sqlite_version();`, (err, rows) => {
+        this.readiness.data.db_version = rows[0];
+      });
+      this.readiness.data.db_connected = true;
+      console.log('Readiness check succeeded!')
+      this.readiness.status = 'READY';
+    }
+    catch {
+      console.log('Readiness check failed!')
+      this.readiness.status = 'NOT READY';
+    }
   }
 
   /* Checks if the server is healthy by checking applicable sub-checks */
