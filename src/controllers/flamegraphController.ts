@@ -1,7 +1,7 @@
 //middelware function that will take a .perf and return a .svg
+
+
 /*
-we will need to use commist and minimist to define the automated command line functions
-we will need to import two .pl scripts from Gregg's repo
 
 1. run the following command to collapse the stack frames
 ./stackcollapse-perf.pl out.perf > out.folded
@@ -11,15 +11,10 @@ we will need to import two .pl scripts from Gregg's repo
 
 3. return the .svg to the next middleware function
 */
-// const execSync = require('child_process').execSync
 
 // exec() method: This method creates a shell first and then executes the command. 
 const exec = require('child_process').exec   
-// const minimist = require('minimist')
-// const commist = require('commist')
 import { Express, Request, Response, NextFunction } from 'express'
-// import * as child from 'child_process'
-// import * as events  from 'events'
 import * as stream from 'stream'
 
 const express = require('express');
@@ -32,7 +27,6 @@ type FlamegraphSVGController = {
   toSVG: (req: Request, res: Response, next: NextFunction) => void, 
 }
 
-
 const flamegraphController: FlamegraphSVGController = {
   stackCollapse: (req: Request, res: Response, next: NextFunction): void => {
     //node child process
@@ -41,7 +35,6 @@ const flamegraphController: FlamegraphSVGController = {
     exec(`./src/perlScripts/stackCollapse-perf.pl ./database/captures/1.perf > ./database/captures/folded/1.folded`,
        (error: stream.Readable, stdout: stream.Readable, stderr: stream.Readable) => {
         //change to String | Buffer if it doesnt work
-        //  console.log(`stdout: ${stdout}`)
         if (error) {
           //   return next({
           //     log: 'something went wrong with the stackFolder middleware',
@@ -71,7 +64,7 @@ const flamegraphController: FlamegraphSVGController = {
   }
 }
 
-// temperaty testing of functiosn
+// temperaty testing of functiosn, will remove
 app.get('/', (req: Request, res: Response): Object => res.json('test the server..'))
 
 app.get('/test',
