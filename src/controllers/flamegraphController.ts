@@ -14,9 +14,6 @@ const exec = require('child_process').exec
 import { Express, Request, Response, NextFunction } from 'express'
 import * as stream from 'stream'
 
-const express = require('express');
-const app = express();
-
 type FlamegraphSVGController = {
   //collapse the stack traces in the perf:
   stackCollapse: (req: Request, res: Response, next: NextFunction) => void, 
@@ -61,18 +58,5 @@ const flamegraphController: FlamegraphSVGController = {
     })
   }
 }
-
-// temperaty testing of functiosn, will remove
-// app.get('/', (req: Request, res: Response): Object => res.json('test the server..'))
-
-// app.get('/test',
-//   flamegraphController.stackCollapse,
-//   flamegraphController.toSVG,
-//   (req: Request, res: Response): Object => {
-//   return res.status(200).json('test fg controllers sucessfull-----');
-// })
-
-// app.listen('3000', (err:Error) => {if (err) console.log(err); else console.log('server is listening....at 3000')})
-
 
 module.exports = flamegraphController;
