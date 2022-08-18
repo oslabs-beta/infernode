@@ -1,6 +1,10 @@
 import {NextFunction, Router, Request, Response} from 'express';
+import { fileController } from '../controllers/controllers.module';
+import bodyParser from 'body-parser';
 
 const apiRouter = Router();
+const textParser = bodyParser.text();
+
 
 apiRouter.get('/',
   (req: Request, res: Response, next: NextFunction) => {
@@ -13,8 +17,14 @@ apiRouter.get('/',
 apiRouter.post('/captures',
   (req: Request, res: Response, next: NextFunction) => {
     console.log(`${new Date().toLocaleString()}: apiRouter handling ${req.method} ${req.url}`);
-    next({message: 'POST /api/captures/ not yet implemented'})
-  }
+    res.locals.id = 1234;
+    return next();
+  },
+textParser,
+fileController.addData,
+(req: Request, res: Response) => {
+  res.status(200).json({id: res.locals.id});
+}
 )
 
 // Create/Update by ID
