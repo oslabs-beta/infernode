@@ -2,7 +2,7 @@
   "extends": "tslint:recommended",
   "rules": {
     "max-line-length": {
-      "options": [100]
+      "options": [120]
     },
     "member-ordering": false,
     "no-consecutive-blank-lines": false,
