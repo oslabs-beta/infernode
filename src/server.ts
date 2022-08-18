@@ -71,6 +71,8 @@ export class Server {
    * Configure global error handler
    * @param {ErrorRequestHandler} handler - Error-first handler for request/response errors
    */
+
+
   private globalError(handler: ErrorRequestHandler) {
     this.app.use(handler);
   }
