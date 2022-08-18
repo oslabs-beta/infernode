@@ -10,12 +10,11 @@
           "safari": "11.1"
         },
         "useBuiltIns": "usage",
-        "corejs": "3.6.5"
+        "corejs": "3"
       }
     ],
     "airbnb",
     "@babel/preset-react",
-    "@babel/preset-typescript",
-    "@babel/plugin-proposal-class-properties"
+    "@babel/preset-typescript"
   ]
 }
