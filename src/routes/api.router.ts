@@ -10,11 +10,11 @@ apiRouter.get('/',
 )
 
 // This middleware was used for testing
-// const will = (req: Request, res: Response, next: NextFunction) => {res.locals.id = 'test'; return next()}
+const will = (req: Request, res: Response, next: NextFunction) => {res.locals.id = 'test'; return next()}
 
 // Create
 apiRouter.post('/captures', 
-  // will, /*will's middlware, */
+  will, /*will's middlware, */
   flamegraph.stackCollapse,
   flamegraph.toSVG,
   (req: Request, res: Response, next: NextFunction) => {
