@@ -28,7 +28,7 @@ const flamegraphController: FlamegraphSVGController = {
   stackCollapse: (req: Request, res: Response, next: NextFunction): void => {
     //node child process
     const fileName = res.locals.id; 
-    // const fileName = '1';
+    console.log(fileName, '-----')
     exec(`./src/perlScripts/stackCollapse-perf.pl ./database/captures/${fileName}.perf > ./database/folded/${fileName}.folded`,
        (error: stream.Readable, stdout: stream.Readable, stderr: stream.Readable) => {
         //change to String | Buffer if it doesnt work
@@ -46,7 +46,7 @@ const flamegraphController: FlamegraphSVGController = {
 
   toSVG: (req: Request, res: Response, next: NextFunction): void => {
     const fileName = res.locals.id;
-    // const fileName = '1';
+    console.log(fileName, '-----')
     exec(`./src/perlScripts/flamegraph.pl ./database/folded/${fileName}.folded > ./database/SVGs/${fileName}.svg`,
       (error: Error, stdout: string | Buffer, stderr: string | Buffer) => {
       //store file ./database/SVGs

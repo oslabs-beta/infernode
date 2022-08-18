@@ -10,7 +10,7 @@ apiRouter.get('/',
 )
 
 // This middleware was used for testing
-// const will = (req: Request, res: Response, next: NextFunction) => {res.locals.id = '1'; return next()}
+// const will = (req: Request, res: Response, next: NextFunction) => {res.locals.id = 'test'; return next()}
 
 // Create
 apiRouter.post('/captures', 
