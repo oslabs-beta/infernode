@@ -2,8 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const MODE = process.env.NODE_ENV || "development";
-
-console.log('Read NODE_ENV: ', process.env.NODE_ENV)
+console.log('Environment NODE_ENV: ', process.env.NODE_ENV)
 console.log('Setting webpack mode: ', MODE)
 
 module.exports = {
@@ -40,7 +39,12 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: ["babel-loader"],
+      },
+      {
+        test: /\.(ts|tsx)$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
@@ -51,6 +55,10 @@ module.exports = {
           'css-loader',
           'sass-loader',
         ],
+      },
+      {
+        test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
+        use: ["file-loader"],
       },
     ],
   },

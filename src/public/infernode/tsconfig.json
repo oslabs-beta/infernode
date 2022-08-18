@@ -1,18 +1,18 @@
 {
   "compilerOptions": {
-    "outDir": "../../dist/public/infernode",
-    "noImplicitAny": true,
-    "module": "es6",
-    "target": "es5",
-    "jsx": "react",
     "allowJs": true,
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "baseUrl": "../../../",
     "esModuleInterop": true,
-    "types": ["react/next", "react-dom/next"],
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react-jsx",
+    "module": "es6",
+    "moduleResolution": "node",
     "noEmitOnError": true,
+    "noImplicitAny": true,
+    "outDir": "../../dist/public/infernode",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es5",
+    "types": ["react/next", "react-dom/next"]
   }
 }
