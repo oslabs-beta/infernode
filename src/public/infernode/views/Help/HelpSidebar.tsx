@@ -1,38 +1,25 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Nav from 'react-bootstrap/Nav'
+import Nav from 'react-bootstrap/Nav';
 import { LinkContainer } from 'react-router-bootstrap';
 
-
-export const HelpSidebar: React.FC = () =>{
-  // <Card><img src='/mocks/help-menu.png'/></Card>
-  // https://react-bootstrap.github.io/components/list-group/
-  // npm i --save-dev @types/react-router-bootstrap
+export default function HelpSidebar(): JSX.Element {
   return (
     <Card className="flex-shrink-0 align-self-start">
       <ListGroup as="ul">
         <ListGroup.Item as="li">
-          <LinkContainer to="/help/page1">
-            <Nav.Link>Page 1</Nav.Link>
+          <LinkContainer to="/help/flamegraphs">
+            <Nav.Link>Flamegraphs</Nav.Link>
           </LinkContainer>
-          <LinkContainer to="/help/page2">
-            <Nav.Link>Page 2</Nav.Link>
+          <LinkContainer to="/help/perf">
+            <Nav.Link>Perf Tools</Nav.Link>
           </LinkContainer>
-          <LinkContainer to="/help/page3">
-            <Nav.Link>Page 3</Nav.Link>
+          <LinkContainer to="/help/profiling">
+            <Nav.Link>Node.js Profiling</Nav.Link>
           </LinkContainer>
-          <LinkContainer to="/help/page4">
-            <Nav.Link>Page 4</Nav.Link>
-          </LinkContainer>
-          <LinkContainer to="/help/page5">
-            <Nav.Link>Page 5</Nav.Link>
-          </LinkContainer>
-          <LinkContainer to="/help/page6">
-            <Nav.Link>Page 6</Nav.Link>
-          </LinkContainer>
-          <LinkContainer to="/help/page7">
-            <Nav.Link>Page 7</Nav.Link>
+          <LinkContainer to="/help/resources">
+            <Nav.Link>More Resources</Nav.Link>
           </LinkContainer>
         </ListGroup.Item>
       </ListGroup>

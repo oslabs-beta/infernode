@@ -1,12 +1,16 @@
-import { NextFunction, Router, Request, Response } from 'express';
-const flamegraph = require('../controllers/flamegraphController');
+/* eslint-disable no-console */
+import {
+  NextFunction, Router, Request, Response,
+} from 'express';
+import flamegraph from '../controllers/flamegraphController';
+
 const apiRouter = Router();
 
 apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
   console.log(
     `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
       req.url
-    }`
+    }`,
   );
   return next({ message: 'GET /api/ not yet implemented' });
 });
@@ -20,16 +24,15 @@ const will = (req: Request, res: Response, next: NextFunction) => {
 // Create
 apiRouter.post(
   '/captures',
-  will /*will's middlware, */,
+  will /* will's middlware, */,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
-  (req: Request, res: Response, next: NextFunction) => {
-    return res
-      .status(200)
-      .send('svg file created and stored in the /database/SVGs');
-    // what we send back to the client will depend on the front end
-    //architecture and how we want the user to see what they just uploaded
-  }
+  (req: Request, res: Response) => res
+    .status(200)
+    .send('svg file created and stored in the /database/SVGs'),
+  // what we send back to the client will depend on the front end
+  // architecture and how we want the user to see what they just uploaded
+
 );
 
 // Create/Update by ID
@@ -39,10 +42,10 @@ apiRouter.put(
     console.log(
       `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
         req.url
-      }`
+      }`,
     );
     next({ message: 'PUT /api/captures/:id not yet implemented' });
-  }
+  },
 );
 
 // Read
@@ -52,10 +55,10 @@ apiRouter.get(
     console.log(
       `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
         req.url
-      }`
+      }`,
     );
     next({ message: 'GET /api/captures/ not yet implemented' });
-  }
+  },
 );
 
 // Read All
@@ -65,10 +68,10 @@ apiRouter.get(
     console.log(
       `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
         req.url
-      }`
+      }`,
     );
     next({ message: 'GET /api/captures/:id not yet implemented' });
-  }
+  },
 );
 
 // Update
@@ -78,10 +81,10 @@ apiRouter.patch(
     console.log(
       `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
         req.url
-      }`
+      }`,
     );
     next({ message: 'PATCH /api/captures/:id not yet implemented' });
-  }
+  },
 );
 
 // Delete
@@ -91,10 +94,10 @@ apiRouter.delete(
     console.log(
       `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
         req.url
-      }`
+      }`,
     );
     next({ message: 'DELETE /api/captures/:id not yet implemented' });
-  }
+  },
 );
 
 // define a global err handler based on the server.globalError method

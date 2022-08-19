@@ -1,18 +1,20 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-const MODE = process.env.NODE_ENV || "development";
-console.log('Environment NODE_ENV: ', process.env.NODE_ENV)
-console.log('Setting webpack mode: ', MODE)
+const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
-  entry: './src/public/infernode/index.tsx',
-  mode: MODE,
+  context: path.resolve(__dirname, './src/public/infernode/'),
+
+  entry: {
+    app: './index.tsx',
+  },
 
   output: {
     path: path.resolve(__dirname, './dist/assets/'),
     filename: 'bundle.js',
     publicPath: '/',
+    clean: true,
   },
 
   plugins: [
@@ -21,21 +23,12 @@ module.exports = {
       template: path.resolve(__dirname, './src/assets/index.html'),
       inject: false,
     }),
+    new ForkTsCheckerWebpackPlugin(),
+    new ForkTsCheckerNotifierWebpackPlugin({
+      title: 'TypeScript',
+      excludeWarnings: false,
+    }),
   ],
-  devServer: {
-    static: {
-      directory: path.resolve(__dirname, './assets/'),
-    },
-    compress: true,
-    port: 8080,
-    proxy: {
-      '/**': {
-        target: 'http://localhost:3000/',
-        secure: false,
-      },
-    },
-  },
-
   module: {
     rules: [
       {
@@ -62,8 +55,7 @@ module.exports = {
       },
     ],
   },
-  devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
   },
 };

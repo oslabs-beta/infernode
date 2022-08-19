@@ -1,4 +1,6 @@
-import express, { Application, NextFunction, Router, ErrorRequestHandler } from 'express';
+import express, {
+  Application, Router, ErrorRequestHandler,
+} from 'express';
 import path from 'path';
 
 /**
@@ -9,14 +11,17 @@ import path from 'path';
  * @param {express.Router} notFoundRouter - 404 handler Router
  * @param {ErrorRequestHandler} globalErrorHandler - Error-first handler for request/response errors
  */
-export class Server {
+export default class Server {
   public app: Application;
-  public apiPath: string = '/api';
-  public assetPath: string = './assets/';
-  public healthPath: string = '/health';
+
+  public apiPath = '/api';
+
+  public assetPath = './assets/';
+
+  public healthPath = '/health';
 
   constructor(
-    private port: number,
+    public port: number,
     routes: Router[],
     healthRouter: Router,
     notFoundRouter: Router,
@@ -24,7 +29,7 @@ export class Server {
   ) {
     /* Setup app and functional route handlers */
     this.app = express();
-    this.static(this.assetPath);
+    this.static();
     this.health(healthRouter);
     this.routes(routes);
     this.notFound(notFoundRouter);
@@ -39,7 +44,7 @@ export class Server {
    * Configure static file serving
    * @param {string} assetPath - The relative path from which to server static content
    */
-  private static(assetPath: string) {
+  private static() {
     this.app.use(express.static(path.resolve(__dirname, this.assetPath)));
   }
 
@@ -72,17 +77,15 @@ export class Server {
    * @param {ErrorRequestHandler} handler - Error-first handler for request/response errors
    */
 
-
   private globalError(handler: ErrorRequestHandler) {
     this.app.use(handler);
   }
 
   public listen() {
     this.app.listen(this.port, () => {
+      // eslint-disable-next-line no-console
       console.log(
-        `${new Date().toLocaleString()}: 🔥 INFERNOde listening on port ${
-          this.port
-        } 🔥`
+        `${new Date().toLocaleString()}: Express.js listening on port ${this.port}`,
       );
     });
   }

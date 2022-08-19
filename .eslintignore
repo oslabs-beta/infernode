@@ -1,4 +1,5 @@
 .eslintrc.js
 jest-setup.js
 jest-teardown.js
-webpack.config.js
+webpack.*.js
+node_modules/**/*

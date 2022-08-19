@@ -1,8 +1,10 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 
-export const HistorySidebar: React.FC = () =>{
+export default function HistorySidebar(): JSX.Element {
   return (
-      <Card className="flex-shrink-0 align-self-start"><img src='/mocks/history-menu.png'/></Card>
+    <Card className="flex-shrink-0 align-self-start">
+      <img alt="mock history page menu" src="/mocks/history-menu.png" />
+    </Card>
   );
 }
