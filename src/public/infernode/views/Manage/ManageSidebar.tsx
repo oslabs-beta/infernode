@@ -1,8 +1,10 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 
-export const ManageSidebar: React.FC = () => (
-  <Card className="flex-shrink-0 align-self-start">
-    <img src="/mocks/manage-menu.png" />
-  </Card>
-);
+export default function ManageSidebar(): JSX.Element {
+  return (
+    <Card className="flex-shrink-0 align-self-start">
+      <img alt="mock manage page menu" src="/mocks/manage-menu.png" />
+    </Card>
+  );
+}

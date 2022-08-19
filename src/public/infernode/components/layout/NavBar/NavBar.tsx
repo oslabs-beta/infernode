@@ -6,8 +6,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { LinkContainer } from 'react-router-bootstrap';
 
-export const NavBar: React.FC = () => {
-  const [isDarkMode, setDarkMode] = useState<boolean>(false);
+export default function NavBar(): JSX.Element {
+  const [isDarkMode, setDarkMode] = useState(false);
 
   let bg = 'light';
   let variant = 'light';
@@ -15,7 +15,7 @@ export const NavBar: React.FC = () => {
     bg = 'dark';
     variant = 'dark';
   }
-  // https://react-bootstrap.github.io/components/navbar/
+
   return (
     <Navbar bg={bg} variant={variant} className="mb-2">
       <Container>
@@ -52,7 +52,7 @@ export const NavBar: React.FC = () => {
               variant="secondary"
               checked={isDarkMode}
               value="1"
-              onChange={(e) => setDarkMode(e.currentTarget.checked)}
+              onChange={() => setDarkMode(!isDarkMode)}
             >
               {(isDarkMode && '🌔') || '🌒'}
             </ToggleButton>
@@ -61,4 +61,4 @@ export const NavBar: React.FC = () => {
       </Container>
     </Navbar>
   );
-};
+}

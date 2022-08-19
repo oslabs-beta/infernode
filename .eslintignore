@@ -2,3 +2,4 @@
 jest-setup.js
 jest-teardown.js
 webpack.config.js
+node_modules/**/*

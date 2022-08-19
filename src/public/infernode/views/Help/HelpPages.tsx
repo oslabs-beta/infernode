@@ -1,35 +1,42 @@
 import React from 'react';
-import Stack from 'react-bootstrap/Stack';
-import { Card } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 
-const HelpPage1: React.FC = () => (
-  <h1> Help Page 1</h1>
-);
+export function HelpTOC(): JSX.Element {
+  return (
+    <Card>
+      <h1>Table of Contents</h1>
+    </Card>
+  );
+}
 
-const HelpPage2: React.FC = () => (
-  <h1> Help Page 2</h1>
-);
+export function HelpFlamegraphs(): JSX.Element {
+  return (
+    <Card>
+      <h1>Flamegraphs</h1>
+    </Card>
+  );
+}
 
-const HelpPage3: React.FC = () => (
-  <h1> Help Page 3</h1>
-);
+export function HelpPerf(): JSX.Element {
+  return (
+    <Card>
+      <h1>Linux Perf Tools</h1>
+    </Card>
+  );
+}
 
-const HelpPage4: React.FC = () => (
-  <h1> Help Page 4</h1>
-);
+export function HelpProfiling(): JSX.Element {
+  return (
+    <Card>
+      <h1>Node.js Profiling</h1>
+    </Card>
+  );
+}
 
-const HelpPage5: React.FC = () => (
-  <h1> Help Page 5</h1>
-);
-
-const HelpPage6: React.FC = () => (
-  <h1> Help Page 6</h1>
-);
-
-const HelpPage7: React.FC = () => (
-  <h1> Help Page 7</h1>
-);
-
-export default {
-  HelpPage1, HelpPage2, HelpPage3, HelpPage4, HelpPage5, HelpPage6, HelpPage7,
-};
+export function HelpResources(): JSX.Element {
+  return (
+    <Card>
+      <h1>Resources</h1>
+    </Card>
+  );
+}

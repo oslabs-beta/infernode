@@ -178,7 +178,7 @@ export default class HealthController {
   }
 
   /* Middleware for /{health}/ requests */
-  getHealthiness(req: Request, res: Response) {
+  public getHealthiness(req: Request, res: Response) {
     this.checkHealthiness();
     if (this.healthiness.status === 'OK') res.status(200);
     else res.status(503);
