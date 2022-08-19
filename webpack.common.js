@@ -1,9 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ForkTsCheckerNotifierWebpackPlugin = require('fork-ts-checker-notifier-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 
 module.exports = {
+  context: path.resolve(__dirname, './src/public/infernode/'),
+
   entry: {
-    app: './src/public/infernode/index.tsx',
+    app: './index.tsx',
   },
 
   output: {
@@ -18,6 +22,11 @@ module.exports = {
       title: 'Development',
       template: path.resolve(__dirname, './src/assets/index.html'),
       inject: false,
+    }),
+    new ForkTsCheckerWebpackPlugin(),
+    new ForkTsCheckerNotifierWebpackPlugin({
+      title: 'TypeScript',
+      excludeWarnings: false,
     }),
   ],
   module: {
