@@ -4,39 +4,40 @@ import formidable from 'formidable';
 import path from 'path';
 
 export default class FileController {
-  constructor() {}
+  public uploadDir = '../../database/uploads';
 
-  addData = async (req: Request, res: Response, next: NextFunction) => {
+  addData = (req: Request, res: Response, next: NextFunction) => {
     // Get next ID
-    const fileId: number = res.locals.id;
+    const fileId = Number(res.locals.id);
 
     const processTempFile = (formName: string, file: formidable.File) => {
-      console.log(
-        `${new Date().toLocaleString()}: Parsed POST'd file, formname ${JSON.stringify(
-          formName
-        )}, files ${JSON.stringify(file)}`
-      );
-      let filePath: string = file.filepath;
-      const currentPath = filePath; //files.capture.filepath;
+      // console.log(
+      //   `${new Date().toLocaleString()}: Parsed POST'd file, formname ${JSON.stringify(
+      //     formName,
+      //   )}, files ${JSON.stringify(file)}`,
+      // );
+      const filePath: string = file.filepath;
+      const currentPath = filePath; // files.capture.filepath;
       const renamedPath = path.resolve(
         __dirname,
-        '../../database/uploads',
-        `${fileId}.perf`
+        this.uploadDir,
+        `${fileId}.perf`,
       );
       const destinationPath = path.resolve(
         __dirname,
-        '../../database/captures/',
-        `${fileId}.perf`
+        this.uploadDir,
+        `${fileId}.perf`,
       );
 
       try {
         fs.renameSync(currentPath, renamedPath);
-        console.log('Data File successfully renamed with Id');
-        fs.move(renamedPath, destinationPath);
-        console.log('Data File successfully moved from uploads to captures');
+        // console.log('Data File successfully renamed with Id');
+        fs.moveSync(renamedPath, destinationPath);
+        // console.log('Data File successfully moved from uploads to captures');
       } catch (err) {
         return next(err);
       }
+      return next();
     };
 
     const uploads = new formidable.IncomingForm({

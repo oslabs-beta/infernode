@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { notFoundController } from '../controllers/controllers.module';
 import process from 'node:process';
+import { notFoundController } from '../controllers/controllers.module';
 
 const notFoundRouter = Router();
 

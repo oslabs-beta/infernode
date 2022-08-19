@@ -1,10 +1,9 @@
 import dotenv from 'dotenv'; // Used for runtime config (listener port, secrets, debug logging)
-import { Server } from './server';
+import Server from './server';
 import apiRouter from './routes/api.router';
 import HealthRouter from './routes/health.router';
 import NotFoundRouter from './routes/notFound.router';
 import { globalErrorHandler } from './utils/globalErrorHandler';
-
 
 dotenv.config();
 
@@ -14,8 +13,6 @@ const port: number = Number(process.env.EXPRESS_PORT) || 3000;
 /* Instantiate a Server with the port, an array of middleware, and the HealthRouter. */
 const server = new Server(port, [apiRouter], HealthRouter, NotFoundRouter, globalErrorHandler);
 
-
 /* Start server, export for use with Jest setup/teardown */
 const listener = server.listen();
 export default listener;
-

@@ -6,12 +6,12 @@ interface IDarkMode {
 }
 
 function darkMode(defaultValue?: boolean): IDarkMode {
-  const [darkModeState, setDarkMode] = useState<boolean>( defaultValue ?? false,)
+  const [darkModeState, setDarkMode] = useState<boolean>(defaultValue ?? false);
 
   return {
     isDarkMode: darkModeState,
-    toggle: () => setDarkMode((prev: Boolean) => !prev),
-  }
+    toggle: () => setDarkMode((prev: boolean) => !prev),
+  };
 }
 
 export default darkMode;

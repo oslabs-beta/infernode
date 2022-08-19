@@ -1,15 +1,14 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Nav from 'react-bootstrap/Nav'
+import Nav from 'react-bootstrap/Nav';
 import { LinkContainer } from 'react-router-bootstrap';
 
-
-export const HelpSidebar: React.FC = () =>{
+export const HelpSidebar: React.FC = () =>
   // <Card><img src='/mocks/help-menu.png'/></Card>
   // https://react-bootstrap.github.io/components/list-group/
   // npm i --save-dev @types/react-router-bootstrap
-  return (
+  (
     <Card className="flex-shrink-0 align-self-start">
       <ListGroup as="ul">
         <ListGroup.Item as="li">
@@ -38,4 +37,3 @@ export const HelpSidebar: React.FC = () =>{
       </ListGroup>
     </Card>
   );
-}

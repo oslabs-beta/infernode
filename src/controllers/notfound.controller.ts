@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-export class NotFoundController {
+export default class NotFoundController {
   public default(req: Request, res: Response) {
     return res.sendStatus(404);
   }
