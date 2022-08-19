@@ -1,18 +1,16 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const MODE = process.env.NODE_ENV || "development";
-console.log('Environment NODE_ENV: ', process.env.NODE_ENV)
-console.log('Setting webpack mode: ', MODE)
-
 module.exports = {
-  entry: './src/public/infernode/index.tsx',
-  mode: MODE,
+  entry: {
+    app: './src/public/infernode/index.tsx',
+  },
 
   output: {
     path: path.resolve(__dirname, './dist/assets/'),
     filename: 'bundle.js',
     publicPath: '/',
+    clean: true,
   },
 
   plugins: [
@@ -22,20 +20,6 @@ module.exports = {
       inject: false,
     }),
   ],
-  devServer: {
-    static: {
-      directory: path.resolve(__dirname, './assets/'),
-    },
-    compress: true,
-    port: 8080,
-    proxy: {
-      '/**': {
-        target: 'http://localhost:3000/',
-        secure: false,
-      },
-    },
-  },
-
   module: {
     rules: [
       {
@@ -62,8 +46,7 @@ module.exports = {
       },
     ],
   },
-  devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
   },
 };
