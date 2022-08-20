@@ -10,30 +10,37 @@
 */
 
 // exec() method: This method creates a shell first and then executes the command.
-import {
-  Express, Request, Response, NextFunction,
-} from 'express';
-import * as stream from 'stream';
+import { Request, Response, NextFunction } from "express";
+import * as stream from "stream";
 
-const { exec } = require('child_process');
+const { exec } = require("child_process");
 
-const path = require('path');
+const path = require("path");
 
 type FlamegraphSVGController = {
   // collapse the stack traces in the perf:
-  stackCollapse: (req: Request, res: Response, next: NextFunction) => void,
+  stackCollapse: (req: Request, res: Response, next: NextFunction) => void;
   // convert the collapsed stack traces into an SVG:
-  toSVG: (req: Request, res: Response, next: NextFunction) => void
+  toSVG: (req: Request, res: Response, next: NextFunction) => void;
 };
 
 const flamegraphController: FlamegraphSVGController = {
   stackCollapse: (req: Request, res: Response, next: NextFunction): void => {
     // node child process
-    console.log('---dirname---', __dirname); // ...src/controllers/flamegraphcontroller.ts
+    console.log("---dirname---", __dirname); // ...src/controllers/flamegraphcontroller.ts
     const fileName: string = res.locals.id;
-    const inputPath: string = path.resolve(__dirname, `../../database/captures/${fileName}.perf`);
-    const outputPath: string = path.resolve(__dirname, `../../database/folded/${fileName}.folded`);
-    const script: string = path.resolve(__dirname, '../../src/perlScripts/stackCollapse-perf.pl');
+    const inputPath: string = path.resolve(
+      __dirname,
+      `../../database/captures/${fileName}.perf`
+    );
+    const outputPath: string = path.resolve(
+      __dirname,
+      `../../database/folded/${fileName}.folded`
+    );
+    const script: string = path.resolve(
+      __dirname,
+      "../../src/perlScripts/stackCollapse-perf.pl"
+    );
 
     exec(
       `${script} ${inputPath} > ${outputPath}`,
@@ -41,35 +48,44 @@ const flamegraphController: FlamegraphSVGController = {
         // change to String | Buffer if it doesnt work
         if (error) {
           return next({
-            message: 'something went wrong with the stackFolder middleware',
+            message: "something went wrong with the stackFolder middleware",
             userMessage: error.message,
-            controller: 'FlamegraphController',
+            controller: "FlamegraphController",
           });
           // console.log('err in stackCollapse');
           // return res.status(500).json('stackFolder err-----');
         }
         return next();
-      },
+      }
     );
   },
 
   toSVG: (req: Request, res: Response, next: NextFunction): void => {
     const fileName = res.locals.id;
-    const inputPath: string = path.resolve(__dirname, `../../database/folded/${fileName}.folded`);
-    const outputPath: string = path.resolve(__dirname, `../../database/SVGs/${fileName}.svg`);
-    const script: string = path.resolve(__dirname, '../../src/perlScripts/flamegraph.pl');
+    const inputPath: string = path.resolve(
+      __dirname,
+      `../../database/folded/${fileName}.folded`
+    );
+    const outputPath: string = path.resolve(
+      __dirname,
+      `../../database/SVGs/${fileName}.svg`
+    );
+    const script: string = path.resolve(
+      __dirname,
+      "../../src/perlScripts/flamegraph.pl"
+    );
 
     exec(
       `${script} ${inputPath} > ${outputPath}`,
       (error: Error, stdout: string | Buffer, stderr: string | Buffer) => {
-      // store file ./database/SVGs
+        // store file ./database/SVGs
         if (!error) return next();
         return next({
-          message: 'something went wrong with the toSVG middleware',
+          message: "something went wrong with the toSVG middleware",
           userMessage: error.message,
-          controller: 'FlamegraphController',
+          controller: "FlamegraphController",
         });
-      },
+      }
     );
   },
 };
