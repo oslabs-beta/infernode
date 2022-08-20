@@ -1,9 +1,9 @@
 import dotenv from 'dotenv'; // Used for runtime config (listener port, secrets, debug logging)
-import { Server } from './server';
+import Server from './server';
 import apiRouter from './routes/api.router';
 import HealthRouter from './routes/health.router';
 import NotFoundRouter from './routes/notFound.router';
-import { globalErrorHandler } from './utils/globalErrorHandler'
+import { globalErrorHandler } from './utils/globalErrorHandler';
 
 dotenv.config();
 

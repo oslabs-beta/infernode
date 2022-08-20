@@ -1,8 +1,10 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 
-export const CaptureSidebar: React.FC = () =>{
+export default function CaptureSidebar(): JSX.Element {
   return (
-      <Card className="flex-shrink-0 align-self-start"><img src='/mocks/capture-menu.png'/></Card>
+    <Card className="flex-shrink-0 align-self-start">
+      <img alt="mock capture page menu" src="/mocks/capture-menu.png" />
+    </Card>
   );
 }

@@ -1,4 +1,3 @@
-
 // Basic health check with a name, status, and optional list of subchecks
 interface HealthCheckResponse {
   name: string;
@@ -34,4 +33,6 @@ interface ReadinessCheckResponse extends HealthCheckResponse {
   }
 }
 
-export {HealthCheckResponse, StartedCheckResponse, LivelinessCheckResponse, ReadinessCheckResponse};
+export {
+  HealthCheckResponse, StartedCheckResponse, LivelinessCheckResponse, ReadinessCheckResponse,
+};
