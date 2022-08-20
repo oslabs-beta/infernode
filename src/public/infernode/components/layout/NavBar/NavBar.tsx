@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useStoreState, useStoreActions } from '../../../store/store';
 
 export default function NavBar(): JSX.Element {
-  const [isDarkMode, setDarkMode] = useState(false);
+  const isDarkMode = useStoreState((state) => state.config.darkMode);
+  const toggleDarkMode = useStoreActions((actions) => actions.config.toggleDarkMode);
 
   let bg = 'light';
   let variant = 'light';
@@ -52,9 +54,10 @@ export default function NavBar(): JSX.Element {
               variant="secondary"
               checked={isDarkMode}
               value="1"
-              onChange={() => setDarkMode(!isDarkMode)}
+              onChange={() => toggleDarkMode(isDarkMode)}
             >
               {(isDarkMode && '🌔') || '🌒'}
+              {`${isDarkMode}`}
             </ToggleButton>
           </ButtonGroup>
         </Navbar.Collapse>
