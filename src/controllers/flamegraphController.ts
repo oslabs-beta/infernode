@@ -13,7 +13,7 @@
 import { Request, Response, NextFunction } from "express";
 import * as stream from "stream";
 
-const { exec } = require("child_process");
+const exec = require("child_process");
 
 const path = require("path");
 
