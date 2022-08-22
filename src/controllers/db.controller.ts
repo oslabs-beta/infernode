@@ -3,7 +3,7 @@ import captureDB from '../models/captureModel';
 import DbBody from '../interfaces/dbcontroller.interface';
 import { InfernodeError } from '../utils/globalErrorHandler';
 
-export default class DBController {
+class DBController {
   nextID: number;
 
   constructor() {
@@ -37,7 +37,6 @@ export default class DBController {
     }
 
     try {
-      console.log(req.body);
       if (isDbBody(req.body as DbBody)) {
         const {
           captureName, date, creator, appName, data,
@@ -85,3 +84,6 @@ export default class DBController {
     }
   };
 }
+
+const controllerInstance = new DBController();
+export default controllerInstance;

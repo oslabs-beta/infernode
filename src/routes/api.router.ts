@@ -3,7 +3,8 @@ import {
   NextFunction, Router, Request, Response,
 } from 'express';
 import flamegraph from '../controllers/flamegraphController';
-import DBController from '../controllers/db.controller';
+import { fileController } from '../controllers/controllers.module';
+import dbController from '../controllers/db.controller';
 
 const apiRouter = Router();
 
@@ -16,36 +17,18 @@ apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
   return next({ message: 'GET /api/ not yet implemented' });
 });
 
-// This middleware was used for testing
-const will = (req: Request, res: Response, next: NextFunction) => {
-  res.locals.id = 'test';
-  return next();
-};
-
-// Create
-// <<<<<<< HEAD
-// apiRouter.post(
-//   '/captures',
-//   will /* will's middlware, */,
-//   flamegraph.stackCollapse,
-//   flamegraph.toSVG,
-//   (req: Request, res: Response) => res
-//     .status(200)
-//     .send('svg file created and stored in the /database/SVGs'),
-//   // what we send back to the client will depend on the front end
-//   // architecture and how we want the user to see what they just uploaded
-
-// );
-// =======
-const controllerInstance: DBController = new DBController();
 apiRouter.post(
   '/captures',
-  controllerInstance.createRecord,
-  (req: Request, res: Response) => {
-    res.status(200).send(`${Number(res.locals.id)}`);
-  },
+  dbController.createRecord,
+  fileController.addData,
+  flamegraph.stackCollapse,
+  flamegraph.toSVG,
+  (req: Request, res: Response) => res
+    .status(200)
+    .send('svg file created and stored in the /database/SVGs'),
+  // what we send back to the client will depend on the front end
+  // architecture and how we want the user to see what they just uploaded
 );
-// >>>>>>> test/dbController
 
 // Create/Update by ID
 apiRouter.put(
