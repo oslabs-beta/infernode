@@ -1,8 +1,8 @@
 interface DbBody {
-  capture_name: string;
-  date: Date;
+  captureName: string;
+  date: string;
   creator: string;
-  app_name: string;
+  appName: string;
   data: string;
 }
 
