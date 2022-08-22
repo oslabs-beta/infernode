@@ -36,8 +36,8 @@ captureDB = new sqlite3.Database(
 // If the db was just created, create a table for the capture information
 if (!dbExists) {
   console.log('Creating capture table in newly created DB');
-  
-  let createTableSQL: string = 'CREATE TABLE capture(id INTEGER PRIMARY KEY, capture_name TEXT NOT ';
+
+  let createTableSQL = 'CREATE TABLE capture(id INTEGER PRIMARY KEY, capture_name TEXT NOT ';
   createTableSQL += 'NULL, date, creator TEXT NOT NULL, app_name TEXT NOT NULL, data';
   createTableSQL += ' TEXT DEFAULT "{}")';
 
