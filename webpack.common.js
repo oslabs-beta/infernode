@@ -49,12 +49,17 @@ module.exports = {
           'sass-loader',
         ],
       },
+      // {
+      //   test: /\.(jpg|jpeg|png|gif|mp3)$/,
+      //   // use: ["file-loader"],
+      // },
       {
-        test: /\.(jpg|jpeg|png|gif|mp3|svg)$/,
-        use: ["file-loader"],
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        use: ['@svgr/webpack'],
       },
     ],
-  },
+},
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
   },
