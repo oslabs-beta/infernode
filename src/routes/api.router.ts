@@ -3,6 +3,7 @@ import {
   NextFunction, Router, Request, Response,
 } from 'express';
 import flamegraph from '../controllers/flamegraphController';
+import { fileController } from '../controllers/controllers.module';
 
 const apiRouter = Router();
 
@@ -16,15 +17,16 @@ apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
 });
 
 // This middleware was used for testing
-const will = (req: Request, res: Response, next: NextFunction) => {
-  res.locals.id = 'test';
-  return next();
-};
+// const will = (req: Request, res: Response, next: NextFunction) => {
+//   res.locals.id = 'test';
+//   return next();
+// };
 
 // Create
 apiRouter.post(
   '/captures',
-  will /* will's middlware, */,
+  // will /* will's middlware, */,
+  fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
   (req: Request, res: Response) => res
