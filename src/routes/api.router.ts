@@ -1,4 +1,5 @@
 import {NextFunction, Router, Request, Response} from 'express';
+import { DBController } from '../controllers/db.controller';
 
 const apiRouter = Router();
 
@@ -10,10 +11,11 @@ apiRouter.get('/',
 )
 
 // Create
-apiRouter.post('/captures',
-  (req: Request, res: Response, next: NextFunction) => {
-    console.log(`${new Date().toLocaleString()}: apiRouter handling ${req.method} ${req.url}`);
-    next({message: 'POST /api/captures/ not yet implemented'})
+const controllerInstance: DBController = new DBController();
+apiRouter.post('/captures', controllerInstance.createRecord,
+  (req: Request, res: Response) => {
+    console.log("Success");
+    res.status(200).send(`${res.locals.id}`)
   }
 )
 
