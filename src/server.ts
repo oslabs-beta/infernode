@@ -24,15 +24,15 @@ export class Server {
   ) {
     /* Setup app and functional route handlers */
     this.app = express();
+    /* Setup middleware for all requests */
+    this.app.use(express.json());
+    this.app.use(express.urlencoded({ extended: false }));
     this.static(this.assetPath);
     this.health(healthRouter);
     this.routes(routes);
     this.notFound(notFoundRouter);
     this.globalError(globalErrorHandler);
 
-    /* Setup middleware for all requests */
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: false }));
   }
 
   /**
