@@ -49,10 +49,10 @@ module.exports = {
           'sass-loader',
         ],
       },
-      // {
-      //   test: /\.(jpg|jpeg|png|gif|mp3)$/,
-      //   // use: ["file-loader"],
-      // },
+      {
+        test: /\.(jpg|jpeg|png|gif|mp3)$/,
+        // use: ["file-loader"],
+      },
       {
         test: /\.svg$/i,
         issuer: /\.[jt]sx?$/,
