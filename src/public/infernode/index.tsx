@@ -1,16 +1,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { StoreProvider } from 'easy-peasy';
+import { Provider } from 'react-redux';
 import App from './App';
-import store from './store/store';
-
-//! Temporary fix for React 18 compatibility issues in Easy-Peasy
-//* See: https://github.com/ctrlplusb/easy-peasy/issues/741
-//*      https://github.com/ctrlplusb/easy-peasy/pull/745
-
-type Props = StoreProvider['props'] & { children: React.ReactNode };
-const StoreProviderCasted = StoreProvider as unknown as React.ComponentType<Props>;
+import { store } from './store/store';
 
 const rootEle = document.getElementById('root');
 if (rootEle === null) {
@@ -20,9 +13,9 @@ const root = createRoot(rootEle);
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <StoreProviderCasted store={store}>
+      <Provider store={store}>
         <App />
-      </StoreProviderCasted>
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>,
 );
