@@ -52,20 +52,14 @@ apiRouter.put(
 
 // Read
 apiRouter.get(
-  '/captures',
-  (req: Request, res: Response, next: NextFunction) => {
-    console.log(
-      `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
-        req.url
-      }`,
-    );
-    next({ message: 'GET /api/captures/ not yet implemented' });
-  },
+  '/captures', /* dbController.getAllMetaData */
+  (req: Request, res: Response) => res.status(200).json('Fetch meta data sucessfully'),
 );
 
 // Read All
 apiRouter.get(
-  '/captures/:id',
+  '/captures/:id', // req.param
+  fileController.deliverSVG,
   (req: Request, res: Response, next: NextFunction) => {
     console.log(
       `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
