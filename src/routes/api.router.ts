@@ -4,7 +4,8 @@ import {
 } from 'express';
 import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
-import dbController from '../controllers/db.controller';
+import { dbControllerInstance, getAllRows } from '../controllers/db.controller';
+import { get } from 'https';
 
 const apiRouter = Router();
 
@@ -19,7 +20,7 @@ apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 apiRouter.post(
   '/captures',
-  dbController.createRecord,
+  dbControllerInstance.createEmptyRecord,
   fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
