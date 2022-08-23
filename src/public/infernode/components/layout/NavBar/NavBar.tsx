@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useAppSelector, useAppDispatch } from '../../../store/hooks';
+import { toggleDarkMode } from '../../../store/configSlice';
+import { LoginButton, LogoutButton } from './Login';
 
 export default function NavBar(): JSX.Element {
-  const [isDarkMode, setDarkMode] = useState(false);
+  const isDarkMode = useAppSelector((state) => state.config.darkMode);
+  const { authenticated } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
 
   let bg = 'light';
   let variant = 'light';
@@ -17,7 +22,7 @@ export default function NavBar(): JSX.Element {
   }
 
   return (
-    <Navbar bg={bg} variant={variant} className="mb-2">
+    <Navbar expand="md" sticky="top" bg={bg} variant={variant} className="mb-2">
       <Container>
         <Navbar.Brand href="#home">
           <img
@@ -45,17 +50,18 @@ export default function NavBar(): JSX.Element {
               <Nav.Link>Help</Nav.Link>
             </LinkContainer>
           </Nav>
-          <ButtonGroup className="mb-2">
+          <ButtonGroup className="mx-2">
             <ToggleButton
               id="toggle-check"
               type="checkbox"
               variant="secondary"
               checked={isDarkMode}
               value="1"
-              onChange={() => setDarkMode(!isDarkMode)}
+              onChange={() => dispatch(toggleDarkMode())}
             >
               {(isDarkMode && '🌔') || '🌒'}
             </ToggleButton>
+            {(authenticated && <LogoutButton />) || <LoginButton />}
           </ButtonGroup>
         </Navbar.Collapse>
       </Container>
