@@ -5,13 +5,15 @@
   "main": "dist/index.js",
   "sideEffects": false,
   "scripts": {
-    "start": "NODE_ENV=production node dist/index.js",
-    "prebuild": "npm run lint && npm run clean && npm run copy-assets",
-    "lint": " eslint . || true && eslint ./src/public/infernode/",
+    "lint": " eslint . && eslint ./src/public/infernode/",
     "clean": "rimraf ./dist/*",
     "copy-assets": "cp -R ./src/assets ./dist/",
-    "build": "tsc && webpack --config webpack.prod.js",
+    "prebuild": "npm run lint && npm run clean && npm run copy-assets",
+    "tsc": "tsc",
+    "webpack": "webpack --config webpack.prod.js",
+    "build": "npm run tsc && npm run webpack",
     "test": "jest --coverage react-scripts test --env=jsdom",
+    "start": "NODE_ENV=production node dist/index.js",
     "dev": "mkdir -p ./dist && touch ./dist/index.js && tsc && concurrently \"npx tsc --watch\" \"NODE_ENV=development nodemon --ext js,json,html,css dist/index.js\" \"webpack serve --open --config webpack.dev.js\""
   },
   "jest": {
@@ -89,6 +91,7 @@
     "@types/node": "^18.7.2",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/react-redux": "^7.1.24",
     "@types/react-router": "^5.1.18",
     "@types/react-router-bootstrap": "^0.24.5",
     "@types/react-router-dom": "^5.3.3",
@@ -130,6 +133,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.5",
     "body-parser": "^1.20.0",
     "bootstrap": "^5.2.0",
     "dotenv": "^16.0.1",
@@ -139,6 +143,7 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.0.2",
     "react-router-bootstrap": "^0.26.2",
     "react-router-dom": "^6.3.0",
     "sqlite3": "^5.0.11"

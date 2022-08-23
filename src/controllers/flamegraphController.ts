@@ -12,7 +12,7 @@
 // exec() method: This method creates a shell first and then executes the command.
 import { Request, Response, NextFunction } from 'express';
 
-import { exec } from 'child_process';
+import { spawnSync } from 'child_process';
 
 import path from 'path';
 
@@ -26,7 +26,7 @@ type FlamegraphSVGController = {
 };
 
 const flamegraphController: FlamegraphSVGController = {
-  stackCollapse: (req: Request, res: Response, next: NextFunction): void => {
+  stackCollapse: (_req: Request, res: Response, next: NextFunction): void => {
     // node child process
     const fileName = Number(res.locals.id);
     const inputPath: string = path.resolve(
@@ -41,26 +41,27 @@ const flamegraphController: FlamegraphSVGController = {
       __dirname,
       '../../src/perlScripts/stackCollapse-perf.pl',
     );
-      // run the child_process to spawn a shell and execute the given
+    // run the child_process to spawn a shell and execute the given
     // command that will execute .pl files
-    exec(
-      `${script} ${inputPath} > ${outputPath}`,
-      (error: Error | null, stdout: string | Buffer, stderr: string | Buffer) => {
-        if (error) {
-          return next({
-            message: 'something went wrong with the stackFolder middleware',
-            userMessage: error.message,
-            controller: 'FlamegraphController',
-          });
-          // console.log('err in stackCollapse');
-          // return res.status(500).json('stackFolder err-----');
-        }
-        return next();
-      },
-    );
+    try {
+      const result = spawnSync(`${script} ${inputPath} > ${outputPath}`, { shell: true, timeout: 10000 });
+      console.log(`${new Date().toLocaleString()}: Folded perf file ${JSON.stringify(result.status)}`);
+      if (result.status === 0) return next();
+      return next({
+        userMessage: 'Error folding capture file',
+        message: `stackCollapse-perf.pl ended with non-zero exit code: ${result.status || 'unknown'}`,
+        controller: 'FlamegraphController',
+      });
+    } catch (error) {
+      return next({
+        userMessage: 'Error folding capture file',
+        message: JSON.stringify(error),
+        controller: 'FlamegraphController',
+      });
+    }
   },
 
-  toSVG: (req: Request, res: Response, next: NextFunction): void => {
+  toSVG: (_req: Request, res: Response, next: NextFunction): void => {
     const fileName = Number(res.locals.id);
     const inputPath: string = path.resolve(
       __dirname,
@@ -75,18 +76,22 @@ const flamegraphController: FlamegraphSVGController = {
       '../../src/perlScripts/flamegraph.pl',
     );
 
-    exec(
-      `${script} ${inputPath} > ${outputPath}`,
-      (error: Error | null, stdout: string | Buffer, stderr: string | Buffer) => {
-        // store file ./database/SVGs
-        if (!error) return next();
-        return next({
-          message: 'something went wrong with the toSVG middleware',
-          userMessage: error.message,
-          controller: 'FlamegraphController',
-        });
-      },
-    );
+    try {
+      const result = spawnSync(`${script} ${inputPath} > ${outputPath}`, { shell: true, timeout: 10000 });
+      console.log(`${new Date().toLocaleString()}: Converted folded perf file ${JSON.stringify(result.status)}`);
+      if (result.status === 0) return next();
+      return next({
+        userMessage: 'Error converting capture to SVG',
+        message: `flamegraph.pl ended with non-zero exit code: ${result.status || 'unknown'}`,
+        controller: 'FlamegraphController',
+      });
+    } catch (error) {
+      return next({
+        userMessage: 'Error converting capture to SVG',
+        message: JSON.stringify(error),
+        controller: 'FlamegraphController',
+      });
+    }
   },
 };
 

@@ -106,6 +106,7 @@ dist
 
 # perf, svg, and db files
 database/captures/**
+database/folded/*.folded
 database/SVGs/**
 database/*.db
 

@@ -4,14 +4,18 @@ import userEvent from '@testing-library/user-event'
 import NavBar from '../public/infernode/components/layout/NavBar/NavBar'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux'
+import { store } from '../public/infernode/store/store'
 
 describe('Navbar unit tests', () => {
 
   beforeEach(() => {
     const page = render(
-      <BrowserRouter>
-        <NavBar />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <NavBar />
+        </BrowserRouter>
+      </Provider>
     )
     const history = screen.getByRole('link', { name: /history/i })
     // refactor later to use variables like this to make it dryer

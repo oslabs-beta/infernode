@@ -6,9 +6,16 @@ import path from 'path';
 export default class FileController {
   public uploadDir = '../../database/uploads';
 
+  public captureDir = '../../database/captures';
+
+  public svgDir = '../../database/SVGs';
+
   addData = (req: Request, res: Response, next: NextFunction) => {
     // Get next ID
+    res.locals.id = 12345;
     const fileId = Number(res.locals.id);
+    // console.log('LOOK OVER HERE!', fileId);
+    // const fileId = 123;
 
     const processTempFile = (formName: string, file: formidable.File) => {
       // console.log(
@@ -25,19 +32,19 @@ export default class FileController {
       );
       const destinationPath = path.resolve(
         __dirname,
-        this.uploadDir,
+        this.captureDir,
         `${fileId}.perf`,
       );
 
       try {
         fs.renameSync(currentPath, renamedPath);
-        // console.log('Data File successfully renamed with Id');
+        console.log('Data File successfully renamed with Id');
         fs.moveSync(renamedPath, destinationPath);
-        // console.log('Data File successfully moved from uploads to captures');
+        console.log('Data File successfully moved from uploads to captures');
+        return next();
       } catch (err) {
         return next(err);
       }
-      return next();
     };
 
     const uploads = new formidable.IncomingForm({
@@ -48,5 +55,26 @@ export default class FileController {
     });
 
     uploads.parse(req);
+  };
+
+  deliverSVG = (req: Request, res: Response, next: NextFunction) => {
+    const fileId = Number(res.locals.id);
+    const fileName = path.resolve(
+      __dirname,
+      this.svgDir,
+      `${fileId}.svg`,
+    );
+    try {
+      res.sendFile(fileName, (err) => {
+        if (err) {
+          next(err);
+        } else {
+          console.log('Sent:', fileName);
+        }
+      });
+      return next();
+    } catch (err) {
+      return next(err);
+    }
   };
 }
