@@ -4,6 +4,7 @@ import {
 } from 'express';
 import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
+import { dbControllerInstance } from '../controllers/db.controller';
 
 const apiRouter = Router();
 
@@ -16,25 +17,17 @@ apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
   return next({ message: 'GET /api/ not yet implemented' });
 });
 
-// This middleware was used for testing
-// const will = (req: Request, res: Response, next: NextFunction) => {
-//   res.locals.id = 'test';
-//   return next();
-// };
-
-// Create
 apiRouter.post(
   '/captures',
-  // will /* will's middlware, */,
+  dbControllerInstance.createEmptyRecord,
   fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
-  (req: Request, res: Response) => res
+  (_req: Request, res: Response) => res
     .status(200)
     .send('svg file created and stored in the /database/SVGs'),
   // what we send back to the client will depend on the front end
   // architecture and how we want the user to see what they just uploaded
-
 );
 
 // Create/Update by ID
