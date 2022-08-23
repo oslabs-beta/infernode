@@ -1,4 +1,4 @@
-import sqlite3, { Database } from 'sqlite3';
+import sqlite3 from 'sqlite3';
 import path from 'path';
 import fs from 'fs';
 
@@ -9,9 +9,6 @@ sqlite3.verbose();
 const dbPath: string = path.resolve(__dirname, '../../database/captureDB.db');
 console.log(`SQLite3 DB path: ${dbPath}`);
 
-// Creating variable for capture database
-let captureDB: Database;
-
 // Checking if db file path already exists
 const dbExists: boolean = fs.existsSync(dbPath);
 
@@ -19,9 +16,10 @@ const dbExists: boolean = fs.existsSync(dbPath);
 // https://github.com/TryGhost/node-sqlite3/wiki/API
 
 // Creating a new instance of the sqlite database
-captureDB = new sqlite3.Database(
+const captureDB = new sqlite3.Database(
   dbPath,
   // tslint:disable-next-line:no-bitwise
+  // eslint-disable-next-line no-bitwise
   sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
   (err) => {
     // Console logs to confirm connection to the database
@@ -46,10 +44,9 @@ if (!dbExists) {
       console.log('Error occurred when creating a table in the database.');
     }
   });
-}
-// If the db already exists, console log the contents
-// Might need to add checks to make sure that the table is formatted correctly
-else {
+} else {
+  // If the db already exists, console log the contents
+  // Might need to add checks to make sure that the table is formatted correctly
   console.log('Using existing capture table: ');
   captureDB.all('SELECT * FROM capture', (err, rows) => {
     // console logging the existing rows in the database
