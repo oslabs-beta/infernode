@@ -35,7 +35,14 @@ describe('Flamegraph controller test', () => {
     });
   });
 
-  xdescribe('toSVG middleware', () => {
+  describe('toSVG middleware', () => {
+    
     flamegraph.toSVG(mockRequest as Request, mockResponse as Response, nextFunction)
+
+    it('creates a correctly named SVG file in /SVGs', async () => {
+      const test = await fs.existsSync(path.resolve(__dirname, `../../database/SVGs/${num}.svg`))
+      expect(test).toBeTruthy();
+    })
+
   });
 });
