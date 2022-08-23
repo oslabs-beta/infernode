@@ -1,4 +1,4 @@
-import sqlite3, { Database } from 'sqlite3';
+import sqlite3 from 'sqlite3';
 import path from 'path';
 import fs from 'fs';
 
@@ -15,7 +15,7 @@ const dbExists: boolean = fs.existsSync(dbPath);
 // https://github.com/TryGhost/node-sqlite3/wiki/API
 
 // Creating a new instance of the sqlite database
-const captureDB: Database = new sqlite3.Database(
+const captureDB = new sqlite3.Database(
   dbPath,
   // tslint:disable-next-line:no-bitwise
   // eslint-disable-next-line no-bitwise
@@ -40,7 +40,7 @@ if (!dbExists) {
       throw (err);
     }
   });
-}
 // Might need to add checks to make sure that the table is formatted correctly
+
 
 export default captureDB;

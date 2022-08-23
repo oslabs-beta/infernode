@@ -31,6 +31,7 @@ module.exports = {
   },
   rules: {
     "import/extensions": ["error", "never"],
+    "no-console": "off",
     "no-unused-expressions": "off",
   }
 };

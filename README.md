@@ -6,11 +6,22 @@ Flamegraph tool for node.js
 
 Coming soon...
 
-## Developing
+## Interface
 
-1. Clone this repository
-1. `npm install` in the repo directory
-1. `npm run dev` to run the server with on-save recompile/reload
+### Overview
+
+![ui overview](/docs/images/layout-overview.png)
+
+### General Page Layout
+
+![generic page layout](/docs/images/layout-draft.png)
+
+### Page Wireframes
+
+![history page](/docs/images/history-page.png)
+![capture page](/docs/images/capture-page.png)
+![manage page](/docs/images/manage-page.png)
+![help page](/docs/images/help-page.png)
 
 ## Architecture
 
@@ -33,38 +44,71 @@ Coming soon...
 
 ![infernode architecture diagram](/docs/images/app-diagram.png)
 
-## Interface
+## Developing
 
-### Overview
+1. Clone this repository
+1. `npm install` in the repo directory
+1. `npm run dev` to run the server with on-save recompile/reload
 
-![ui overview](/docs/images/layout-overview.png)
+### Additional project scripts
 
-### General Page Layout
+All scripts are accessible via `npm run <scriptname>`.
 
-![generic page layout](/docs/images/layout-draft.png)
+- `clean`: Remove all contents of the `./dist/` directory
+- `copy-assets`:  Copy static assets from `./src/` to `./dist/`
+- `lint`:  Run linter (ESLint) against the relevant client and server source code
+- `prebuild`: Sequentially runs `lint`, `clean`, and `copy-assets` prior to all `build`s
+- `tsc`: Performs TypeScript transpilation for the server project
+- `build`: Performs `npm run prebuild`, `npm run tsc`, and `npm run webpack` sequentially, will halt if any `prebuild` steps have non-zero exit codes
+- `test`: Performs a fresh `build` and then executes all test suites
+- `start`: Starts the `node` server in production mode, access via <http://localhost:3000>
+- `dev`: Starts the `node` and `webpack-dev-server` servers in development mode, both dynamically recompiling/bundling/restarting on source code changes, access via <http://localhost:8080>
 
-### Page Wireframes
-![history page](/docs/images/history-page.png)
-![capture page](/docs/images/capture-page.png)
-![manage page](/docs/images/manage-page.png)
-![help page](/docs/images/help-page.png)
+### Express.js Global Error Handler
+
+- Invoked via `next( errObject: InfernodeError )`.
+- Takes an `InfernodeError` type object with the following mandatory properties:
+  - `message: string`: A technical error message not necessarily intended for end users
+- The `InfernodeError` object can optionally include:
+  - `userMessage: string`: A non-technical error message intended for (public) end users or API consumers
+  - `httpStatus: number`: A more specific HTTP status code to use for the response
+  - `controller: string`: The Express middleware controller/function/method/operation that caused the error
+- Logs the entire error object + the request method and path to the server's console.
+- The response status will be set to 500 by default if an `errObject.httpStatus` code is not provided.
+- In development mode, entire error object, request method, and request path will be sent in the HTTP response body as JSON.
+- In production mode, only the errObject.userMessage will be sent in the HTTP response body as JSON.
 
 ## Contributing
 
-See [this page](https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/) for general best practices.
-
 ### Commit Messages
 
+For working branch commits a single line message is sufficient
+
+For PR commits please add a longer description of the changes
+
+Please author single line commit messages and PR commit titles to:
+
 - Start with capital letter
-- No period
-- Imperative and present tense
-- Descriptive of outcome
-- Short (less than 72 characters)
-- For working branch commits, first line is sufficient
+- Have no trailing punctuation
+- Use imperative and present tense
+- Describe the outcome, not the process
+- Be less than 50 characters in length
 
 ### Pull Requests
 
-- Update working branch and test with most recent code before PRing
+- Development should be performed on branches from `dev` and PR'd back to `dev` once complete,
+- Releases will be performed by PRing to `main`.
+- Pull Requests to `dev` and `main` are blocked on passing GHA checks. In order to ensure your PR will pass checks, make sure that:
+  - All new dependencies have been included in package.json/package-lock.json
+  - All tests are passing locally via `npm test`
+  - All ESLint checks pass locally via `npm run lint`
+  - A new build is successful locally via `npm run build`
+  - The app is functional in production mode via `npm run build && npm start` and browsing to <http://localhost:3000>
+
+Please consider the following when filing pull requests:
+
+- Update working branch from dev
+- Test the above GHA check criteria locally
 - PR title should take the form of a commit message title
 - Body of PR should take the form of a full commit message body
 - Once approved, the PR author is responsible for squash merging into the destination branch
@@ -79,5 +123,6 @@ See [this page](https://www.freecodecamp.org/news/writing-good-commit-messages-a
   - feature
   - docs
   - testing
+  - refactor
 - The descriptive-outcome should describe what will be achieved by merging the branch
   
