@@ -2,12 +2,10 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 // import { describe, test, beforeEach } from ''
-
-import HistoryPage from '../public/infernode/views/History/HistoryPage'
 import NavBar from '../public/infernode/components/layout/NavBar/NavBar'
-import ManagePage from '../public/infernode/views/Manage/ManagePage'
 import React from 'react'
-import { BrowserRouter, Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 // eliminate the need for this import
 // by altering tsconfig jsx compiling option to react - jsx
 
@@ -19,42 +17,43 @@ describe('Navbar unit tests', () => {
         <NavBar />
       </BrowserRouter>
     )
+    const history = screen.getByRole('link', { name: /history/i })
+    // refactor later to use variables to make it dryer
+    //its having issues atm
   })
+  
+  describe('Navbar has links to 4 pages', () => {
+    test('The correct buttons render as links', () => {
+      // using regex instead of strings will prevent tests failing due to capitalization
+      expect(screen.getByRole('link', { name: /history/i })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /capture/i })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /manage/i })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /help/i })).toBeInTheDocument()
+    })
 
-  describe('Navbar will have correct links', () => {
-    
-    test('History link', () => {
-      expect(true).toBe(true)
-    })
-    
-    test('Capture page renders correct content', () => {
-      
-    })
-    
   })
-
-  describe('Capture page tests', () => {
-    
-    test('Capture button will render capture page', () => {
-      expect(true).toBe(true)
+  
+  describe('Navbar has the correct styling', () => {
+    test('the links have nav-link class from bootstrap', () => {
+      expect(screen.getByRole('link', { name: /history/i })).toHaveClass('nav-link')
+      expect(screen.getByRole('link', { name: /capture/i })).toHaveClass('nav-link')
+      expect(screen.getByRole('link', { name: /manage/i })).toHaveClass('nav-link')
+      expect(screen.getByRole('link', { name: /help/i })).toHaveClass('nav-link')
     })
-    
-    test('Capture page renders correct content', () => {
-      
-    })
-    
   })
-
-  describe('Manage page tests', () => {
-    
-    test('Manage button will render Manage page', () => {
-      
+  
+  describe('Each link routes to the proper page', () => {
+    test('history button routes to the History page', () => {
+      expect(screen.getByRole('link', { name: /history/i })).toHaveAttribute('href', '/history')
     })
-    
-    test('Manage page renders two buttons to upload and submit .perf', () => {
-      render(<ManagePage />)
-      expect(screen.getByRole('button', { name: 'Choose File'})).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'Submit'})).toBeInTheDocument()
+    test('capture button routes to the capture page', () => {
+      expect(screen.getByRole('link', { name: /capture/i })).toHaveAttribute('href', '/capture')
+    })
+    test('manage button routes to the manage page', () => {
+      expect(screen.getByRole('link', { name: /manage/i })).toHaveAttribute('href', '/manage')
+    })
+    test('help button routes to the help page', () => {
+      expect(screen.getByRole('link', { name: /help/i })).toHaveAttribute('href', '/help')
     })
     
   })

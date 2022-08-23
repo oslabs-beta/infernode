@@ -11,7 +11,7 @@
     "clean": "rimraf ./dist/*",
     "copy-assets": "cp -R ./src/assets ./dist/",
     "build": "tsc && webpack --config webpack.prod.js",
-    "test": "npm run build && jest --coverage react-scripts test --env=jsdom",
+    "test": "jest --coverage react-scripts test --env=jsdom",
     "dev": "mkdir -p ./dist && touch ./dist/index.js && tsc && concurrently \"npx tsc --watch\" \"NODE_ENV=development nodemon --ext js,json,html,css dist/index.js\" \"webpack serve --open --config webpack.dev.js\""
   },
   "jest": {
