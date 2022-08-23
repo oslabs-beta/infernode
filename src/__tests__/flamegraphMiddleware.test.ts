@@ -1,6 +1,6 @@
 // import {Request, Response, NextFunction} from 'express';
-// import fs from 'fs';
-// import path from 'path';
+import fs from 'fs';
+import path from 'path';
 // import { describe, expect, it, jest } from '@jest/globals';
 //unit tests for the flamegraph generating middleware
 //import middleware
