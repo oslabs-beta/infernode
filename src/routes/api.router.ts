@@ -4,8 +4,7 @@ import {
 } from 'express';
 import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
-import { dbControllerInstance, getAllRows } from '../controllers/db.controller';
-import { get } from 'https';
+import { dbControllerInstance } from '../controllers/db.controller';
 
 const apiRouter = Router();
 

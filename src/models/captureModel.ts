@@ -41,6 +41,6 @@ if (!dbExists) {
     }
   });
 // Might need to add checks to make sure that the table is formatted correctly
-
+}
 
 export default captureDB;
