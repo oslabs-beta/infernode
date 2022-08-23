@@ -16,6 +16,6 @@
     "sourceMap": true,
     "strict": true,
     "target": "es5",
-    "types": ["react/next", "react-dom/next", "jest", "@testing-library/jest-dom"]
+    "types": ["react/next", "react-dom/next", "jest"]
   }
 }
