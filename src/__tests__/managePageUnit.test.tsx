@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
-import CapturePage from '../public/infernode/views/Capture/CapturePage'
 import ManagePage from '../public/infernode/views/Manage/ManagePage'
 
 describe('Manage page unit tests', () => {
