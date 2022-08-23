@@ -3,7 +3,7 @@ import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
 import ManagePage from '../public/infernode/views/Manage/ManagePage'
 
-describe('Manage page unit tests', () => {
+describe('Manage page integration tests', () => {
 
   beforeEach(() => {
     const page = render(

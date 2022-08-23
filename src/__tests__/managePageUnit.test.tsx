@@ -37,11 +37,4 @@ describe('Manage page unit tests', () => {
       //
     })
   })
-
-  describe('the buttons work as intended', () => {
-    test('the submit button will call the API', async () => {
-      //this will be an integration test
-    })
-  })
-
 })
