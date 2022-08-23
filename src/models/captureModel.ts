@@ -7,7 +7,6 @@ import fs from 'fs';
 sqlite3.verbose();
 
 const dbPath: string = path.resolve(__dirname, '../../database/captureDB.db');
-console.log(`SQLite3 DB path: ${dbPath}`);
 
 // Checking if db file path already exists
 const dbExists: boolean = fs.existsSync(dbPath);
@@ -24,36 +23,24 @@ const captureDB = new sqlite3.Database(
   (err) => {
     // Console logs to confirm connection to the database
     if (err) {
-      console.log('Error occurred when connecting to the database: ', err);
-    } else {
-      console.log('Connected to database');
+      throw (err);
     }
   },
 );
 
 // If the db was just created, create a table for the capture information
 if (!dbExists) {
-  console.log('Creating capture table in newly created DB');
+  let createTableSQL = 'CREATE TABLE capture(id INTEGER PRIMARY KEY, capture_name';
+  createTableSQL += ', date, creator, app_name, data';
 
-  let createTableSQL = 'CREATE TABLE capture(id INT NOT NULL, capture_name TEXT NOT ';
-  createTableSQL += 'NULL, date, creator TEXT NOT NULL, app_name TEXT NOT NULL, data';
-  createTableSQL += ' TEXT NOT NULL)';
+  createTableSQL += ' TEXT DEFAULT "{}")';
 
   captureDB.run(createTableSQL, (err) => {
     if (err) {
-      console.log('Error occurred when creating a table in the database.');
+      throw (err);
     }
   });
-} else {
-  // If the db already exists, console log the contents
-  // Might need to add checks to make sure that the table is formatted correctly
-  console.log('Using existing capture table: ');
-  captureDB.all('SELECT * FROM capture', (err, rows) => {
-    // console logging the existing rows in the database
-    rows.forEach((el) => {
-      console.log(el);
-    });
-  });
+// Might need to add checks to make sure that the table is formatted correctly
 }
 
 export default captureDB;
