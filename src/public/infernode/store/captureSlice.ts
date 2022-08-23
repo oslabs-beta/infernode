@@ -5,7 +5,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-
 /*
   let createTableSQL = 'CREATE TABLE capture(id INT NOT NULL, capture_name TEXT NOT ';
   createTableSQL += 'NULL, date, creator TEXT NOT NULL, app_name TEXT NOT NULL, data';
@@ -20,15 +19,14 @@ export interface Capture {
   data: string;
 }
 
-export interface CaptureState { 
+export interface CaptureState {
   captureList: Capture[];
   current: number | null;
   loading: boolean;
 }
 
 const initialState: CaptureState = {
-  captureList: [{ id: 1, date: new Date('Mon Aug 22 2022 15:21:18 GMT-0500 (Central Daylight Time)'), captureName: 'infernode0.0', creator: 'Will', appName: 'Infernode 0.0.0', data: ''},
-    { id: 2, date: new Date('Mon Aug 22 2022 15:22:18 GMT-0500 (Central Daylight Time)'), captureName: 'infernode0.1', creator: 'will', appName: 'Infernode 0.0.0', data: ''}],
+  captureList: [],
   current: null,
   loading: false,
 };
