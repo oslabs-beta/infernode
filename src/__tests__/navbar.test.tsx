@@ -1,13 +1,9 @@
 //this 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-// import { describe, test, beforeEach } from ''
 import NavBar from '../public/infernode/components/layout/NavBar/NavBar'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
-import ButtonGroup from 'react-bootstrap/ButtonGroup';
-// eliminate the need for this import
-// by altering tsconfig jsx compiling option to react - jsx
 
 describe('Navbar unit tests', () => {
 
@@ -18,7 +14,7 @@ describe('Navbar unit tests', () => {
       </BrowserRouter>
     )
     const history = screen.getByRole('link', { name: /history/i })
-    // refactor later to use variables to make it dryer
+    // refactor later to use variables like this to make it dryer
     //its having issues atm
   })
   
