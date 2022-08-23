@@ -58,8 +58,9 @@ export default class FileController {
   };
 
   deliverSVG = (req: Request, res: Response, next: NextFunction) => {
-    const fileId = req.params.id.substring(1);
-    console.log(fileId)
+    console.log('Invoked deliverSVG');
+    const fileId = req.params.id;
+    console.log(fileId);
     const fileName = path.resolve(
       __dirname,
       this.svgDir,
@@ -69,9 +70,6 @@ export default class FileController {
     res.sendFile(fileName, (err) => {
       if (err) {
         next(err);
-      } else {
-        console.log('Sent:', fileName);
-        return next();
       }
     });
   };
