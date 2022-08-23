@@ -1,0 +1,11 @@
+.flex-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;   
+    align-items: flex-start; 
+}
+
+/* Button {
+    width: 10%;
+    height: 1%;
+} */

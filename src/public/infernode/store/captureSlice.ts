@@ -5,6 +5,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
+/*
+  let createTableSQL = 'CREATE TABLE capture(id INT NOT NULL, capture_name TEXT NOT ';
+  createTableSQL += 'NULL, date, creator TEXT NOT NULL, app_name TEXT NOT NULL, data';
+  createTableSQL += ' TEXT NOT NULL)';
+  */
 export interface Capture {
   id: number;
   captureName: string;
@@ -12,7 +17,6 @@ export interface Capture {
   creator: string;
   appName: string;
   data: string;
-  saved: boolean;
 }
 
 export interface CaptureState {
@@ -37,8 +41,11 @@ export const captureSlice = createSlice({
     deleteCapture: (state, action: PayloadAction<number>) => {
       state.captureList = state.captureList.filter((capture) => capture.id !== action.payload);
     },
+    setCurrent: (state, action: PayloadAction<number>) => {
+      state.current = action.payload;
+    },
   },
 });
 
-export const { addCapture, deleteCapture } = captureSlice.actions;
+export const { addCapture, deleteCapture, setCurrent } = captureSlice.actions;
 export default captureSlice.reducer;
