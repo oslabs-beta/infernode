@@ -1,40 +1,46 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import { Form } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import HistoryFileItem from './HistoryFileItem';
 
+type MetaDataType = {
+  id: number,
+  date: string,
+  name: string,
+
+};
+
 type HistorySidebarProps = {
-  // display: (name: string) => Promise<void>
-  display: (name: string) => void
-}
-
+  metaData: MetaDataType[],
+  display: (event: SyntheticEvent) => void
+};
 export default function HistorySidebar(props: HistorySidebarProps) {
-  const { display } = props;
+  const { metaData, display } = props;
 
-  async function getFileLists() {
-    const res = await fetch('/api/captures');
-    const data: string[] = await res.json();
-    return data;
-  }
-  // const files = getFileLists();
-  const files = ['1.svg', '2.svg', '3.svg']; // not meaningful name
+
 
   // const remove = (name: string) {
   //   //
   // }
 
-  const historyFileLists: JSX.Element[] = [];
-  for (let i = 0; i < files.length; i++) {
-    historyFileLists.push(<HistoryFileItem name={files[i]} display={display} /* remove={remove} */ key={i} id ={i}/>);
+  const HistoryFileLists: JSX.Element[] = [];
+  console.log('metadata', metaData);
+  for (let i = 0; i < metaData.length; i++) {
+    HistoryFileLists.push(<HistoryFileItem
+      name={metaData[i].name}
+      display={display} /* remove={remove} */
+      key={i}
+      id={metaData[i].id}
+      date={metaData[i].date}
+    />);
   }
 
   return (
     <Card className="align-self-start">
-      {/* <img alt="mock history page menu" src="/mocks/history-menu.png" /> */}
       <Form>
         <Form.Group>
           <Form.Label>History</Form.Label>
-          {historyFileLists}
+          {HistoryFileLists}
         </Form.Group>
       </Form>
     </Card>

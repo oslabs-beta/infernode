@@ -1,22 +1,30 @@
-import React from 'react';
+import React, { SyntheticEvent } from 'react';
 import { Button } from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 
 type HistoryFileItemProps = {
   name: string,
-  // display: (name: string) => Promise<void>,
-  display: (name: string) => void
+  display: (event: SyntheticEvent) => void
   // remove: (name: string) => Promise<void>,
-  id: number
+  id: number,
+  date: string
 };
 
 export default function HistoryFileItem(props: HistoryFileItemProps) {
-  const { name, display, /* remove, */ id } = props;
+  const {
+    name,
+    display, /* remove, */
+    id,
+    date,
+  } = props;
   return (
     <div className="flex-box">
       <Form.Text>{name}</Form.Text>
-      <Button variant="primary" onClick={() => { display(name)}} id={`diplay-${id}`}>Display</Button>
-      {/* <Button variant="secondary" onClick={() => remove({ name })} id={`remove-${id}`}>Remove</Button> */}
+      <Form.Text>{date}</Form.Text>
+      <Button variant="primary" onClick={display} id={`display-${id}`}>Display</Button>
+      {/* <Button variant="secondary" onClick={() => remove({ name })} id={`remove-${id}`}>
+      Remove
+      </Button> */}
     </div>
   );
 }
