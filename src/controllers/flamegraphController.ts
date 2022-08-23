@@ -44,7 +44,8 @@ const flamegraphController: FlamegraphSVGController = {
     // run the child_process to spawn a shell and execute the given
     // command that will execute .pl files
     try {
-      const result = spawnSync(`${script} ${inputPath} > ${outputPath}`);
+      const result = spawnSync(`${script} ${inputPath} > ${outputPath}`, { shell: true, timeout: 10000 });
+      console.log(`${new Date().toLocaleString()}: Folded perf file ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       return next({
         userMessage: 'Error folding capture file',
@@ -76,7 +77,8 @@ const flamegraphController: FlamegraphSVGController = {
     );
 
     try {
-      const result = spawnSync(`${script} ${inputPath} > ${outputPath}`, { timeout: 10000 });
+      const result = spawnSync(`${script} ${inputPath} > ${outputPath}`, { shell: true, timeout: 10000 });
+      console.log(`${new Date().toLocaleString()}: Converted folded perf file ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       return next({
         userMessage: 'Error converting capture to SVG',

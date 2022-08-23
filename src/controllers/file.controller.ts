@@ -38,13 +38,13 @@ export default class FileController {
 
       try {
         fs.renameSync(currentPath, renamedPath);
-        // console.log('Data File successfully renamed with Id');
+        console.log('Data File successfully renamed with Id');
         fs.moveSync(renamedPath, destinationPath);
-        // console.log('Data File successfully moved from uploads to captures');
+        console.log('Data File successfully moved from uploads to captures');
+        return next();
       } catch (err) {
         return next(err);
       }
-      return next();
     };
 
     const uploads = new formidable.IncomingForm({
