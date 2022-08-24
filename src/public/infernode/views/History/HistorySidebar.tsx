@@ -1,40 +1,31 @@
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import { Form } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import HistoryFileItem from './HistoryFileItem';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
-import { setCurrent } from '../../store/captureSlice';
-// import { Capture } from '../../store/captureSlice';
+import { deleteCapture, setCurrent } from '../../store/captureSlice';
 
-// type MetaDataType = {
-//   id: number,
-//   date: Date,
-//   name: string,
-
-// };
-
-// type HistorySidebarProps = {
-//   captureList: captureListType[],
-//   display: (event: SyntheticEvent) => void
-// };
-export default function HistorySidebar() {
-  const { current, captureList } = useAppSelector((state) => state.captures);
+export default function HistorySidebar(): JSX.Element {
+  const { captureList, current } = useAppSelector((state) => state.captures);
   const dispatch = useAppDispatch();
-
-  // const { captureList, display } = props;
-
-  // const remove = (name: string) {
-  //   //
-  // }
 
   const HistoryFileLists: JSX.Element[] = [];
   console.log('captureList', captureList);
   for (let i = 0; i < captureList.length; i++) {
     HistoryFileLists.push(<HistoryFileItem
       name={captureList[i].captureName}
-      display={(e) => dispatch(setCurrent(captureList[i].id))} /* remove={remove} */
+      display={() => dispatch(setCurrent(captureList[i].id))}
+      remove={() => {
+        if (current === captureList[i].id && captureList.length > 1) {
+          // restrict to delete current displayed capture
+          dispatch(setCurrent(captureList[(i + 1) % captureList.length].id));
+          dispatch(deleteCapture(captureList[i].id));
+        } else if (captureList.length === 1) {
+          dispatch(setCurrent(null));
+          dispatch(deleteCapture(captureList[i].id));
+        }
+      }}
       key={i}
-      id={captureList[i].id}
       date={captureList[i].date}
     />);
   }
