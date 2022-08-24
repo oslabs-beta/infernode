@@ -33,5 +33,6 @@ module.exports = {
     "import/extensions": ["error", "never"],
     "no-console": "off",
     "no-unused-expressions": "off",
+    "no-console": "off"
   }
 };

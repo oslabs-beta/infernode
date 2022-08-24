@@ -43,6 +43,9 @@ export const captureSlice = createSlice({
     setCaptures: (state, action: PayloadAction<Capture[]>) => {
       state.captureList = action.payload;
     },
+    setCurrent: (state, action: PayloadAction<number>) => {
+      state.current = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllCaptures.fulfilled, (state, action) => {
@@ -57,5 +60,5 @@ export const captureSlice = createSlice({
   },
 });
 
-export const { addCapture, deleteCapture } = captureSlice.actions;
+export const { addCapture, deleteCapture, setCurrent } = captureSlice.actions;
 export default captureSlice.reducer;

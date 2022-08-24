@@ -31,6 +31,8 @@ module.exports = {
   rules: {
     "import/extensions": ["error", "never"],
     "no-unused-expressions": "off",
-    "react/jsx-filename-extension": [1, { "allow": "as-needed", "extensions": [".tsx", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "allow": "as-needed", "extensions": [".tsx", ".jsx"] }],
+    "no-console": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }]
   }
 };
