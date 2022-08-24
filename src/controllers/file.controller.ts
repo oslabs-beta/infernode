@@ -12,7 +12,6 @@ export default class FileController {
 
   addData = (req: Request, res: Response, next: NextFunction) => {
     // Get next ID
-    res.locals.id = 12345;
     const fileId = Number(res.locals.id);
     // console.log('LOOK OVER HERE!', fileId);
     // const fileId = 123;

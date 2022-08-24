@@ -14,8 +14,9 @@ class DBController {
   }
 
   public getID = (req: Request, res: Response, next: NextFunction) => {
-    res.locals.id = this.nextID;
-    return next();
+    // res.locals.id = this.nextID;
+    // return next();
+    captureDB.get
   };
 
   // IMPORTANT: Currently does not assign/change res.locals.id
@@ -140,6 +141,7 @@ function getAllRows(req: Request, res: Response, next: NextFunction) {
         ));
       }
       res.locals.rows = rows;
+      console.log(rows);
       return next();
     },
   );
