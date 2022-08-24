@@ -43,7 +43,7 @@ export const captureSlice = createSlice({
     setCaptures: (state, action: PayloadAction<Capture[]>) => {
       state.captureList = action.payload;
     },
-    setCurrent: (state, action: PayloadAction<number>) => {
+    setCurrent: (state, action: PayloadAction<number | null>) => {
       state.current = action.payload;
     },
   },
