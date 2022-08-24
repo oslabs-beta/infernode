@@ -4,7 +4,7 @@ import {
 } from 'express';
 import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
-import { dbControllerInstance } from '../controllers/db.controller';
+import { dbControllerInstance, getAllRows } from '../controllers/db.controller';
 
 const apiRouter = Router();
 
@@ -56,20 +56,8 @@ apiRouter.put(
 // Read All
 apiRouter.get(
   '/captures', /* dbController.getAllMetaData */
-  (req: Request, res: Response) => res.status(200).json([
-    {
-      id: 1, captureName: 'capture 1', date: Date.now(), creator: 'test 1', appName: 'app 1', data: '',
-    },
-    {
-      id: 2, captureName: 'capture 2', date: Date.now(), creator: 'test 2', appName: 'app 2', data: '',
-    },
-    {
-      id: 3, captureName: 'capture 3', date: Date.now(), creator: 'test 3', appName: 'app 3', data: '',
-    },
-    {
-      id: 4, captureName: 'capture 4', date: Date.now(), creator: 'test 4', appName: 'app 4', data: '',
-    },
-  ]),
+  getAllRows,
+  (req: Request, res: Response) => res.status(200).json(res.locals.rows),
 );
 
 // Read by ID
