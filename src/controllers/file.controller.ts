@@ -12,7 +12,6 @@ export default class FileController {
 
   addData = (req: Request, res: Response, next: NextFunction) => {
     // Get next ID
-    res.locals.id = 12345;
     const fileId = Number(res.locals.id);
     // console.log('LOOK OVER HERE!', fileId);
     // const fileId = 123;
@@ -58,23 +57,19 @@ export default class FileController {
   };
 
   deliverSVG = (req: Request, res: Response, next: NextFunction) => {
-    const fileId = Number(res.locals.id);
+    console.log('Invoked deliverSVG');
+    const fileId = req.params.id;
+    console.log(fileId);
     const fileName = path.resolve(
       __dirname,
       this.svgDir,
       `${fileId}.svg`,
     );
-    try {
-      res.sendFile(fileName, (err) => {
-        if (err) {
-          next(err);
-        } else {
-          console.log('Sent:', fileName);
-        }
-      });
-      return next();
-    } catch (err) {
-      return next(err);
-    }
+
+    res.sendFile(fileName, (err) => {
+      if (err) {
+        next(err);
+      }
+    });
   };
 }

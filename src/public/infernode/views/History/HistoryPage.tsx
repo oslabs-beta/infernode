@@ -2,17 +2,23 @@ import React from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Card from 'react-bootstrap/Card';
 import HistorySidebar from './HistorySidebar';
+import { useAppSelector } from '../../store/hooks';
 
 export default function HistoryPage(): JSX.Element {
+  const { current } = useAppSelector((state) => state.captures);
+  let realid = 0;
+  let haveid = false;
+  console.log(`Processing updated current item: ${current || 'null'}`);
+  if (current !== null) {
+    realid = current;
+    haveid = true;
+  }
+
   return (
     <Stack direction="horizontal" gap={3}>
       <HistorySidebar />
       <Card>
-        <img alt="mock history page header" src="/mocks/history-header.png" />
-        <div style={{ width: 1024, height: 'auto' }}>
-          <embed type="image/svg+xml" src="/node-example-fg.svg" width="1024" />
-        </div>
-        <img alt="mock history page footer" src="/mocks/history-footer.png" />
+        {haveid && <iframe src={`/api/captures/${realid}`} title="flamegraph" width="1000" height="800" />}
       </Card>
     </Stack>
   );

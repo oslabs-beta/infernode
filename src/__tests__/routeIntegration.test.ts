@@ -1,8 +1,11 @@
+import { doesNotReject } from 'assert'
 import request from 'supertest'
-import fs from 'fs'
+// import fs from 'fs'
 
 const server = 'http://localhost:3000'
 // const server2 = 'http://localhost:8080'
+
+// please see ref docs: https://jestjs.io/docs/asynchronous
 
 describe('Route Integration testing', () => {
 
@@ -15,16 +18,16 @@ describe('Route Integration testing', () => {
     })
   })
 
-  xdescribe('/api integration testing', () => {
-    describe('GET', () => {
-      it('responds with 200 status and application/json content', () => {
+  describe('/api integration testing', () => {
+    xdescribe('GET', () => {
+      it('responds with 200 status and text/html content', () => {
         return request(server)
           .get('/api')
-          .expect('Content-Type', /application\/json/)
+          .expect('Content-Type', /text\/html/)
           .expect(200)
       })
     })
-    describe('POST', () => {
+    xdescribe('POST', () => {
       it('responds with 200 status and application/json content', () => {
         return request(server)
           .post('/api')
@@ -32,7 +35,7 @@ describe('Route Integration testing', () => {
           .expect(200)
       })
     })
-    describe('PUT', () => {
+    xdescribe('PUT', () => {
       it('responds with 200 status and application/json content', () => {
         return request(server)
           .put('/api')
@@ -40,7 +43,7 @@ describe('Route Integration testing', () => {
           .expect(200)
       })
     })
-    describe('PATCH', () => {
+    xdescribe('PATCH', () => {
       it('responds with 200 status and application/json content', () => {
         return request(server)
           .patch('/api')
@@ -51,21 +54,23 @@ describe('Route Integration testing', () => {
 
   })
 
-  xdescribe('/api/captures integration testing', () => {
-    xdescribe('GET', () => {
-      it('responds with 200 status and text/html content', () => {
+  describe('/api/captures integration testing', () => {
+    describe('GET', () => {
+      it('responds with 200 status and application/json content', () => {
         return request(server)
           .get('/api/captures')
-          .expect('Content-Type', /text\/html/)
+          .expect('Content-Type', /application\/json/)
           .expect(200)
       })
     })
-    describe('POST', () => {
-      it('responds with 200 status and text/html content', () => {
-        return request(server)
+    xdescribe('POST', () => {
+      // jest.setTimeout(15000)
+      it('responds with 200 status and application/json content', async () => {
+        return await request(server)
           .post('/api/captures')
-          .expect('Content-Type', /text\/html/)
+          .expect('Content-Type', /application\/json/)
           .expect(200)
+          
       })
     })
     xdescribe('PUT', () => {
