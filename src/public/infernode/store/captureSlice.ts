@@ -41,7 +41,7 @@ export const captureSlice = createSlice({
     deleteCapture: (state, action: PayloadAction<number>) => {
       state.captureList = state.captureList.filter((capture) => capture.id !== action.payload);
     },
-    setCurrent: (state, action: PayloadAction<number>) => {
+    setCurrent: (state, action: PayloadAction<number | null>) => {
       state.current = action.payload;
     },
   },
