@@ -17,10 +17,10 @@ describe('Navbar unit tests', () => {
         </BrowserRouter>
       </Provider>
     )
-    const history = screen.getByRole('link', { name: /history/i })
+  })
+    // const history = screen.getByRole('link', { name: /history/i })
     // refactor later to use variables like this to make it dryer
     //its having issues atm
-  })
   
   describe('Navbar has links to 4 pages', () => {
     test('The correct buttons render as links', () => {
