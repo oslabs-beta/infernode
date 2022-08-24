@@ -5,5 +5,4 @@ export interface Capture {
   creator: string;
   appName: string;
   data: string;
-  saved: boolean;
 }
