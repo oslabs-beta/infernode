@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  SyntheticEvent, useCallback, useEffect, useState,
+} from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Card from 'react-bootstrap/Card';
 import HistorySidebar from './HistorySidebar';

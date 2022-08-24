@@ -29,7 +29,6 @@ export default function HistorySidebar(): JSX.Element {
       date={captureList[i].date}
     />);
   }
-
   return (
     <Card className="align-self-start">
       <Form>
