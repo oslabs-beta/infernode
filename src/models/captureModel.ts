@@ -30,7 +30,7 @@ const captureDB = new sqlite3.Database(
 
 // If the db was just created, create a table for the capture information
 if (!dbExists) {
-  let createTableSQL = 'CREATE TABLE capture(id INTEGER PRIMARY KEY, capture_name';
+  let createTableSQL = 'CREATE TABLE capture (id INTEGER PRIMARY KEY AUTOINCREMENT, capture_name';
   createTableSQL += ', date, creator, app_name, data';
 
   createTableSQL += ' TEXT DEFAULT "{}")';

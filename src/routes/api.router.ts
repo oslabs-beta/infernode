@@ -4,7 +4,7 @@ import {
 } from 'express';
 import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
-import { dbControllerInstance, getAllRows } from '../controllers/db.controller';
+import dbController from '../controllers/db.controller';
 
 const apiRouter = Router();
 
@@ -19,14 +19,18 @@ apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
 
 apiRouter.post(
   '/captures',
-  // dbControllerInstance.createEmptyRecord,
-  getAllRows,
+  // dbControllerInstance.closeDB,
+  dbController.createEmptyRecord,
+  dbController.updateRecord,
   fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
-  (_req: Request, res: Response) => res
-    .status(200)
-    .send('svg file created and stored in the /database/SVGs'),
+  (_req: Request, res: Response) => {
+    console.log(res.locals.rows);
+    res
+      .status(200)
+      .send('svg file created and stored in the /database/SVGs');
+  },
   // what we send back to the client will depend on the front end
   // architecture and how we want the user to see what they just uploaded
 );
@@ -67,13 +71,14 @@ apiRouter.get(
 // Update
 apiRouter.patch(
   '/captures/:id',
-  (req: Request, res: Response, next: NextFunction) => {
+  dbController.updateRecord,
+  (req: Request, res: Response) => {
     console.log(
       `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
         req.url
       }`,
     );
-    next({ message: 'PATCH /api/captures/:id not yet implemented' });
+    res.sendStatus(200);
   },
 );
 
