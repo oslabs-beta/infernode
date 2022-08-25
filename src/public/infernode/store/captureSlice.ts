@@ -35,10 +35,10 @@ export const updateCapture = createAsyncThunk<void, Capture>(
   },
 );
 
-export const deleteCapture = createAsyncThunk<void, number>(
+export const deleteCapture = createAsyncThunk<void, Capture>(
   'captures/deleteOne',
-  async (id: number) => {
-    await captures.deleteOne(id);
+  async (capture: Capture) => {
+    await captures.deleteOne(capture);
   },
 );
 

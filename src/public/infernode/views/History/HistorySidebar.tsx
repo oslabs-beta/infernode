@@ -22,7 +22,7 @@ export default function HistorySidebar(): JSX.Element {
         } else if (captureList.length === 1) {
           dispatch(setCurrent(null));
         }
-        dispatch(deleteCapture(captureList[i].id)).catch((err) => console.log(`Failed to delete capture: ${JSON.stringify(err)}`));
+        dispatch(deleteCapture(captureList[i])).catch((err) => console.log(`Failed to delete capture: ${JSON.stringify(err)}`));
       }}
       key={i}
       date={captureList[i].date}
