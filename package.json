@@ -7,6 +7,7 @@
   "scripts": {
     "lint": " eslint . && eslint ./src/public/infernode/",
     "clean": "rimraf ./dist/*",
+    "resetdb": "rimraf ./database/captures/*.perf ./database/folded/*.folded ./database/SVGs/*.svg ./database/uploads/* ./database/captureDB.db",
     "copy-assets": "cp -R ./src/assets ./dist/",
     "prebuild": "npm run lint && npm run clean && npm run copy-assets",
     "tsc": "tsc",
@@ -82,6 +83,7 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.18.6",
     "@svgr/webpack": "^6.3.1",
+    "@types/deep-equal": "^1.0.1",
     "@testing-library/dom": "^8.17.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
@@ -139,6 +141,7 @@
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "bootstrap": "^5.2.0",
+    "deep-equal": "^2.0.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "formidable": "^2.0.1",
