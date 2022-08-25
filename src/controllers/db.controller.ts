@@ -244,7 +244,7 @@ const dbController: DbCInterface = {
   },
 
   deleteRecord(req: Request, res: Response, next: NextFunction): void {
-    return next();
+    // captureDB.run()
   },
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import './App.scss';
 import { Routes, Route } from 'react-router-dom';
@@ -8,8 +8,19 @@ import HelpPage from './views/Help/HelpPage';
 import * as HelpPages from './views/Help/HelpPages';
 import HistoryPage from './views/History/HistoryPage';
 import ManagePage from './views/Manage/ManagePage';
+import { useAppDispatch } from './store/hooks';
+import { fetchAllCaptures } from './store/captureSlice';
 
 export default function App(): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  // Get capture list once on app mount
+  useEffect(() => {
+    async function initialCaptureLoad(): Promise<void> { await dispatch(fetchAllCaptures()); }
+    // eslint-disable-next-line no-console
+    initialCaptureLoad().catch((err) => console.log('Error: failed to fetch data on App mount: ', err));
+  }, [dispatch]);
+
   return (
     <>
       <NavBar />

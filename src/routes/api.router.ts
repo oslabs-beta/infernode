@@ -8,39 +8,37 @@ import dbController from '../controllers/db.controller';
 
 const apiRouter = Router();
 
+// API Root
 apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
   console.log(
-    `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
+    `${new Date().toLocaleString()}: API Root apiRouter handling ${req.method} ${
       req.url
     }`,
   );
   return next({ message: 'GET /api/ not yet implemented' });
 });
 
+// Create
 apiRouter.post(
   '/captures',
-  // dbControllerInstance.closeDB,
   dbController.createEmptyRecord,
   dbController.updateRecord,
   fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
   (_req: Request, res: Response) => {
-    console.log(res.locals.rows);
-    res
-      .status(200)
-      .send('svg file created and stored in the /database/SVGs');
+    res.status(200).redirect('/api/captures');
   },
   // what we send back to the client will depend on the front end
   // architecture and how we want the user to see what they just uploaded
 );
 
-// Create/Update by ID
+// Create by ID
 apiRouter.put(
   '/captures/:id',
   (req: Request, res: Response, next: NextFunction) => {
     console.log(
-      `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
+      `${new Date().toLocaleString()}: Create by ID apiRouter handling ${req.method} ${
         req.url
       }`,
     );
@@ -51,15 +49,16 @@ apiRouter.put(
 // Read All
 apiRouter.get(
   '/captures', /* dbController.getAllMetaData */
-  (req: Request, res: Response) => res.status(200).json('Fetch meta data sucessfully'),
+  dbController.getAllRows,
+  (req: Request, res: Response) => res.status(200).json(res.locals.rows),
 );
 
-// Read
+// Read by ID
 apiRouter.get(
   '/captures/:id', // req.param
   (req: Request, res: Response, next: NextFunction) => {
     console.log(
-      `${new Date().toLocaleString()}: WANT TO SEE THIS apiRouter handling ${req.method} ${
+      `${new Date().toLocaleString()}: Read by ID apiRouter handling ${req.method} ${
         req.url
       }`,
     );
@@ -68,13 +67,13 @@ apiRouter.get(
   fileController.deliverSVG,
 );
 
-// Update
+// Update by ID
 apiRouter.patch(
   '/captures/:id',
   dbController.updateRecord,
   (req: Request, res: Response) => {
     console.log(
-      `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
+      `${new Date().toLocaleString()}: Update by ID apiRouter handling ${req.method} ${
         req.url
       }`,
     );
@@ -82,19 +81,17 @@ apiRouter.patch(
   },
 );
 
-// Delete
+// Delete by ID
 apiRouter.delete(
   '/captures/:id',
   (req: Request, res: Response, next: NextFunction) => {
     console.log(
-      `${new Date().toLocaleString()}: apiRouter handling ${req.method} ${
+      `${new Date().toLocaleString()}: Delete by ID apiRouter handling ${req.method} ${
         req.url
       }`,
     );
     next({ message: 'DELETE /api/captures/:id not yet implemented' });
   },
 );
-
-// define a global err handler based on the server.globalError method
 
 export default apiRouter;
