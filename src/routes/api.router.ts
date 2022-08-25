@@ -33,9 +33,9 @@ apiRouter.post(
   fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
-  (_req: Request, res: Response) => res
-    .status(200)
-    .send('svg file created and stored in the /database/SVGs'),
+  (_req: Request, res: Response) => {
+    res.status(200).redirect('/api/captures');
+  },
   // what we send back to the client will depend on the front end
   // architecture and how we want the user to see what they just uploaded
 );

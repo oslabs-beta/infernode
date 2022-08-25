@@ -5,6 +5,7 @@
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+
 import { Capture } from './interfaces';
 import captures from '../services/captureService';
 
@@ -52,11 +53,15 @@ export const captureSlice = createSlice({
     setCurrent: (state, action: PayloadAction<number | null>) => {
       state.current = action.payload;
     },
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.loading = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllCaptures.fulfilled, (state, action) => {
       console.log('fulfilled', JSON.stringify(action));
       state.captureList = action.payload;
+      state.current = state.captureList[state.captureList.length - 1].id;
     });
     builder.addCase(fetchAllCaptures.rejected, (state, action) => {
       console.log('REJECTED', JSON.stringify(action));
@@ -82,5 +87,5 @@ export const captureSlice = createSlice({
   },
 });
 
-export const { setCurrent } = captureSlice.actions;
+export const { setCurrent, setLoading } = captureSlice.actions;
 export default captureSlice.reducer;

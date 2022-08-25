@@ -2,7 +2,9 @@ import { doesNotReject } from 'assert'
 import request from 'supertest'
 // import fs from 'fs'
 
-const server = 'http://localhost:3000'
+const port = Number(process.env.EXPRESS_PORT) || 8378;
+const server = `http://localhost:${port}`;
+// const server = 'http://localhost:3000'
 // const server2 = 'http://localhost:8080'
 
 // please see ref docs: https://jestjs.io/docs/asynchronous

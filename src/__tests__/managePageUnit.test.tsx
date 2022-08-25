@@ -2,14 +2,18 @@ import { render, screen } from '@testing-library/react'
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom';
 import ManagePage from '../public/infernode/views/Manage/ManagePage'
+import { Provider } from 'react-redux'
+import { store } from '../public/infernode/store/store'
 
 describe('Manage page unit tests', () => {
 
   beforeEach(() => {
     const page = render(
+      <Provider store={store}>
       <BrowserRouter>
         <ManagePage />
       </BrowserRouter>
+      </Provider>
     )
   })
 
