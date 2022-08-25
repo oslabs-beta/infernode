@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import axios from 'axios';
+import deepEqual from 'deep-equal';
 import Api from './Api';
 import { Capture } from '../store/interfaces';
 
@@ -25,7 +26,8 @@ export default {
         `captures/${capture.id}`,
         capture,
       );
-      if (status === 200 && data == capture) return;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      if (status === 200 && deepEqual(capture, data)) return;
       console.log(
         `Error: unexpected HTTP response code or response: ${status} : ${JSON.stringify(data)}`,
       );
@@ -36,12 +38,13 @@ export default {
       console.log(`Error: unknown: ${JSON.stringify(err)}`);
     }
   },
-  async deleteOne(id: number) {
+  async deleteOne(capture: Capture) {
     try {
-      const { status } = await Api().delete(
-        `captures/${id}`,
+      const { data, status } = await Api().delete<Capture>(
+        `captures/${capture.id}`,
       );
-      if (status === 200) return true;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      if (status === 200 && deepEqual(capture, data)) return true;
       console.log(
         `Error: unexpected HTTP response code or response: ${status}`,
       );
