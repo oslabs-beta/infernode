@@ -12,7 +12,8 @@
     "tsc": "tsc",
     "webpack": "webpack --config webpack.prod.js",
     "build": "npm run tsc && npm run webpack",
-    "test": "jest --coverage react-scripts test --env=jsdom",
+    "test": "npm run build && jest --coverage react-scripts test --env=jsdom",
+    "test-only": "jest --coverage react-scripts test --env=jsdom",
     "start": "NODE_ENV=production node dist/index.js",
     "dev": "mkdir -p ./dist && touch ./dist/index.js && tsc && concurrently \"npx tsc --watch\" \"NODE_ENV=development nodemon --ext js,json,html,css dist/index.js\" \"webpack serve --open --config webpack.dev.js\""
   },
