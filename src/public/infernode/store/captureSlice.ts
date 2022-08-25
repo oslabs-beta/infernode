@@ -28,18 +28,24 @@ export const fetchAllCaptures = createAsyncThunk<Capture[]>(
   },
 );
 
+export const updateCapture = createAsyncThunk<void, Capture>(
+  'captures/updateOne',
+  async (capture: Capture) => {
+    await captures.putOne(capture);
+  },
+);
+
+export const deleteCapture = createAsyncThunk<void, number>(
+  'captures/deleteOne',
+  async (id: number) => {
+    await captures.deleteOne(id);
+  },
+);
+
 export const captureSlice = createSlice({
   name: 'captures',
   initialState,
   reducers: {
-    addCapture: (state, action: PayloadAction<Capture>) => {
-      state.captureList.push(action.payload);
-    },
-    deleteCapture: (state, action: PayloadAction<number>) => {
-      state.captureList = state.captureList.filter(
-        (capture) => capture.id !== action.payload,
-      );
-    },
     setCaptures: (state, action: PayloadAction<Capture[]>) => {
       state.captureList = action.payload;
     },
@@ -57,8 +63,24 @@ export const captureSlice = createSlice({
       console.log('fetchAllCaptures resolved to error: ', action.payload || action.error);
       state.captureList = [];
     });
+    builder.addCase(updateCapture.fulfilled, (_state, action) => {
+      console.log('fulfilled', JSON.stringify(action));
+      fetchAllCaptures();
+    });
+    builder.addCase(updateCapture.rejected, (_state, action) => {
+      console.log('REJECTED', JSON.stringify(action));
+      console.log('updateCapture resolved to error: ', action.payload || action.error);
+    });
+    builder.addCase(deleteCapture.fulfilled, (_state, action) => {
+      console.log('fulfilled', JSON.stringify(action));
+      fetchAllCaptures();
+    });
+    builder.addCase(deleteCapture.rejected, (_state, action) => {
+      console.log('REJECTED', JSON.stringify(action));
+      console.log('deleteCapture resolved to error: ', action.payload || action.error);
+    });
   },
 });
 
-export const { addCapture, deleteCapture, setCurrent } = captureSlice.actions;
+export const { setCurrent } = captureSlice.actions;
 export default captureSlice.reducer;

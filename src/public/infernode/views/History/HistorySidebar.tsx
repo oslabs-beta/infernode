@@ -19,11 +19,10 @@ export default function HistorySidebar(): JSX.Element {
         if (current === captureList[i].id && captureList.length > 1) {
           // restrict to delete current displayed capture
           dispatch(setCurrent(captureList[(i + 1) % captureList.length].id));
-          dispatch(deleteCapture(captureList[i].id));
         } else if (captureList.length === 1) {
           dispatch(setCurrent(null));
-          dispatch(deleteCapture(captureList[i].id));
         }
+        dispatch(deleteCapture(captureList[i].id)).catch((err) => console.log(`Failed to delete capture: ${JSON.stringify(err)}`));
       }}
       key={i}
       date={captureList[i].date}

@@ -16,9 +16,9 @@ export default function App(): JSX.Element {
 
   // Get capture list once on app mount
   useEffect(() => {
-    async function blah(): Promise<void> { await dispatch(fetchAllCaptures()); }
+    async function initialCaptureLoad(): Promise<void> { await dispatch(fetchAllCaptures()); }
     // eslint-disable-next-line no-console
-    blah().catch((err) => console.log('Error: failed to fetch data on App mount: ', err));
+    initialCaptureLoad().catch((err) => console.log('Error: failed to fetch data on App mount: ', err));
   }, [dispatch]);
 
   return (
