@@ -52,6 +52,7 @@ export const captureSlice = createSlice({
     builder.addCase(fetchAllCaptures.fulfilled, (state, action) => {
       console.log('fulfilled', JSON.stringify(action));
       state.captureList = action.payload;
+      state.current = state.captureList[state.captureList.length - 1].id;
     });
     builder.addCase(fetchAllCaptures.rejected, (state, action) => {
       console.log('REJECTED', JSON.stringify(action));
