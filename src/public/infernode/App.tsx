@@ -40,7 +40,7 @@ export default function App(): JSX.Element {
           <Route path="*" element={<HistoryPage />} />
         </Routes>
       </Container>
-      v1.0.0
+      <Container>v1.0.0</Container>
     </>
   );
 }
