@@ -102,3 +102,14 @@ dist
 
 # TernJS port file
 .tern-port
+.DS_Store
+
+# perf, svg, and db files
+database/captures/**
+database/folded/*.folded
+database/SVGs/**
+database/*.db
+database/uploads
+
+# include .gitkeep files
+!.gitkeep
