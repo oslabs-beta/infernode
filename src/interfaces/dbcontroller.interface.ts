@@ -1,8 +1,15 @@
-interface DbBody {
-  captureName: string;
-  creator: string;
-  appName: string;
-  data: string;
+import { Request, Response, NextFunction } from 'express';
+
+interface DbCInterface {
+  createEmptyRecord: (req: Request, res: Response, next: NextFunction) => void;
+  deleteRecord: (req: Request, res: Response, next: NextFunction) => void;
+  getAllRows: (req: Request, res: Response, next: NextFunction) => void;
+  updateRecord: (req: Request, res: Response, next: NextFunction) => void;
 }
 
-export default DbBody;
+interface CbThis {
+  lastID: number;
+  changes: [];
+}
+
+export { DbCInterface, CbThis };
