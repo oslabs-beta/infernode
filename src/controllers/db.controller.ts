@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import captureDB, { Capture } from '../models/captureModel';
-import { UpdateBody, DbCInterface, CbThis } from '../interfaces/dbcontroller.interface';
+import { DbCInterface, CbThis } from '../interfaces/dbcontroller.interface';
 import { InfernodeError } from '../utils/globalErrorHandler';
 
 function isNumber(id: number | unknown): id is number {
@@ -92,6 +92,8 @@ const dbController: DbCInterface = {
     );
   },
 
+  // disabling consistent return because eslint can't make up its mind
+  // eslint-disable-next-line consistent-return
   updateRecord(req: Request, res: Response, next: NextFunction): void {
     const reqBody: object | undefined = req.body as object | undefined;
     const isReqParamsFormatted = req.params.id !== undefined;
@@ -114,7 +116,9 @@ const dbController: DbCInterface = {
     });
     setInfo = setInfo.slice(0, -2);
     const updateSQL = `UPDATE capture SET ${setInfo} WHERE id = ${res.locals.id as number}`;
-    captureDB.run(updateSQL, (err) => {
+    // disabled consistent return here bc eslint for some reason expects a return from a void func
+    // eslint-disable-next-line consistent-return
+    captureDB.run(updateSQL, (err): void => {
       if (err) {
         return next(new InfernodeError(
           'Unable to update given capture info in database',
