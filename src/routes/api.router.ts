@@ -22,7 +22,6 @@ apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
 apiRouter.post(
   '/captures',
   dbController.createEmptyRecord,
-  dbController.updateRecord,
   fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
@@ -77,20 +76,23 @@ apiRouter.patch(
         req.url
       }`,
     );
-    res.sendStatus(200);
+    console.log(res.locals.rowFromID);
+    res.status(200).json(res.locals.rowFromID);
   },
 );
 
 // Delete by ID
 apiRouter.delete(
   '/captures/:id',
-  (req: Request, res: Response, next: NextFunction) => {
+  dbController.deleteRecord,
+  (req: Request, res: Response) => {
     console.log(
       `${new Date().toLocaleString()}: Delete by ID apiRouter handling ${req.method} ${
         req.url
       }`,
     );
-    next({ message: 'DELETE /api/captures/:id not yet implemented' });
+    console.log(res.locals.rowFromID);
+    res.status(200).json(res.locals.rowFromID);
   },
 );
 

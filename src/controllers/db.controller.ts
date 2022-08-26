@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import captureDB from '../models/captureModel';
+import captureDB, { Capture } from '../models/captureModel';
 import { UpdateBody, DbCInterface, CbThis } from '../interfaces/dbcontroller.interface';
 import { InfernodeError } from '../utils/globalErrorHandler';
 
@@ -128,6 +128,49 @@ function isNumber(id: number | unknown): id is number {
   return false;
 }
 
+// type CaptureOrNull = Capture | null;
+
+async function selectRow(id: number): Promise<Capture> {
+  // let result: null | Capture;
+  let selectSQL = 'SELECT * FROM capture WHERE id = ';
+  selectSQL += id;
+  return new Promise((resolve, reject) => {
+    captureDB.all(
+      selectSQL,
+      (err: Error, rows: object[]): void => {
+        if (err) {
+          // console.log(`dbController.selectRow error: ${JSON.stringify(err)}`);
+          reject(new Error(`dbController.selectRow error: ${JSON.stringify(err)}`));
+        }
+        if (rows.length === 1) {
+          resolve(rows[0] as Capture);
+        } else {
+          reject(new Error(`dbController.selectRow unexpected number of rows: ${rows.length}`));
+        }
+      },
+    );
+  });
+}
+// function selectRow(id: string, res: Response, next: NextFunction) {
+//   let selectSQL = 'SELECT * FROM capture WHERE id = ';
+//   selectSQL += id;
+//   captureDB.run(
+//     selectSQL,
+//     (err: Error, rows: object[]): void | null => {
+//       if (err) {
+//         return next(new InfernodeError(
+//           'Unable to select row',
+//           'An error occured when select row based off of ID',
+//           500,
+//           'DBController',
+//         ));
+//       }
+//       [res.locals.rowFromID] = [rows];
+//       return next();
+//     },
+//   );
+// }
+
 const dbController: DbCInterface = {
   getAllRows(req: Request, res: Response, next: NextFunction): void {
     captureDB.all(
@@ -144,7 +187,6 @@ const dbController: DbCInterface = {
           ));
         }
         res.locals.rows = rows;
-        console.log(rows);
         return next();
       },
     );
@@ -204,36 +246,7 @@ const dbController: DbCInterface = {
     // if (req.method === 'PATCH') {
     // }
 
-    if (reqBody && (/* isReqBodyFormatted ||  */isReqParamsFormatted)) {
-      res.locals.id = Number(req.params.id);
-      // if (res.locals.id === undefined) res.locals.id = Number(reqBody.id);
-      const keys = Object.keys(reqBody);
-      const vals: string[] = Object.values(reqBody) as [];
-      let setInfo = '';
-      keys.forEach((el, i) => {
-        if (el !== 'id') {
-          setInfo += `${el} = "${vals[i]}", `;
-        }
-      });
-      setInfo = setInfo.slice(0, -2);
-      const updateSQL = `UPDATE capture SET ${setInfo} WHERE id = ${res.locals.id as number}`;
-      captureDB.run(updateSQL, (err) => {
-        if (err) {
-          return next(new InfernodeError(
-            'Unable to update given capture info in database',
-            'There was an error when updating capture info in database',
-            500,
-            'DBController',
-          ));
-        }
-        return next();
-      });
-      // const fields: string[] = ['capture_name', 'creator', 'app_name', 'data'];
-      // UPDATE demo SET Name = "0", Hint = "h" WHERE ID = 1;
-      // fields.forEach((field) => {
-      //   // if current field is in reqbody then updateSQL += field
-      // });
-    } else {
+    if (!reqBody || (/* isReqBodyFormatted ||  */!isReqParamsFormatted)) {
       return next(new InfernodeError(
         'The request body was not formatted correctly',
         'There was an error in updateRecord',
@@ -241,10 +254,70 @@ const dbController: DbCInterface = {
         'DBController',
       ));
     }
+    res.locals.id = Number(req.params.id);
+    // if (res.locals.id === undefined) res.locals.id = Number(reqBody.id);
+    const keys = Object.keys(reqBody);
+    const vals: string[] = Object.values(reqBody) as [];
+    let setInfo = '';
+    keys.forEach((el, i) => {
+      if (el !== 'id') {
+        setInfo += `${el} = "${vals[i]}", `;
+      }
+    });
+    setInfo = setInfo.slice(0, -2);
+    const updateSQL = `UPDATE capture SET ${setInfo} WHERE id = ${res.locals.id as number}`;
+    captureDB.run(updateSQL, (err) => {
+      if (err) {
+        return next(new InfernodeError(
+          'Unable to update given capture info in database',
+          'There was an error when updating capture info in database',
+          500,
+          'DBController',
+        ));
+      }
+      const id = Number(req.params.id);
+      selectRow(id)
+        .then((row) => {
+          res.locals.rowFromID = row;
+          return next();
+        })
+        .catch((error) => next({
+          message: JSON.stringify(error),
+        }));
+    });
+    // const fields: string[] = ['capture_name', 'creator', 'app_name', 'data'];
+    // UPDATE demo SET Name = "0", Hint = "h" WHERE ID = 1;
+    // fields.forEach((field) => {
+    //   // if current field is in reqbody then updateSQL += field
+    // });
   },
 
   deleteRecord(req: Request, res: Response, next: NextFunction): void {
-    // captureDB.run()
+    // selectRow(req.params.id, res, next);
+    const id = Number(req.params.id);
+    selectRow(id)
+      .then((row) => {
+        res.locals.rowFromID = row;
+      })
+      .catch((error) => next({
+        message: JSON.stringify(error),
+      }));
+    let deleteSQL = 'DELETE FROM capture WHERE id = ';
+    deleteSQL += req.params.id;
+    captureDB.run(
+      deleteSQL,
+      (err) => {
+        if (err) {
+          return next(new InfernodeError(
+            'Unable to delete capture based off of ID',
+            'There was an error when deleting capture info in database',
+            500,
+            'DBController',
+          ));
+        }
+        return next();
+      },
+    );
   },
 };
 

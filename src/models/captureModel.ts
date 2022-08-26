@@ -43,4 +43,13 @@ if (!dbExists) {
 // Might need to add checks to make sure that the table is formatted correctly
 }
 
+export interface Capture {
+  id: number;
+  captureName: string;
+  date: Date;
+  creator: string;
+  appName: string;
+  data: string;
+}
+
 export default captureDB;
