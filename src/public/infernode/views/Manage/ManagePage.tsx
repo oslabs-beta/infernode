@@ -1,7 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Stack from 'react-bootstrap/Stack';
+import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
 import ManageSidebar from './ManageSidebar';
 import { fetchAllCaptures, setLoading } from '../../store/captureSlice';
 import { useAppDispatch } from '../../store/hooks';
@@ -12,16 +14,20 @@ export default function ManagePage(): JSX.Element {
   return (
     <Stack direction="horizontal" gap={3}>
       <ManageSidebar />
-      <Card>
-        <form
+      <Card className="w-100">
+        <Form
           onSubmit={(event: React.SyntheticEvent) => {
+            console.log('Form event:');
+            console.log(event);
             const form: HTMLFormElement = event.target as HTMLFormElement;
+            console.log('Form:');
+            console.log(form);
             console.log('1 Setting loading to true');
             event.preventDefault();
             dispatch(setLoading(true));
             console.log('2 Posting form');
-            fetch(form.action, {
-              method: form.method,
+            fetch('/api/captures', {
+              method: 'POST',
               body: new FormData(form),
             })
               .then(() => {
@@ -39,16 +45,30 @@ export default function ManagePage(): JSX.Element {
               .catch((err) => console.log(`uploading files info unfulfilled: ${JSON.stringify(err)}`));
           }}
           id="uploadForm"
-          method="POST"
-          action="/api/captures"
           encType="multipart/form-data"
         >
-          <input type="file" name="capture" />
-          <input type="text" name="captureName" />
-          <input type="text" name="appName" />
-          <input type="text" name="creator" />
-          <input type="submit" />
-        </form>
+          <Form.Group controlId="capture">
+            <Form.Label>Capture file</Form.Label>
+            <Form.Control type="file" />
+          </Form.Group>
+          <Form.Group controlId="captureName">
+            <Form.Label>Capture name</Form.Label>
+            <Form.Control type="text" placeholder="trace slow function" />
+          </Form.Group>
+          <Form.Group controlId="appName">
+            <Form.Label>Application name</Form.Label>
+            <Form.Control type="text" placeholder="NodeApp.js" />
+          </Form.Group>
+          <Form.Group controlId="creator">
+            <Form.Label>Creator</Form.Label>
+            <Form.Control type="text" placeholder="anonymous" />
+          </Form.Group>
+          {/* <input type="file" name="capture" /> */}
+          {/* <input type="text" name="captureName" /> */}
+          {/* <input type="text" name="appName" /> */}
+          {/* <input type="text" name="creator" /> */}
+          <Button variant="primary" type="submit">Upload</Button>
+        </Form>
       </Card>
     </Stack>
   );

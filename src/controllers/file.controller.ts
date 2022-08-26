@@ -17,6 +17,7 @@ export default class FileController {
     // const fileId = 123;
 
     const processTempFile = (formName: string, file: formidable.File) => {
+      console.log(`fileController.addData() processing ${formName} file: ${file.originalFilename || 'unknown'}`);
       // console.log(
       //   `${new Date().toLocaleString()}: Parsed POST'd file, formname ${JSON.stringify(
       //     formName,
@@ -50,6 +51,7 @@ export default class FileController {
       uploadDir: path.resolve(__dirname, '../../database/uploads/'),
     });
     uploads.on('file', (fieldName: string, file: formidable.File) => {
+      console.log(`fileController.addData() recv'd ${fieldName} file: ${file.originalFilename || 'unknown'}`);
       processTempFile(fieldName, file);
     });
 
