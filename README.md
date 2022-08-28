@@ -1,4 +1,5 @@
 # infernode
+Current version: 1.0.0
 
 Flamegraph tool for node.js
 
