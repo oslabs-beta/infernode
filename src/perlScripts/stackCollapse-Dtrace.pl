@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 #
 ## THE CONTENTS OF THIS FILE ARE OBTAINED FROM BRENDAN GREGG
 # https://github.com/brendangregg/FlameGraph
