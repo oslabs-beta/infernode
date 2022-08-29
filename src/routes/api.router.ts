@@ -4,7 +4,7 @@ import {
 } from 'express';
 import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
-import { dbControllerInstance, getAllRows } from '../controllers/db.controller';
+import dbController from '../controllers/db.controller';
 
 const apiRouter = Router();
 
@@ -21,15 +21,7 @@ apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
 // Create
 apiRouter.post(
   '/captures',
-  (req: Request, res: Response, next: NextFunction) => {
-    console.log(
-      `${new Date().toLocaleString()}: Create apiRouter handling ${req.method} ${
-        req.url
-      }`,
-    );
-    next();
-  },
-  dbControllerInstance.createEmptyRecord,
+  dbController.createEmptyRecord,
   fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
@@ -56,7 +48,7 @@ apiRouter.put(
 // Read All
 apiRouter.get(
   '/captures', /* dbController.getAllMetaData */
-  getAllRows,
+  dbController.getAllRows,
   (req: Request, res: Response) => res.status(200).json(res.locals.rows),
 );
 
@@ -77,26 +69,30 @@ apiRouter.get(
 // Update by ID
 apiRouter.patch(
   '/captures/:id',
-  (req: Request, res: Response, next: NextFunction) => {
+  dbController.updateRecord,
+  (req: Request, res: Response) => {
     console.log(
       `${new Date().toLocaleString()}: Update by ID apiRouter handling ${req.method} ${
         req.url
       }`,
     );
-    next({ message: 'PATCH /api/captures/:id not yet implemented' });
+    console.log(res.locals.rowFromID);
+    res.status(200).json(res.locals.rowFromID);
   },
 );
 
 // Delete by ID
 apiRouter.delete(
   '/captures/:id',
-  (req: Request, res: Response, next: NextFunction) => {
+  dbController.deleteRecord,
+  (req: Request, res: Response) => {
     console.log(
       `${new Date().toLocaleString()}: Delete by ID apiRouter handling ${req.method} ${
         req.url
       }`,
     );
-    next({ message: 'DELETE /api/captures/:id not yet implemented' });
+    console.log(res.locals.rowFromID);
+    res.status(200).json(res.locals.rowFromID);
   },
 );
 

@@ -4,7 +4,7 @@ import path from 'path';
 
 import flamegraph from '../controllers/flamegraphController'
 import { fileController } from '../controllers/controllers.module'
-import { dbControllerInstance } from '../controllers/db.controller'
+import dbControllerInstance from '../controllers/db.controller'
 import captureDB from '../models/captureModel';
 
 // please see official docs for reference: https://jestjs.io/docs/using-matchers

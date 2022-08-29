@@ -109,6 +109,7 @@ database/captures/**
 database/folded/*.folded
 database/SVGs/**
 database/*.db
+database/uploads
 
 # include .gitkeep files
 !.gitkeep
