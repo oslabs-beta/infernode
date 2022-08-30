@@ -5,6 +5,7 @@ import {
 import captureRouter from './captures.router';
 import controlRouter from './control.router';
 import dtraceRouter from './dtrace.router';
+import diffRouter from './diff.router';
 
 const apiRouter = Router();
 
@@ -32,6 +33,11 @@ apiRouter.use(
 apiRouter.use(
   '/control',
   controlRouter,
+);
+
+apiRouter.use(
+  '/diff',
+  diffRouter,
 );
 
 export default apiRouter;
