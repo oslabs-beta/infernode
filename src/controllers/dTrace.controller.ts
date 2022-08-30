@@ -2,7 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 // import captureDB, { Capture } from '../models/captureModel';
 // import { DbCInterface, CbThis } from '../interfaces/dbcontroller.interface';
 import path from 'path';
-import { spawnSync, spawn, exec, execSync } from 'child_process';
+import {
+  spawnSync,
+  spawn,
+  exec,
+  execSync,
+} from 'child_process';
 import { InfernodeError } from '../utils/globalErrorHandler';
 
 /*
@@ -88,11 +93,14 @@ const DtraceController: DtraceControllerType = {
       res.locals.duration = reqBody.duration;
       // refactor to match front end
       const result = spawn(`node ${filepath}`, { shell: true });
-      // result will be a child process
-      const { pid } = result;
-      console.log(pid);
-      res.locals.pid = pid;
-      return next();
+      result.on('spawn', (code: unknown) => {
+        // result will be a child process
+        const { pid } = result;
+        console.log(pid);
+        res.locals.pid = pid;
+        console.log('Code: ', code);
+        return next();
+      });
     } catch (err) {
       return next(new InfernodeError(
         'something failed while launching the app via node',
@@ -117,8 +125,8 @@ const DtraceController: DtraceControllerType = {
       const predicate = `profile-97 /pid == ${pid} && arg1/ { @[ustack()] = count(); } tick-${duration}s { exit(0); }`;
       const output = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
       // const output = path.resolve(__dirname, `${id}.stacks`);
-      const result = execSync(`sudo dtrace ${probe} '${predicate}' -o ${output}`);
-      console.log(result);
+      const result = execSync(`open http://localhost:4000 && sudo dtrace ${probe} '${predicate}' -o ${output}`);
+      console.log(result.toString());
       // if (result.status === 0)
       return next();
       // throw Error(`something went wrong in runDtrace: ${String(result.status)}`);
