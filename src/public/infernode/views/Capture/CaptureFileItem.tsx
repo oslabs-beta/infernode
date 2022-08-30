@@ -5,7 +5,6 @@ import Form from 'react-bootstrap/Form';
 type CaptureFileItemProps = {
   name: string,
   display: (event: SyntheticEvent) => void,
-//   date: Date
 };
 
 export default function CaptureFileItem(props: CaptureFileItemProps) {
@@ -17,8 +16,8 @@ export default function CaptureFileItem(props: CaptureFileItemProps) {
   return (
     <div className="flex-box">
       <Form.Text>{name}</Form.Text>
-      {/* <Form.Text>{new Date(date).toLocaleString()}</Form.Text> */}
       <Button variant="primary" onClick={display}>Display</Button>
+      <Button variant="secondary">Manage</Button>
     </div>
   );
 }
