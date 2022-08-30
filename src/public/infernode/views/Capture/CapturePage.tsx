@@ -9,6 +9,7 @@ import {
   Col,
 } from 'react-bootstrap';
 import CaptureSidebar from './CaptureSidebar';
+import { startApp } from '../../store/appSlice';
 
 export default function CapturePage(): JSX.Element {
   return (
@@ -20,15 +21,27 @@ export default function CapturePage(): JSX.Element {
           <Form>
             <Form.Group className="mb-3" controlId="formGroupAppName">
               <Form.Label>App Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter App Name" />
+              <Form.Control type="text" id="appName" placeholder="Enter App Name" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formGroupPath">
               <Form.Label>Relative Path of Entry Point</Form.Label>
-              <Form.Control type="text" placeholder="/enter/relative/path" />
+              <Form.Control type="text" id="relativePath" placeholder="/enter/relative/path" />
             </Form.Group>
           </Form>
           <div className="d-grid gap-2">
-            <Button variant="success" size="lg">
+            <Button
+              variant="success"
+              size="lg"
+              onClick={() => {
+                const appNameElement = document.getElementById('appName') as HTMLInputElement;
+                const relativePathElement = document.getElementById('relativePath') as HTMLInputElement;
+                if (appNameElement && relativePathElement) {
+                  const appName: string = appNameElement.value;
+                  const relativePath: string = relativePathElement.value;
+                  startApp({ appName, relativePath });
+                }
+              }}
+            >
               Start Application
             </Button>
             <Button variant="danger" size="lg">
