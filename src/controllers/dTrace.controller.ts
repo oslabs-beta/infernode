@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 // import captureDB, { Capture } from '../models/captureModel';
 // import { DbCInterface, CbThis } from '../interfaces/dbcontroller.interface';
 import path from 'path';
-import { spawnSync, spawn, exec } from 'child_process';
+import { spawnSync, spawn, exec, execSync } from 'child_process';
 import { InfernodeError } from '../utils/globalErrorHandler';
 
 /*
@@ -14,7 +14,8 @@ the perl scripts from Gregg will convert .txt to .svg
 we need to use a Dtrace tool to profile the application and output a .txt stack trace
 from there the .pl files will do all the heavy lifting
 
-The following example uses DTrace to sample user-level stacks at 99 Hertz for processes named "mysqld",
+The following example uses DTrace to sample user-level stacks at
+99 Hertz for processes named "mysqld",
 and then generates the flame graph
 
 # dtrace -x ustackframes=100 -n 'profile-99 /execname == "mysqld" && arg1/ {
@@ -29,10 +30,8 @@ cat dtrace-example.d
 
 probe / predicate / {actions}
 
-
                                 probes       predicate   actions
-# dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o out.kern_stacks
-
+dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o out.kern_stacks
 
 function 1
 first run a node command with the relative file path to launch the application
@@ -75,6 +74,7 @@ const DtraceController: DtraceControllerType = {
   nodeLaunch: (req: Request, res: Response, next: NextFunction): void => {
     // recieve executable filepath and second from user
     const reqBody = req.body as ReqBody | object;
+    console.log(reqBody);
     if (!isReqBody(reqBody)) {
       return next(new InfernodeError(
         'something failed while verifying req.body',
@@ -90,6 +90,7 @@ const DtraceController: DtraceControllerType = {
       const result = spawn(`node ${filepath}`, { shell: true });
       // result will be a child process
       const { pid } = result;
+      console.log(pid);
       res.locals.pid = pid;
       return next();
     } catch (err) {
@@ -108,13 +109,19 @@ const DtraceController: DtraceControllerType = {
   runDtrace: (req: Request, res: Response, next: NextFunction) => {
     try {
       const { pid, duration, id } = res.locals;
+      // const pid = 67497;
       if (typeof pid !== 'number' || typeof duration !== 'number' || typeof id !== 'number') {
         throw TypeError('Check that PID and duration are numbers');
       }
       const probe = '-x ustackframes=100 -n';
       const predicate = `profile-97 /pid == ${pid} && arg1/ { @[ustack()] = count(); } tick-${duration}s { exit(0); }`;
-      const output = `../../database/captures/${id}.stacks`;
-      const result = spawnSync(`sudo dtrace ${probe} '${predicate}' -o ${output}`);
+      const output = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
+      // const output = path.resolve(__dirname, `${id}.stacks`);
+      const result = execSync(`sudo dtrace ${probe} '${predicate}' -o ${output}`);
+      console.log(result);
+      // if (result.status === 0)
+      return next();
+      // throw Error(`something went wrong in runDtrace: ${String(result.status)}`);
     } catch (err) {
       return next(new InfernodeError(
         'something failed while running the DTrace capture',
@@ -131,10 +138,11 @@ const DtraceController: DtraceControllerType = {
       if (typeof id !== 'number') {
         throw TypeError('id is incorrect type');
       }
-      const script = '../perlScripts/stackCollapse-Dtrace.pl';
-      const input = `../../database/captures/${id}.stacks`;
-      const output = `../../database/folded/${id}.folded`;
+      const script = path.resolve(__dirname, '../../src/perlScripts/stackCollapse-Dtrace.pl');
+      const input = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
+      const output = path.resolve(__dirname, `../../database/folded/${id}.folded`);
       const result = spawnSync(`${script} ${input} > ${output}`, { shell: true, timeout: 10000 });
+      console.log(result.stderr.toString());
       console.log(`${new Date().toLocaleString()}: Folded perf file ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       throw Error(`Error occurred in spawnSync: ${String(result.status)}`);
