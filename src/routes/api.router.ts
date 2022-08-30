@@ -4,6 +4,7 @@ import {
 } from 'express';
 import captureRouter from './captures.router';
 import controlRouter from './control.router';
+import dtraceRouter from './dtrace.router';
 
 const apiRouter = Router();
 
@@ -23,16 +24,9 @@ apiRouter.use(
   captureRouter,
 );
 
-apiRouter.post(
+apiRouter.use(
   '/dtrace',
-  dbController.createEmptyRecord,
-  DtraceController.nodeLaunch,
-  DtraceController.runDtrace,
-  DtraceController.foldDtrace,
-  flamegraphController.toSVG,
-  (_req: Request, res: Response) => {
-    res.status(200).send('test successful');
-  },
+  dtraceRouter,
 );
 
 apiRouter.use(
