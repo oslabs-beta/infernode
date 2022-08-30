@@ -78,6 +78,7 @@ const flamegraphController: FlamegraphSVGController = {
 
     try {
       const result = spawnSync(`${script} ${inputPath} > ${outputPath}`, { shell: true, timeout: 10000 });
+      console.log(result.stderr.toString());
       console.log(`${new Date().toLocaleString()}: Converted folded perf file ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       return next({

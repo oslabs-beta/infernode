@@ -5,6 +5,8 @@ import {
 import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
 import dbController from '../controllers/db.controller';
+import DtraceController from '../controllers/dTrace.controller';
+import flamegraphController from '../controllers/flamegraphController';
 
 const apiRouter = Router();
 
@@ -30,6 +32,18 @@ apiRouter.post(
   },
   // what we send back to the client will depend on the front end
   // architecture and how we want the user to see what they just uploaded
+);
+
+apiRouter.post(
+  '/dtrace',
+  dbController.createEmptyRecord,
+  DtraceController.nodeLaunch,
+  DtraceController.runDtrace,
+  DtraceController.foldDtrace,
+  flamegraphController.toSVG,
+  (_req: Request, res: Response) => {
+    res.status(200).send('test successful');
+  },
 );
 
 // Create by ID
