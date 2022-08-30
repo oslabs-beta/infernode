@@ -2,7 +2,7 @@
 import {
   NextFunction, Router, Request, Response,
 } from 'express';
-import flamegraph from '../controllers/flamegraphController';
+// import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
 import dbController from '../controllers/db.controller';
 import DtraceController from '../controllers/dTrace.controller';
@@ -25,8 +25,8 @@ apiRouter.post(
   '/captures',
   dbController.createEmptyRecord,
   fileController.addData,
-  flamegraph.stackCollapse,
-  flamegraph.toSVG,
+  flamegraphController.stackCollapse,
+  flamegraphController.toSVG,
   (_req: Request, res: Response) => {
     res.status(200).redirect('/api/captures');
   },
