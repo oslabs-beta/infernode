@@ -1,6 +1,7 @@
 const express = require('express');
 const console = require('console');
 const levenshtein = require('fast-levenshtein');
+const process = require('process');
 
 //Tweak this to change how easily spotted the long operation is going to be.
 //When set to 100 it should be the only visible operation
@@ -18,6 +19,8 @@ const someFakeModule = (function someFakeModule() {
 })();
 
 const app = express();
+
+console.log(process.pid);
 
 app.get('/', (req, res) => {
   res.send(`
@@ -49,6 +52,6 @@ app.get('/api/tick', (req, res) => {
 
 app.get('/api/end', () => process.exit());
 
-app.listen(8080, () => {
-  console.log(`go to http://localhost:8080/ to generate traffic`);
+app.listen(4000, () => {
+  console.log(`go to http://localhost:4000/ to generate traffic`);
 });
