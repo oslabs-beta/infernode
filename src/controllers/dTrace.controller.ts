@@ -29,7 +29,6 @@ the provider deploys and communicates with the probe.
 probe / predicate / {actions}
 dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o out.kern_stacks
 
-
 function 1
 first run a node command with the relative file path to launch the application
 then retrieve the pid of the running application

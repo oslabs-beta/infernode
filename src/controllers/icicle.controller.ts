@@ -42,5 +42,4 @@ const icicleController: IcicleControllerType = {
   },
 };
 
-
 export default icicleController;
