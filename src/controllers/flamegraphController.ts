@@ -11,9 +11,7 @@
 
 // exec() method: This method creates a shell first and then executes the command.
 import { Request, Response, NextFunction } from 'express';
-
 import { spawnSync } from 'child_process';
-
 import path from 'path';
 
 type FlamegraphSVGController = {
