@@ -8,43 +8,22 @@ import { InfernodeError } from '../utils/globalErrorHandler';
 Dtrace command to convert .txt to .svg
 $ ./stackcollapse.pl filename.txt | ./flamegraph.pl > filename.svg
 
-the application to profile will arrive on the req body of the first middleware function
-the perl scripts from Gregg will convert .txt to .svg
-we need to use a Dtrace tool to profile the application and output a .txt stack trace
-from there the .pl files will do all the heavy lifting
-
 The following example uses DTrace to sample user-level stacks at
-99 Hertz for processes named "mysqld",
-and then generates the flame graph
+99 Hertz for processes named "mysqld", and then generates the flame graph
 
 # sudo dtrace -x ustackframes=100 -n 'profile-99 /execname == "mysqld" && arg1/ { @[ustack()] = count(); } tick-60s { exit(0); }' -o out.stacks
-# ./stackcollapse.pl out.stacks > out.folded
-# ./flamegraph.pl out.folded > out.svg
 
 Using DTrace to capture 60 seconds of user-level stacks for PID 12345 at 97 Hertz
 dtrace -x ustackframes=100 -n 'profile-97 /pid == 12345 && arg1/ { @[ustack()] = count(); } tick-60s { exit(0); }' -o out.user_stacks
 
-the provider manages probes, which is a tiny unit of observability.
-the provider deploys and communicates with the probe.
-
 probe / predicate / {actions}
 sudo dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o out.kern_stacks
-
-function 1
-first run a node command with the relative file path to launch the application
-then retrieve the pid of the running application
-
-function 2
-then run dTrace on that pid, dumping a stack trace
-
-function 3
-then fold the stack trace
 */
 
 type DtraceControllerType = {
-  // launch the node application, save the PID
+  // launch the node application, retrieve the PID
   nodeLaunch: (req: Request, res: Response, next: NextFunction) => void;
-  // run Dtrace on the given node application
+  // run Dtrace on the given node application, using the pid
   runDtrace: (req: Request, res: Response, next: NextFunction) => void;
   // fold the Dtrace output to collapse matching stack frames
   foldDtrace: (req: Request, res: Response, next: NextFunction) => void;
@@ -98,7 +77,6 @@ const DtraceController: DtraceControllerType = {
         'nodeLaunch',
       ));
     }
-    // sudo dtrace -x ustackframes=100 -n 'profile-99 /execname == "mysqld" && arg1/ { @[ustack()] = count(); } tick-60s { exit(0); }' -o out.stacks
   },
 
   runDtrace: (req: Request, res: Response, next: NextFunction) => {
@@ -110,7 +88,6 @@ const DtraceController: DtraceControllerType = {
       const probe = '-x ustackframes=100 -n';
       const predicate = `profile-150 /pid == ${pid} && arg1/ { @[ustack()] = count(); } tick-${duration}s { exit(0); }`;
       const output = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
-      // const output = path.resolve(__dirname, `${id}.stacks`);
       const result = execSync(`sudo dtrace ${probe} '${predicate}' -o ${output}`);
       console.log(result.toString());
       // if (result.status === 0)
