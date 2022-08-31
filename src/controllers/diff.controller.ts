@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { spawnSync } from 'child_process';
@@ -17,7 +19,7 @@ type ReqBody = {
   id1: number;
   id2: number;
 };
-
+// note reqBody and ReqBody are not the same thing
 function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
   const hasid1 = 'id1' in reqBody && typeof reqBody.id1 === 'number';
   const hasid2 = 'id2' in reqBody && typeof reqBody.id2 === 'number';
@@ -27,8 +29,8 @@ function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
 
 
 const diffController: DiffControllerType = {
-  flamegraphDiff: (_req: Request, res: Response, next: NextFunction) => {
-    const requestBody = _req.body as ReqBody | object;
+  flamegraphDiff: (req: Request, res: Response, next: NextFunction) => {
+    const requestBody = req.body as ReqBody | object;
     if (!isReqBody(requestBody)) {
       return next({
         userMessage: 'invalid file type entry',
@@ -39,13 +41,19 @@ const diffController: DiffControllerType = {
     try {
       const { id1, id2 } = req.body;
       // first retrieve the folded stack traces to compare
+      // note these filepaths are relative from the /dist folder since
+      // that is where the .js compiled copies are being run
       const file1: string = path.resolve(__dirname, `../../database/folded/${id1}.folded`);
       const file2: string = path.resolve(__dirname, `../../database/folded/${id2}.folded`);
-      const diffPathPl: string = path.resolve(__dirname, '../perlScripts/diff-folded.pl');
-      const flamePathPl: string = path.resolve(__dirname, '../perlScripts/flamegraph.pl');
-      const output: string = path.resolve(__dirname, `../../database/SVGs/diff${id2}-${id1}`);
-
-      const result = spawnSync(`${diffPathPl} ${file1} ${file2} | ${flamePathPl} > ${output}`);
+      const diffPathPl: string = path.resolve(__dirname, '../../src/perlScripts/diff-folded.pl');
+      const flamePathPl: string = path.resolve(__dirname, '../../src/perlScripts/flamegraph.pl');
+      const output: string = path.resolve(__dirname, `../../database/SVGs/diff${id2}-${id1}.svg`);
+      console.log(diffPathPl);
+      console.log(file1);
+      console.log(file2);
+      console.log(flamePathPl);
+      console.log(output);
+      const result = spawnSync(`${diffPathPl} ${file1} ${file2} | ${flamePathPl} > ${output}`, { shell: true });
       console.log(`${new Date().toLocaleString()}: diffed folded files ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       return next({
