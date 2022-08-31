@@ -15,7 +15,7 @@ captureRouter.post(
   fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
-  (_req: Request, res: Response) => res.status(200).redirect('/api/captures'),
+  (_req: Request, res: Response) => res.sendStatus(200),
 );
 
 // Create by ID
