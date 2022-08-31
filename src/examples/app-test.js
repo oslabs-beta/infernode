@@ -20,7 +20,7 @@ const someFakeModule = (function someFakeModule() {
 
 const app = express();
 
-console.log(process.pid);
+console.log(`pid: ${process.pid}`);
 
 app.get('/', (req, res) => {
   res.send(`
