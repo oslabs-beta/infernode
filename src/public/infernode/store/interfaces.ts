@@ -1,7 +1,7 @@
 export interface Capture {
   id: number;
   captureName: string;
-  date: Date;
+  date: string;
   creator: string;
   appName: string;
   data: string;
