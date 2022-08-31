@@ -59,7 +59,7 @@ type ReqBody = {
   filePath: string;
   duration: number;
 };
-
+// note reqBody and Reqbody are not the same thing
 function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
   const hasFilePath = 'filePath' in reqBody && typeof reqBody.filePath === 'string';
   const hasDuration = 'duration' in reqBody && typeof reqBody.duration === 'number';
@@ -68,10 +68,10 @@ function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
 }
 
 const DtraceController: DtraceControllerType = {
-  nodeLaunch: (req: Request, res: Response, next: NextFunction): void => {
+  nodeLaunch: (req: Request, res: Response, next: NextFunction) => {
     // recieve executable filepath and second from user
     const reqBody = req.body as ReqBody | object;
-    console.log(reqBody);
+    // console.log(reqBody);
     if (!isReqBody(reqBody)) {
       return next(new InfernodeError(
         'something failed while verifying req.body',
