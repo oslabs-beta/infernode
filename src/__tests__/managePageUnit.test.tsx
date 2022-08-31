@@ -20,7 +20,7 @@ describe('Manage page unit tests', () => {
   describe('page displays the correct content', () => {
     test('Manage page renders submit button to submit a .perf', () => {
       // expect(screen.getByRole('input', { name: 'capture'})).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /Upload/i })).toBeInTheDocument()
     })
     xtest('Manage page renders a user submitted flamegraph', () => {
       //

@@ -6,7 +6,7 @@ type HistoryFileItemProps = {
   name: string,
   display: (event: SyntheticEvent) => void,
   remove: (event: SyntheticEvent) => void,
-  date: Date
+  date: string
 };
 
 export default function HistoryFileItem(props: HistoryFileItemProps) {
