@@ -13,18 +13,11 @@ export default class FileController {
   addData = (req: Request, res: Response, next: NextFunction) => {
     // Get next ID
     const fileId = Number(res.locals.id);
-    // console.log('LOOK OVER HERE!', fileId);
-    // const fileId = 123;
 
     const processTempFile = (formName: string, file: formidable.File) => {
       console.log(`fileController.addData() processing ${formName} file: ${file.originalFilename || 'unknown'}`);
-      // console.log(
-      //   `${new Date().toLocaleString()}: Parsed POST'd file, formname ${JSON.stringify(
-      //     formName,
-      //   )}, files ${JSON.stringify(file)}`,
-      // );
       const filePath: string = file.filepath;
-      const currentPath = filePath; // files.capture.filepath;
+      const currentPath = filePath;
       const renamedPath = path.resolve(
         __dirname,
         this.uploadDir,
@@ -51,33 +44,6 @@ export default class FileController {
     const uploads = new formidable.IncomingForm({
       uploadDir: path.resolve(__dirname, '../../database/uploads/'),
       maxFileSize: 1024 * 1024 * 1240,
-    });
-    uploads.on('data', ({
-      name, key, value, buffer, start, end, formname, ...more
-    }) => {
-      console.log(`formidable detected data; ${buffer}`);
-      if (name === 'partBegin') {
-      }
-      if (name === 'partData') {
-      }
-      if (name === 'headerField') {
-      }
-      if (name === 'headerValue') {
-      }
-      if (name === 'headerEnd') {
-      }
-      if (name === 'headersEnd') {
-      }
-      if (name === 'field') {
-        console.log('field name:', key);
-        console.log('field value:', value);
-      }
-      if (name === 'file') {
-        console.log('file:', formname, value);
-      }
-      if (name === 'fileBegin') {
-        console.log('fileBegin:', formname, value);
-      }
     });
     uploads.on('file', (fieldName: string, file: formidable.File) => {
       console.log(`fileController.addData() recv'd ${fieldName} file: ${file.originalFilename || 'unknown'}`);
