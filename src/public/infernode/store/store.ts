@@ -3,6 +3,7 @@ import configReducer from './configSlice';
 import captureReducer from './captureSlice';
 import userReducer from './userSlice';
 import appReducer from './appSlice';
+import uploadReducer from './uploadSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     captures: captureReducer,
     user: userReducer,
     app: appReducer,
+    upload: uploadReducer,
   },
 });
 
