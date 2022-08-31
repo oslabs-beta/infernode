@@ -27,8 +27,14 @@ export default function ManagePage(): JSX.Element {
     event.preventDefault();
     console.log('submitEvent');
     console.log(event);
-    dispatch(setFile((formData.get('captureFile') as File).name));
-    // document.getElementById('capture');
+    const fileElement: HTMLInputElement | null = document.getElementById('captureFile') as HTMLInputElement;
+    if (fileElement !== null && fileElement.files && fileElement.files.length === 1) {
+      formData.append('captureFile', fileElement.files[0]);
+      dispatch(setFile(fileElement.files[0].name));
+    } else {
+      console.log('No file selected...');
+      return;
+    }
     formData.append('captureName', captureName);
     formData.append('appName', appName);
     formData.append('creator', creator);
@@ -65,7 +71,6 @@ export default function ManagePage(): JSX.Element {
               <Form.Label>Capture file</Form.Label>
               <Form.Control
                 type="file"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => (e.target.files ? formData.set('captureFile', e.target.files[0]) : null)}
               />
             </Form.Group>
             <Form.Group controlId="captureName" className="m-3">
