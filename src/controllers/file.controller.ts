@@ -46,13 +46,45 @@ export default class FileController {
         return next(err);
       }
     };
-
+    console.log('Invoked fileController.addData');
+    console.log(req.body);
     const uploads = new formidable.IncomingForm({
       uploadDir: path.resolve(__dirname, '../../database/uploads/'),
+      maxFileSize: 1024 * 1024 * 1240,
+    });
+    uploads.on('data', ({
+      name, key, value, buffer, start, end, formname, ...more
+    }) => {
+      console.log(`formidable detected data; ${buffer}`);
+      if (name === 'partBegin') {
+      }
+      if (name === 'partData') {
+      }
+      if (name === 'headerField') {
+      }
+      if (name === 'headerValue') {
+      }
+      if (name === 'headerEnd') {
+      }
+      if (name === 'headersEnd') {
+      }
+      if (name === 'field') {
+        console.log('field name:', key);
+        console.log('field value:', value);
+      }
+      if (name === 'file') {
+        console.log('file:', formname, value);
+      }
+      if (name === 'fileBegin') {
+        console.log('fileBegin:', formname, value);
+      }
     });
     uploads.on('file', (fieldName: string, file: formidable.File) => {
       console.log(`fileController.addData() recv'd ${fieldName} file: ${file.originalFilename || 'unknown'}`);
       processTempFile(fieldName, file);
+    });
+    uploads.on('field', (fieldName: string, field: string) => {
+      console.log(`fileController.addData() recv'd ${fieldName} value: ${field || 'unknown'}`);
     });
 
     uploads.parse(req);

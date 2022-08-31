@@ -4,72 +4,94 @@ import Stack from 'react-bootstrap/Stack';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
+import axios from 'axios';
 import ManageSidebar from './ManageSidebar';
-import { fetchAllCaptures, setLoading } from '../../store/captureSlice';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  setFile, updateCaptureName, updateAppName, updateCreator, updateDate, updateData, setLoading,
+  setProgress,
+} from '../../store/uploadSlice';
+import ProgressCard from '../../components/layout/ProgressCard';
+import { fetchAllCaptures } from '../../store/captureSlice';
 
 export default function ManagePage(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const formData = new FormData();
+  const {
+    appName, captureName, creator, date, data,
+  } = useAppSelector((state) => state.upload.capture);
+  const { file, loading, progress } = useAppSelector((state) => state.upload);
+
+  const submitForm = (event: React.SyntheticEvent) => {
+    event.preventDefault();
+    console.log('submitEvent');
+    console.log(event);
+    dispatch(setFile((formData.get('captureFile') as File).name));
+    // document.getElementById('capture');
+    formData.append('captureName', captureName);
+    formData.append('appName', appName);
+    formData.append('creator', creator);
+    formData.append('date', date);
+    formData.append('data', data);
+    dispatch(setLoading(true));
+    dispatch(setProgress(0));
+    axios.post('/api/captures/', formData, {
+      onUploadProgress: (progressEvent: ProgressEvent) => {
+        const loaded: number = progressEvent.loaded ? Number(progressEvent.loaded) : 0;
+        const total: number = progressEvent.total ? Number(progressEvent.total) : 100;
+        const progressPct: number = Math.round((loaded / total) * 100);
+        dispatch(setProgress(progressPct));
+      },
+    })
+      .then(async () => {
+        await dispatch(fetchAllCaptures());
+        dispatch(setLoading(false));
+        navigate('/');
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Stack direction="horizontal" gap={3}>
       <ManageSidebar />
-      <Card className="w-100">
-        <Form
-          onSubmit={(event: React.SyntheticEvent) => {
-            console.log('Form event:');
-            console.log(event);
-            const form: HTMLFormElement = event.target as HTMLFormElement;
-            console.log('Form:');
-            console.log(form);
-            console.log('1 Setting loading to true');
-            event.preventDefault();
-            dispatch(setLoading(true));
-            console.log('2 Posting form');
-            fetch('/api/captures', {
-              method: 'POST',
-              body: new FormData(form),
-            })
-              .then(() => {
-                console.log('3 Setting timeout and waiting for 2 seconds');
-                setTimeout(() => {
-                  console.log('4 Timeout over, setting loading to false');
-                  dispatch(setLoading(false));
-                  console.log('5 Fetching updated capture list');
-                  dispatch(fetchAllCaptures()).then(() => {
-                    console.log('6 Redirecting to history page');
-                    navigate('/');
-                  }).catch((err: Error) => console.log(JSON.stringify(err)));
-                }, 2000);
-              })
-              .catch((err) => console.log(`uploading files info unfulfilled: ${JSON.stringify(err)}`));
-          }}
-          id="uploadForm"
-          encType="multipart/form-data"
-        >
-          <Form.Group controlId="capture">
-            <Form.Label>Capture file</Form.Label>
-            <Form.Control type="file" />
-          </Form.Group>
-          <Form.Group controlId="captureName">
-            <Form.Label>Capture name</Form.Label>
-            <Form.Control type="text" placeholder="trace slow function" />
-          </Form.Group>
-          <Form.Group controlId="appName">
-            <Form.Label>Application name</Form.Label>
-            <Form.Control type="text" placeholder="NodeApp.js" />
-          </Form.Group>
-          <Form.Group controlId="creator">
-            <Form.Label>Creator</Form.Label>
-            <Form.Control type="text" placeholder="anonymous" />
-          </Form.Group>
-          {/* <input type="file" name="capture" /> */}
-          {/* <input type="text" name="captureName" /> */}
-          {/* <input type="text" name="appName" /> */}
-          {/* <input type="text" name="creator" /> */}
-          <Button variant="primary" type="submit">Upload</Button>
-        </Form>
-      </Card>
+      {(!loading && (
+        <Card className="w-100">
+          <Form
+            onSubmit={submitForm}
+            id="uploadForm"
+          >
+            <Form.Group controlId="captureFile" className="m-3">
+              <Form.Label>Capture file</Form.Label>
+              <Form.Control
+                type="file"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => (e.target.files ? formData.set('captureFile', e.target.files[0]) : null)}
+              />
+            </Form.Group>
+            <Form.Group controlId="captureName" className="m-3">
+              <Form.Label>Capture name</Form.Label>
+              <Form.Control type="text" placeholder="trace slow function" onChange={(e) => dispatch(updateCaptureName(e.target.value))} />
+            </Form.Group>
+            <Form.Group controlId="appName" className="m-3">
+              <Form.Label>Application name</Form.Label>
+              <Form.Control type="text" placeholder="NodeApp.js" onChange={(e) => dispatch(updateAppName(e.target.value))} />
+            </Form.Group>
+            <Form.Group controlId="creator" className="m-3">
+              <Form.Label>Creator</Form.Label>
+              <Form.Control type="text" placeholder="anonymous" onChange={(e) => dispatch(updateCreator(e.target.value))} />
+            </Form.Group>
+            <Form.Group controlId="data" className="m-3">
+              <Form.Label>Metadata</Form.Label>
+              <Form.Control type="text" onChange={(e) => dispatch(updateData(e.target.value))} />
+            </Form.Group>
+            <Form.Group controlId="date" className="m-3">
+              <Form.Label>Date</Form.Label>
+              <Form.Control type="text" placeholder={new Date().toLocaleString()} onChange={(e) => dispatch(updateDate(e.target.value))} />
+            </Form.Group>
+            <Button variant="primary" type="submit" className="m-3">Upload</Button>
+          </Form>
+        </Card>
+      )) || <ProgressCard fileName={file} progress={progress} />}
     </Stack>
   );
 }
