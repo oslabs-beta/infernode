@@ -1,7 +1,5 @@
 /* eslint-disable max-len */
 import { Request, Response, NextFunction } from 'express';
-// import captureDB, { Capture } from '../models/captureModel';
-// import { DbCInterface, CbThis } from '../interfaces/dbcontroller.interface';
 import path from 'path';
 import { spawnSync, spawn, execSync } from 'child_process';
 import { InfernodeError } from '../utils/globalErrorHandler';
@@ -19,16 +17,18 @@ The following example uses DTrace to sample user-level stacks at
 99 Hertz for processes named "mysqld",
 and then generates the flame graph
 
-# dtrace -x ustackframes=100 -n 'profile-99 /execname == "mysqld" && arg1/ { @[ustack()] = count(); } tick-60s { exit(0); }' -o out.stacks
+# sudo dtrace -x ustackframes=100 -n 'profile-99 /execname == "mysqld" && arg1/ { @[ustack()] = count(); } tick-60s { exit(0); }' -o out.stacks
 # ./stackcollapse.pl out.stacks > out.folded
 # ./flamegraph.pl out.folded > out.svg
+
+Using DTrace to capture 60 seconds of user-level stacks for PID 12345 at 97 Hertz
+dtrace -x ustackframes=100 -n 'profile-97 /pid == 12345 && arg1/ { @[ustack()] = count(); } tick-60s { exit(0); }' -o out.user_stacks
 
 the provider manages probes, which is a tiny unit of observability.
 the provider deploys and communicates with the probe.
 
 probe / predicate / {actions}
-dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o out.kern_stacks
-
+sudo dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } tick-60s { exit(0); }' -o out.kern_stacks
 
 function 1
 first run a node command with the relative file path to launch the application
@@ -38,10 +38,7 @@ function 2
 then run dTrace on that pid, dumping a stack trace
 
 function 3
-then fold the stack trace,
-
-already exists
-convert to svg, then send it back!
+then fold the stack trace
 */
 
 type DtraceControllerType = {
@@ -68,7 +65,7 @@ function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
 }
 
 const DtraceController: DtraceControllerType = {
-  nodeLaunch: (req: Request, res: Response, next: NextFunction): void => {
+  nodeLaunch: (req: Request, res: Response, next: NextFunction) => {
     // recieve executable filepath and second from user
     const reqBody = req.body as ReqBody | object;
     console.log(reqBody);
@@ -82,15 +79,15 @@ const DtraceController: DtraceControllerType = {
     }
     try {
       const filepath: string = path.resolve(__dirname, `${reqBody.filePath}`);
+      res.locals.filepath = filepath;
       res.locals.duration = reqBody.duration;
       // refactor to match front end
       const result = spawn(`node ${filepath}`, { shell: true });
-      result.on('spawn', (code: unknown) => {
-        // result will be a child process
+      // result will be a child process
+      result.on('spawn', () => {
         const { pid } = result;
-        console.log(pid);
+        console.log('Dtrace pid:', pid);
         res.locals.pid = pid;
-        console.log('Code: ', code);
         return next();
       });
     } catch (err) {
@@ -101,23 +98,20 @@ const DtraceController: DtraceControllerType = {
         'nodeLaunch',
       ));
     }
-    // const result3 = spawn(`start dtrace capture`, { shell: true });
-    //     // start dtrace capture in async shell
-    // });
+    // sudo dtrace -x ustackframes=100 -n 'profile-99 /execname == "mysqld" && arg1/ { @[ustack()] = count(); } tick-60s { exit(0); }' -o out.stacks
   },
 
   runDtrace: (req: Request, res: Response, next: NextFunction) => {
     try {
       const { pid, duration, id } = res.locals;
-      // const pid = 67497;
       if (typeof pid !== 'number' || typeof duration !== 'number' || typeof id !== 'number') {
         throw TypeError('Check that PID and duration are numbers');
       }
       const probe = '-x ustackframes=100 -n';
-      const predicate = `profile-97 /pid == ${pid} && arg1/ { @[ustack()] = count(); } tick-${duration}s { exit(0); }`;
+      const predicate = `profile-150 /pid == ${pid} && arg1/ { @[ustack()] = count(); } tick-${duration}s { exit(0); }`;
       const output = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
       // const output = path.resolve(__dirname, `${id}.stacks`);
-      const result = execSync(`open http://localhost:4000 && sudo dtrace ${probe} '${predicate}' -o ${output}`);
+      const result = execSync(`sudo dtrace ${probe} '${predicate}' -o ${output}`);
       console.log(result.toString());
       // if (result.status === 0)
       return next();
