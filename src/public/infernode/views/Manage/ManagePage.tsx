@@ -27,8 +27,8 @@ export default function ManagePage(): JSX.Element {
     event.preventDefault();
     console.log('submitEvent');
     console.log(event);
-    const fileElement: HTMLInputElement | null = document.getElementById('captureFile') as HTMLInputElement;
-    if (fileElement !== null && fileElement.files && fileElement.files.length === 1) {
+    const fileElement = document.getElementById('captureFile') as HTMLInputElement;
+    if (fileElement?.files?.length === 1) {
       formData.append('captureFile', fileElement.files[0]);
       dispatch(setFile(fileElement.files[0].name));
     } else {
