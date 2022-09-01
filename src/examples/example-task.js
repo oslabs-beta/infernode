@@ -1,3 +1,13 @@
 const crypto = require('crypto');
 const { readFileSync } = require('fs');
-crypto.pbkdf2Sync(readFileSync(__filename), 'example-task.js', 1000000, 512, 'sha512');
+const process = require('process');
+
+console.log(`pid: ${process.pid}`);
+
+crypto.pbkdf2Sync(
+  readFileSync(__filename),
+  'example-task.js',
+  10000000,
+  512,
+  'sha512'
+);

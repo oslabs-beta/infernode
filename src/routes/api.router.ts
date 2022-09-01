@@ -4,6 +4,7 @@ import {
 } from 'express';
 import captureRouter from './captures.router';
 import controlRouter from './control.router';
+import dtraceRouter from './dtrace.router';
 
 const apiRouter = Router();
 
@@ -21,6 +22,11 @@ apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
 apiRouter.use(
   '/captures',
   captureRouter,
+);
+
+apiRouter.use(
+  '/dtrace',
+  dtraceRouter,
 );
 
 apiRouter.use(
