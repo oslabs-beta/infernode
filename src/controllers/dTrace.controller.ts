@@ -55,7 +55,6 @@ const DtraceController: DtraceControllerType = {
     try {
       const filepath: string = path.resolve(__dirname, `${reqBody.filePath}`);
       res.locals.filepath = filepath;
-      res.locals.duration = reqBody.duration;
       // refactor to match front end
       const result = spawn(`node ${filepath}`, { shell: true });
       // result will be a child process

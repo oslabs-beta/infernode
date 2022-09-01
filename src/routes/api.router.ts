@@ -6,6 +6,7 @@ import captureRouter from './captures.router';
 import controlRouter from './control.router';
 import dtraceRouter from './dtrace.router';
 import diffRouter from './diff.router';
+import applicationRouter from './application.router';
 
 const apiRouter = Router();
 
@@ -25,6 +26,13 @@ apiRouter.use(
   captureRouter,
 );
 
+// starting and stopping applications to be profiled
+apiRouter.use(
+  '/app',
+  applicationRouter,
+);
+
+// running dtrace captures
 apiRouter.use(
   '/dtrace',
   dtraceRouter,
@@ -35,6 +43,7 @@ apiRouter.use(
   controlRouter,
 );
 
+// creating differential flamegraphs
 apiRouter.use(
   '/diff',
   diffRouter,

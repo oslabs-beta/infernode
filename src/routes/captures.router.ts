@@ -29,16 +29,6 @@ captureRouter.post(
   (_req: Request, res: Response) => res.status(200).redirect('/api/captures'),
 );
 
-// create a new flamechart from a .perf
-captureRouter.post(
-  '/flamechart',
-  dbController.createEmptyRecord,
-  fileController.addData,
-  flamegraph.stackCollapse,
-  // flamechartController.toFlamechartSVG,
-  (_req: Request, res: Response) => res.status(200).redirect('/api/captures'),
-);
-
 // Create by ID
 captureRouter.put(
   '/:id',

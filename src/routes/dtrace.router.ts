@@ -32,17 +32,4 @@ dtraceRouter.post(
   },
 );
 
-// create a new flame chart with a dtrace
-dtraceRouter.post(
-  '/flamechart',
-  dbController.createEmptyRecord,
-  DtraceController.nodeLaunch,
-  DtraceController.runDtrace,
-  DtraceController.foldDtrace,
-  // flamechartController.toFlamechartSVG,
-  (_req: Request, res: Response) => {
-    res.status(200).send('test successful');
-  },
-);
-
 export default dtraceRouter;
