@@ -61,7 +61,7 @@ export default function ManagePage(): JSX.Element {
   return (
     <Stack direction="horizontal" gap={3}>
       <ManageSidebar />
-      {(!loading && (
+      {!loading ? (
         <Card className="w-100">
           <Form
             onSubmit={submitForm}
@@ -96,7 +96,7 @@ export default function ManagePage(): JSX.Element {
             <Button variant="primary" type="submit" className="m-3">Upload</Button>
           </Form>
         </Card>
-      )) || <ProgressCard fileName={file} progress={progress} />}
+      ) : <ProgressCard fileName={file} progress={progress} />}
     </Stack>
   );
 }
