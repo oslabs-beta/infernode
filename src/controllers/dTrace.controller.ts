@@ -54,6 +54,7 @@ const DtraceController: DtraceControllerType = {
     }
     try {
       const filepath: string = path.resolve(__dirname, `${reqBody.filePath}`);
+      res.locals.duration = reqBody.duration;
       res.locals.filepath = filepath;
       // refactor to match front end
       const result = spawn(`node ${filepath}`, { shell: true });
@@ -83,6 +84,7 @@ const DtraceController: DtraceControllerType = {
       const probe = '-x ustackframes=100 -n';
       const predicate = `profile-150 /pid == ${pid} && arg1/ { @[ustack()] = count(); } tick-${duration}s { exit(0); }`;
       const output = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
+      console.log('ExecSync Pre check');
       const result = execSync(`sudo dtrace ${probe} '${predicate}' -o ${output}`);
       console.log(result.toString());
       // if (result.status === 0)
