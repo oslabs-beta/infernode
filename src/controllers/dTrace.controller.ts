@@ -47,7 +47,6 @@ const DtraceController: DtraceControllerType = {
   nodeLaunch: (req: Request, res: Response, next: NextFunction) => {
     // recieve executable filepath and second from user
     const reqBody = req.body as ReqBody | object;
-    // console.log(reqBody);
     if (!isReqBody(reqBody)) {
       return next(new InfernodeError(
         'something failed while verifying req.body',
@@ -65,7 +64,7 @@ const DtraceController: DtraceControllerType = {
       // result will be a child process
       result.on('spawn', () => {
         const { pid } = result;
-        console.log('Dtrace pid:', pid);
+        // console.log('Dtrace pid:', pid);
         res.locals.pid = pid;
         return next();
       });
@@ -88,7 +87,6 @@ const DtraceController: DtraceControllerType = {
       const probe = '-x ustackframes=100 -n';
       const predicate = `profile-150 /pid == ${pid} && arg1/ { @[ustack()] = count(); } tick-${duration}s { exit(0); }`;
       const output = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
-      console.log('ExecSync Pre check');
       const result = execSync(`sudo dtrace ${probe} '${predicate}' -o ${output}`);
       console.log(result.toString());
       // if (result.status === 0)
@@ -114,7 +112,6 @@ const DtraceController: DtraceControllerType = {
       const input = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
       const output = path.resolve(__dirname, `../../database/folded/${id}.folded`);
       const result = spawnSync(`${script} ${input} > ${output}`, { shell: true, timeout: 10000 });
-      console.log(result.stderr.toString());
       console.log(`${new Date().toLocaleString()}: Folded perf file ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       throw Error(`Error occurred in spawnSync: ${String(result.status)}`);

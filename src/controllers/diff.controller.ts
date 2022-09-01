@@ -25,7 +25,6 @@ function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
   return false;
 }
 
-
 const diffController: DiffControllerType = {
   flamegraphDiff: (req: Request, res: Response, next: NextFunction) => {
     const requestBody = req.body as ReqBody | object;
@@ -37,7 +36,7 @@ const diffController: DiffControllerType = {
       });
     }
     try {
-      const { id1, id2 } = req.body;
+      const { id1, id2 } = requestBody;
       // first retrieve the folded stack traces to compare
       // note these filepaths are relative from the /dist folder since
       // that is where the .js compiled copies are being run
@@ -46,11 +45,6 @@ const diffController: DiffControllerType = {
       const diffPathPl: string = path.resolve(__dirname, '../../src/perlScripts/diff-folded.pl');
       const flamePathPl: string = path.resolve(__dirname, '../../src/perlScripts/flamegraph.pl');
       const output: string = path.resolve(__dirname, `../../database/SVGs/diff${id2}-${id1}.svg`);
-      console.log(diffPathPl);
-      console.log(file1);
-      console.log(file2);
-      console.log(flamePathPl);
-      console.log(output);
       const result = spawnSync(`${diffPathPl} ${file1} ${file2} | ${flamePathPl} > ${output}`, { shell: true });
       console.log(`${new Date().toLocaleString()}: diffed folded files ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
