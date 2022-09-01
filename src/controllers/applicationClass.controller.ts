@@ -1,13 +1,11 @@
-/* eslint-disable max-len */
 import { Request, Response, NextFunction } from 'express';
 import process from 'process';
 import path from 'path';
 import { spawn } from 'child_process';
 import { InfernodeError } from '../utils/globalErrorHandler';
 
-type ApplicationControllerType = {
-  nodeLaunch: (req: Request, res: Response, next: NextFunction) => void;
-  nodeKill: (req: Request, res: Response, next: NextFunction) => void;
+type ProcessInfo = {
+  userId: number | null; // Can remove null as an option when auth is implemented
 };
 
 type ReqBody = {
@@ -22,8 +20,20 @@ function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
   return false;
 }
 
-const applicationController: ApplicationControllerType = {
-  nodeLaunch: (req: Request, res: Response, next: NextFunction) => {
+export default class ApplicationController {
+  private runningProcesses: { [pid: number]: ProcessInfo } = {};
+
+  private startProcess(pid: number) {
+    this.runningProcesses[pid] = {
+      userId: null,
+    };
+  }
+
+  private endProcess(pid: number) {
+    delete this.runningProcesses[pid];
+  }
+
+  public nodeLaunch(req: Request, res: Response, next: NextFunction) {
     // recieve executable filepath and second from user
     const reqBody = req.body as ReqBody | object;
     if (!isReqBody(reqBody)) {
@@ -43,10 +53,15 @@ const applicationController: ApplicationControllerType = {
       // result will be a child process
       result.on('spawn', () => {
         const { pid } = result;
-        console.log('Dtrace pid:', pid);
-        // console.log(process);
         res.locals.pid = pid;
+        console.log('Dtrace pid:', pid);
+        if (pid === undefined) throw Error('Something went wrong when launching the app');
+        this.startProcess(pid);
         return next();
+      });
+
+      result.on('close', () => {
+
       });
     } catch (err) {
       return next(new InfernodeError(
@@ -56,8 +71,9 @@ const applicationController: ApplicationControllerType = {
         'nodeLaunch',
       ));
     }
-  },
-  nodeKill: (req: Request, res: Response, next: NextFunction) => {
+  }
+
+  public nodeKill(req: Request, res: Response, next: NextFunction) {
     // retrieve the pid from somewhere
     try {
       const { pid } = req.body;
@@ -72,7 +88,19 @@ const applicationController: ApplicationControllerType = {
         controller: 'application.Controller',
       });
     }
-  },
-};
+  }
+}
 
-export default applicationController;
+
+/*
+
+Cases to consider:
+1. Instantiation of Application controller/no active captures running
+2. Running captures
+
+Important information to include in the object?
+- pid
+- node child_process object returned from spawn?
+  - Allows direct access to exit code
+
+*/

@@ -22,7 +22,7 @@ sudo dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } 
 
 type DtraceControllerType = {
   // launch the node application, retrieve the PID
-  nodeLaunch: (req: Request, res: Response, next: NextFunction) => void;
+  // nodeLaunch: (req: Request, res: Response, next: NextFunction) => void;
   // run Dtrace on the given node application, using the pid
   runDtrace: (req: Request, res: Response, next: NextFunction) => void;
   // fold the Dtrace output to collapse matching stack frames
@@ -44,39 +44,39 @@ function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
 }
 
 const DtraceController: DtraceControllerType = {
-  nodeLaunch: (req: Request, res: Response, next: NextFunction) => {
-    // recieve executable filepath and second from user
-    const reqBody = req.body as ReqBody | object;
-    if (!isReqBody(reqBody)) {
-      return next(new InfernodeError(
-        'something failed while verifying req.body',
-        'user submitted invalid file path',
-        500,
-        'DtraceController',
-      ));
-    }
-    try {
-      const filepath: string = path.resolve(__dirname, `${reqBody.filePath}`);
-      res.locals.duration = reqBody.duration;
-      res.locals.filepath = filepath;
-      // refactor to match front end
-      const result = spawn(`node ${filepath}`, { shell: true });
-      // result will be a child process
-      result.on('spawn', () => {
-        const { pid } = result;
-        // console.log('Dtrace pid:', pid);
-        res.locals.pid = pid;
-        return next();
-      });
-    } catch (err) {
-      return next(new InfernodeError(
-        'something failed while launching the app via node',
-        'something broke in the DtraceController middleware',
-        500,
-        'nodeLaunch',
-      ));
-    }
-  },
+  // nodeLaunch: (req: Request, res: Response, next: NextFunction) => {
+  //   // recieve executable filepath and second from user
+  //   const reqBody = req.body as ReqBody | object;
+  //   if (!isReqBody(reqBody)) {
+  //     return next(new InfernodeError(
+  //       'something failed while verifying req.body',
+  //       'user submitted invalid file path',
+  //       500,
+  //       'DtraceController',
+  //     ));
+  //   }
+  //   try {
+  //     const filepath: string = path.resolve(__dirname, `${reqBody.filePath}`);
+  //     res.locals.duration = reqBody.duration;
+  //     res.locals.filepath = filepath;
+  //     // refactor to match front end
+  //     const result = spawn(`node ${filepath}`, { shell: true });
+  //     // result will be a child process
+  //     result.on('spawn', () => {
+  //       const { pid } = result;
+  //       // console.log('Dtrace pid:', pid);
+  //       res.locals.pid = pid;
+  //       return next();
+  //     });
+  //   } catch (err) {
+  //     return next(new InfernodeError(
+  //       'something failed while launching the app via node',
+  //       'something broke in the DtraceController middleware',
+  //       500,
+  //       'nodeLaunch',
+  //     ));
+  //   }
+  // },
 
   runDtrace: (req: Request, res: Response, next: NextFunction) => {
     try {
