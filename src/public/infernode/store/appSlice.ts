@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AppSliceStateType {
-  isAppRuninng: boolean,
+  isAppRunning: boolean,
   isAppCapturing: boolean,
   duration: number | null,
   appName: string | null,
@@ -36,9 +36,10 @@ const checkIsAppCapturing = createAsyncThunk(
 const startApp = createAsyncThunk(
   'api/startApp',
   async (args: StartAppPayloadType) => {
+    console.log('start callback');
     if (!args.appName || !args.relativePath) return new Error('invalid entries');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const pid = await fetch('/api/startApp', {
+    const pid = await fetch('/api/captures/startApp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset-UTF-8',
@@ -48,6 +49,7 @@ const startApp = createAsyncThunk(
         relativePath: args.relativePath,
       }),
     }).then((res) => res.json());
+    console.log('got pid back', pid);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return pid;
   },
@@ -55,6 +57,7 @@ const startApp = createAsyncThunk(
 const stopApp = createAsyncThunk(
   'api/stopApp',
   async (pid: number) => {
+    console.log('stop callback');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     await fetch('/api/stopApp', {
       method: 'POST',
@@ -72,8 +75,7 @@ const startCapture = createAsyncThunk(
   'api/appCapture',
   async (duration: number) => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const startCaptureResult = await fetch('/api/app', {
-      method: 'POST',
+    const startCaptureResult = await fetch('/api/appCapture', { 
       headers: {
         'Content-Type': 'application/json;charset-UTF-8',
       },
@@ -87,7 +89,7 @@ const startCapture = createAsyncThunk(
 );
 
 const initialState: AppSliceStateType = {
-  isAppRuninng: false,
+  isAppRunning: false,
   isAppCapturing: false,
   duration: null,
   appName: null,
@@ -103,7 +105,7 @@ const appSlice = createSlice({
     builder.addCase(checkIsAppRunning.fulfilled, (state, action: PayloadAction<string>) => {
       if (action.payload === 'finished') { // fake string
         // update appSlice state
-        state.isAppRuninng = false;
+        state.isAppRunning = false;
         state.isAppCapturing = false;
         state.appName = null;
         state.duration = null;
@@ -119,7 +121,8 @@ const appSlice = createSlice({
     });
 
     builder.addCase(startApp.fulfilled, (state, action: PayloadAction<string>) => {
-      state.isAppRuninng = true;
+      console.log('startApp is fullfilled state.pid is ', state.pid, state.isAppRunning);
+      state.isAppRunning = true;
       state.pid = action.payload;
     });
 
@@ -128,7 +131,7 @@ const appSlice = createSlice({
     });
 
     builder.addCase(stopApp.fulfilled, (state, action: PayloadAction<void>) => {
-      state.isAppRuninng = false;
+      state.isAppRunning = false;
     });
   },
 });

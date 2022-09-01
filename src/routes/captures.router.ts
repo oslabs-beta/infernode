@@ -8,6 +8,12 @@ import dbController from '../controllers/db.controller';
 
 const captureRouter = Router();
 
+// fake reqeust
+captureRouter.post('/startApp', /* req.body has appName, relativePath => middlewarelogic: start app, */ (req: Request, res: Response) => {
+  console.log('start App request sucessfully');
+  return res.status(200).json('12345');
+});
+
 // Create
 captureRouter.post(
   '/',

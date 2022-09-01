@@ -10,8 +10,10 @@ import {
 } from 'react-bootstrap';
 import CaptureSidebar from './CaptureSidebar';
 import { startApp } from '../../store/appSlice';
+import { useAppDispatch } from '../../store/hooks';
 
 export default function CapturePage(): JSX.Element {
+  const dispatch = useAppDispatch();
   return (
     <Stack direction="horizontal" gap={3}>
       <CaptureSidebar />
@@ -33,13 +35,18 @@ export default function CapturePage(): JSX.Element {
               variant="success"
               size="lg"
               onClick={() => {
-                const appNameElement = document.getElementById('appName') as HTMLInputElement;
-                const relativePathElement = document.getElementById('relativePath') as HTMLInputElement;
-                if (appNameElement && relativePathElement) {
-                  const appName: string = appNameElement.value;
-                  const relativePath: string = relativePathElement.value;
-                  startApp({ appName, relativePath });
-                }
+                const func = async () => {
+                  console.log('click start app button');
+                  const appNameElement = document.getElementById('appName') as HTMLInputElement;
+                  const relativePathElement = document.getElementById('relativePath') as HTMLInputElement;
+                  if (appNameElement && relativePathElement) {
+                    const appName: string = appNameElement.value;
+                    const relativePath: string = relativePathElement.value;
+                    console.log('in click event view =>', appName, relativePath);
+                    await dispatch(startApp({ appName, relativePath }));
+                  }
+                };
+                func();
               }}
             >
               Start Application
