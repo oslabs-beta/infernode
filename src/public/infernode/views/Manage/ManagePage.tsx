@@ -42,7 +42,7 @@ export default function ManagePage(): JSX.Element {
     formData.append('data', data);
     dispatch(setLoading(true));
     dispatch(setProgress(0));
-    axios.post('/api/captures/', formData, {
+    axios.post('/api/captures/flamegraph', formData, {
       onUploadProgress: (progressEvent: ProgressEvent) => {
         const loaded: number = progressEvent.loaded ? Number(progressEvent.loaded) : 0;
         const total: number = progressEvent.total ? Number(progressEvent.total) : 100;
