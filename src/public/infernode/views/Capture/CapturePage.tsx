@@ -9,11 +9,12 @@ import {
   Col,
 } from 'react-bootstrap';
 import CaptureSidebar from './CaptureSidebar';
-import { startApp } from '../../store/appSlice';
-import { useAppDispatch } from '../../store/hooks';
+import { startApp, stopApp, startCapture } from '../../store/appSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
+  const { pid } = useAppSelector((state) => state.app);
   return (
     <Stack direction="horizontal" gap={3}>
       <CaptureSidebar />
@@ -51,7 +52,16 @@ export default function CapturePage(): JSX.Element {
             >
               Start Application
             </Button>
-            <Button variant="danger" size="lg">
+            <Button
+              variant="danger"
+              size="lg"
+              onClick={() => {
+                console.log('click on stop app button')
+                console.log('pid is', pid)
+                const func = () => dispatch(stopApp(pid));
+                func();
+            }}
+            >
               Stop Application
             </Button>
           </div>
@@ -59,16 +69,32 @@ export default function CapturePage(): JSX.Element {
         <Card>
           <h4>Predetermined Capture Length</h4>
           <Col>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Group className="mb-3" controlId="AppDuration">
               <Form.Label>Duration of Capture</Form.Label>
-              <Form.Control type="text" placeholder="Enter Duration" />
+              <Form.Control type="text" placeholder="Enter Duration" id="duration" />
               <Form.Text className="text-muted">
                 Please enter the duration you would like to capture in seconds.
               </Form.Text>
             </Form.Group>
           </Col>
           <Col>
-            <Button variant="success" size="lg">
+            <Button
+              variant="success"
+              size="lg"
+              onClick={() => {
+                // grab duration
+                console.log('click the start capture button');
+                const durationElement = document.getElementById('duration') as HTMLInputElement;
+                if (durationElement) {
+                  const durationString: string = durationElement.value;
+                  const duration = Number(durationString);
+                  console.log(duration);
+                  console.log('pid is', pid);
+                  const func = () => dispatch(startCapture({ pid, duration }));
+                  func();
+                }
+              }}
+            >
               Start
             </Button>
           </Col>

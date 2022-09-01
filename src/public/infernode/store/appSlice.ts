@@ -14,6 +14,11 @@ interface StartAppPayloadType {
   relativePath: string | null;
 }
 
+interface StartCapturePayloadType {
+  pid: string | null;
+  duration: number | null;
+}
+
 const checkIsAppRunning = createAsyncThunk(
   'app/checkIsAppRunning',
   async () => {
@@ -56,10 +61,11 @@ const startApp = createAsyncThunk(
 );
 const stopApp = createAsyncThunk(
   'api/stopApp',
-  async (pid: number) => {
+  async (pid: string | null) => {
+    if (!pid) throw new Error('pid doesn\'t exist');
     console.log('stop callback');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    await fetch('/api/stopApp', {
+    await fetch('/api/captures/stopApp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset-UTF-8',
@@ -72,19 +78,21 @@ const stopApp = createAsyncThunk(
 );
 
 const startCapture = createAsyncThunk(
-  'api/appCapture',
-  async (duration: number) => {
+  'api/startCapture',
+  async (args: StartCapturePayloadType) => {
+    console.log('start capture callback');
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const startCaptureResult = await fetch('/api/appCapture', { 
+    await fetch('/api/captures/startCapture', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset-UTF-8',
       },
       body: JSON.stringify({
-        duration,
+        duration: args.duration,
+        pid: args.pid,
       }),
     }).then((res) => res.json());
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return startCaptureResult;
+    console.log('finished start capture callback');
   },
 );
 
@@ -130,9 +138,17 @@ const appSlice = createSlice({
       state.isAppCapturing = true;
     });
 
+    // builder.addCase(startCapture.rejected, (state, action: PayloadAction<void>) => {
+    //   console.log('unable to start capture');
+    // });
+
     builder.addCase(stopApp.fulfilled, (state, action: PayloadAction<void>) => {
       state.isAppRunning = false;
+      state.pid = null;
     });
+    // builder.addCase(stopApp.rejected, (state, action: PayloadAction<void>) => {
+    //   console.log('start capture is rejected')
+    // });
   },
 });
 

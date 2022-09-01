@@ -8,10 +8,28 @@ import dbController from '../controllers/db.controller';
 
 const captureRouter = Router();
 
-// fake reqeust
+/*
+*
+* modify your backend router logic in the following fake requests
+*
+*/
+
+// fake reqeust to start app: response value is pid
 captureRouter.post('/startApp', /* req.body has appName, relativePath => middlewarelogic: start app, */ (req: Request, res: Response) => {
   console.log('start App request sucessfully');
   return res.status(200).json('12345');
+});
+
+// fake reqeust to stop app
+captureRouter.post('/stopApp', /* req.body has pid => middlewarelogic: stop app, */ (req: Request, res: Response) => {
+  console.log('stopt App request sucessfully');
+  return res.status(200).json('stop app sucessfully');
+});
+
+// fake reqeust to start capture
+captureRouter.post('/startCapture', /* req.body has pid, duration => middlewarelogic: start capture, */ (req: Request, res: Response) => {
+  console.log('start capture request sucessfully');
+  return res.status(200).json('start capture sucessfully');
 });
 
 // Create
