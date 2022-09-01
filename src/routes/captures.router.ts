@@ -5,10 +5,11 @@ import {
 import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
 import dbController from '../controllers/db.controller';
+import icicleController from '../controllers/icicle.controller';
 
 const captureRouter = Router();
 
-// Create
+// Create new flamegraph from a .perf
 captureRouter.post(
   '/',
   dbController.createEmptyRecord,
@@ -16,6 +17,16 @@ captureRouter.post(
   flamegraph.stackCollapse,
   flamegraph.toSVG,
   (_req: Request, res: Response) => res.sendStatus(200),
+);
+
+// create a new icicle chart from a .perf
+captureRouter.post(
+  '/icicle',
+  dbController.createEmptyRecord,
+  fileController.addData,
+  flamegraph.stackCollapse,
+  icicleController.toIcicleSVG,
+  (_req: Request, res: Response) => res.status(200).redirect('/api/captures'),
 );
 
 // Create by ID
