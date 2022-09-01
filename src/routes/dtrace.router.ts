@@ -10,7 +10,8 @@ const dtraceRouter = Router();
 // run dtrace on an already running node app, then generate flamegraph
 dtraceRouter.post(
   '/flamegraph',
-  // DtraceController.getPID
+  // applicationController.getPID
+  dbController.createEmptyRecord,
   DtraceController.runDtrace,
   DtraceController.foldDtrace,
   flamegraphController.toSVG,
@@ -22,7 +23,8 @@ dtraceRouter.post(
 // run dtrace on an already running node app, then generate icicle chart
 dtraceRouter.post(
   '/icicle',
-  // DtraceController.getPID
+  // applicationController.getPID
+  dbController.createEmptyRecord,
   DtraceController.runDtrace,
   DtraceController.foldDtrace,
   icicleController.toIcicleSVG,

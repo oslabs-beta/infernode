@@ -61,9 +61,8 @@ const applicationController: ApplicationControllerType = {
     // retrieve the pid from somewhere
     try {
       const { pid } = req.body;
-      console.log(pid);
-      const test = process.kill(pid);
-      console.log(test);
+      process.kill(pid);
+      console.log('child process killed - pid:', pid);
       return next();
     } catch (err) {
       return next({

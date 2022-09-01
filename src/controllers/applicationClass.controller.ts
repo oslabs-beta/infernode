@@ -55,13 +55,14 @@ export default class ApplicationController {
         const { pid } = result;
         res.locals.pid = pid;
         console.log('Dtrace pid:', pid);
-        if (pid === undefined) throw Error('Something went wrong when launching the app');
+        if (pid === undefined) throw new Error('Something is wrong with the pid');
         this.startProcess(pid);
         return next();
       });
 
       result.on('close', () => {
-
+        if (typeof res.locals.pid !== 'number') throw new Error();
+        this.endProcess(res.locals.pid);
       });
     } catch (err) {
       return next(new InfernodeError(
@@ -77,9 +78,10 @@ export default class ApplicationController {
     // retrieve the pid from somewhere
     try {
       const { pid } = req.body;
-      console.log(pid);
-      const test = process.kill(pid);
-      console.log(test);
+      // check if node process is currently running
+      // if not, return an error 
+      if (typeof pid !== 'number') throw new TypeError('Incorrect type passed in to req.body');
+      process.kill(pid);
       return next();
     } catch (err) {
       return next({
