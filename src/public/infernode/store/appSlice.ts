@@ -9,6 +9,7 @@ interface AppSliceStateType {
   relativePath: string | null,
   pid: string | null,
 }
+
 interface StartAppPayloadType {
   appName: string | null;
   relativePath: string | null;
@@ -17,6 +18,7 @@ interface StartAppPayloadType {
 interface StartCapturePayloadType {
   pid: string | null;
   duration: number | null;
+  appName: string | null;
 }
 
 const checkIsAppRunning = createAsyncThunk(
@@ -90,6 +92,7 @@ const startCapture = createAsyncThunk(
       body: JSON.stringify({
         duration: args.duration,
         pid: args.pid,
+        appName: args.appName,
       }),
     }).then((res) => res.json());
     console.log('finished start capture callback');
