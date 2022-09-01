@@ -76,7 +76,9 @@ const DtraceController: DtraceControllerType = {
 
   runDtrace: (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { pid, duration, id } = res.locals;
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      const { pid, duration } = req.body;
+      const { id } = res.locals;
       if (typeof pid !== 'number' || typeof duration !== 'number' || typeof id !== 'number') {
         throw TypeError('Check that PID and duration are numbers');
       }
