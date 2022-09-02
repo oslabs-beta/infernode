@@ -1,26 +1,32 @@
 import { Router, Request, Response } from 'express';
-import DtraceController from '../controllers/dTrace.controller';
-// import dbController from '../controllers/db.controller';
-// import flamegraphController from '../controllers/flamegraphController';
-// import icicleController from '../controllers/icicle.controller';
-// import dtraceRouter from './dtrace.router';
+import ApplicationController from '../controllers/application.controller';
 
 const applicationRouter = Router();
 
 // start the application
 applicationRouter.post(
   '/start',
-  DtraceController.nodeLaunch,
+  ApplicationController.nodeLaunch,
   (_req: Request, res: Response) => {
-    res.status(200).send(res.locals.pid);
+    res.status(200).send('node app launched');
   },
 );
 
 // stop the application
-applicationRouter.post(
+applicationRouter.get(
   '/stop',
+  ApplicationController.nodeKill,
   (_req: Request, res: Response) => {
-    res.status(200).send('test successful');
+    res.status(200).send('Congrats! Your child process was successfully murdered');
+  },
+);
+
+// route to access the back-end state of current running node apps
+applicationRouter.get(
+  '/status',
+  ApplicationController.getStatus,
+  (_req: Request, res: Response) => {
+    res.status(200).send(res.locals.status);
   },
 );
 
