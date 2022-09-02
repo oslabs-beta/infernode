@@ -5,47 +5,28 @@ import {
 import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
 import dbController from '../controllers/db.controller';
+import icicleController from '../controllers/icicle.controller';
 
 const captureRouter = Router();
 
-/*
-*
-* modify your backend router logic in the following fake requests
-*
-*/
-
-// fake reqeust to start app: response value is pid
-captureRouter.post('/startApp', /* req.body has appName, relativePath => middlewarelogic: start app, */ (req: Request, res: Response) => {
-  console.log('start App request sucessfully');
-  return res.status(200).json('12345');
-});
-
-// fake reqeust to stop app
-captureRouter.post('/stopApp', /* req.body has pid => middlewarelogic: stop app, */ (req: Request, res: Response) => {
-  console.log('stopt App request sucessfully');
-  return res.status(200).json('stop app sucessfully');
-});
-
-// fake reqeust to start capture
-captureRouter.post('/startCapture', /* req.body has pid, duration => middlewarelogic: start capture, */ (req: Request, res: Response) => {
-  console.log('start capture request sucessfully');
-  return res.status(200).json('start capture sucessfully');
-});
-
-// fake request to ask for app process status
-captureRouter.get('/isAppRunning', /* req.body has pid, duration => middlewarelogic: start capture, */ (req: Request, res: Response) => {
-  console.log('app running polling continuously');
-  return res.status(200).json('unfinished');
-});
-
-// Create
+// Create new flamegraph from a .perf
 captureRouter.post(
-  '/',
+  '/flamegraph',
   dbController.createEmptyRecord,
   fileController.addData,
   flamegraph.stackCollapse,
   flamegraph.toSVG,
   (_req: Request, res: Response) => res.sendStatus(200),
+);
+
+// create a new icicle chart from a .perf
+captureRouter.post(
+  '/icicle',
+  dbController.createEmptyRecord,
+  fileController.addData,
+  flamegraph.stackCollapse,
+  icicleController.toIcicleSVG,
+  (_req: Request, res: Response) => res.status(200).redirect('/api/captures'),
 );
 
 // Create by ID
