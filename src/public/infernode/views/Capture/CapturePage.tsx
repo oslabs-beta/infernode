@@ -16,6 +16,7 @@ import {
 } from '../../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import AppStatusCircle from './AppStatusCircle';
+import { setActivePage } from '../../store/configSlice';
 
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -24,6 +25,7 @@ export default function CapturePage(): JSX.Element {
   } = useAppSelector((state) => state.app);
   const [appId, setAppId] = useState<number | null>(null);
   const [capId, setCapId] = useState<number | null>(null);
+  dispatch(setActivePage('/capture'));
 
   // const dispatchMemo = useCallback(dispatch, [dispatch]);
   // const appIdMemo = useMemo(() => appId, [appId]);
