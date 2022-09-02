@@ -11,9 +11,7 @@
 
 // exec() method: This method creates a shell first and then executes the command.
 import { Request, Response, NextFunction } from 'express';
-
 import { spawnSync } from 'child_process';
-
 import path from 'path';
 
 type FlamegraphSVGController = {
@@ -78,6 +76,7 @@ const flamegraphController: FlamegraphSVGController = {
 
     try {
       const result = spawnSync(`${script} ${inputPath} > ${outputPath}`, { shell: true, timeout: 10000 });
+      console.log(result.stderr.toString());
       console.log(`${new Date().toLocaleString()}: Converted folded perf file ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       return next({
