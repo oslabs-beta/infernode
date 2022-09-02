@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 // import Stack from 'react-bootstrap/Stack';
 // import Card from 'react-bootstrap/Card';
 import {
@@ -9,13 +9,28 @@ import {
   Col,
 } from 'react-bootstrap';
 import CaptureSidebar from './CaptureSidebar';
-import { startApp, stopApp, startCapture } from '../../store/appSlice';
+import { startApp, stopApp, startCapture, checkIsAppRunning } from '../../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import AppStatusCircle from './AppStatusCircle';
 
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const { pid, appName } = useAppSelector((state) => state.app);
+  const { pid, appName, isAppRunning } = useAppSelector((state) => state.app);
+  const [appId, setAppId] = useState<number | null>(null);
+
+  console.log('start app polling 1', isAppRunning);
+  useEffect(() => {
+    if (isAppRunning) {
+      const newAppId = setInterval(() => dispatch(checkIsAppRunning()), 10000);
+      setAppId(Number(newAppId));
+      console.log('start app polling 3');
+    } else {
+      console.log('start app polling 4');
+      console.log('appId', appId);
+      if (appId) clearInterval(appId);
+    }
+  },  [isAppRunning]);
+
   return (
     <div>
       <Stack direction="horizontal" gap={3}>
@@ -52,7 +67,7 @@ export default function CapturePage(): JSX.Element {
                   func();
                 }}
               >
-                Start Application
+              Start Application 
               </Button>
               <Button
                 variant="danger"

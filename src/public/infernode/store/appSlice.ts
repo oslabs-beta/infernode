@@ -24,8 +24,10 @@ interface StartCapturePayloadType {
 const checkIsAppRunning = createAsyncThunk(
   'app/checkIsAppRunning',
   async () => {
+    console.log('start app polling action')
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const appStatus = await fetch('/api/app').then((res) => res.json());
+    const appStatus = await fetch('/api/captures/isAppRunning').then((res) => res.json());
+    console.log('app status is', appStatus)
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return appStatus;
   },
@@ -114,27 +116,32 @@ const appSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(checkIsAppRunning.fulfilled, (state, action: PayloadAction<string>) => {
-      if (action.payload === 'finished') { // fake string
+      console.log('checkisapprunning action payload is ', action.payload, state.isAppRunning)
+      if (action.payload === 'finished' && state.isAppRunning ) { // fake string   
         // update appSlice state
         state.isAppRunning = false;
-        state.isAppCapturing = false;
         state.appName = null;
-        state.duration = null;
         state.relativePath = null;
+        state.pid = null;
+        if (state.isAppCapturing) { // Luke said we don't need worry about it probably 9/1
+          state.isAppCapturing = false;
+          state.duration = null;
+        }
       }
     });
 
     builder.addCase(checkIsAppCapturing.fulfilled, (state, action: PayloadAction<string>) => {
-      if (action.payload === 'finished') { // fake string
+      if (action.payload === 'finished' && state.isAppCapturing) { // fake string
         // update appSlice state
         state.isAppCapturing = false;
+        state.duration = null;
       }
     });
 
     builder.addCase(startApp.fulfilled, (state, action: PayloadAction<string>) => {
-      console.log('startApp is fullfilled state.pid is ', state.pid, state.isAppRunning);
       state.isAppRunning = true;
       state.pid = action.payload;
+      console.log('startApp is fullfilled state.pid is ', state.pid, state.isAppRunning);
     });
 
     builder.addCase(startCapture.fulfilled, (state, action: PayloadAction<void>) => {

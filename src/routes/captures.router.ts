@@ -32,6 +32,12 @@ captureRouter.post('/startCapture', /* req.body has pid, duration => middlewarel
   return res.status(200).json('start capture sucessfully');
 });
 
+// fake request to ask for app process status
+captureRouter.get('/isAppRunning', /* req.body has pid, duration => middlewarelogic: start capture, */ (req: Request, res: Response) => {
+  console.log('app running polling continuously');
+  return res.status(200).json('unfinished');
+});
+
 // Create
 captureRouter.post(
   '/',
