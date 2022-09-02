@@ -113,7 +113,7 @@ class ApplicationController {
         userMessage: 'attempted to stop process that is not running',
         message: 'Process not found in runningProcesses',
         controller: 'application.Controller',
-        httpStatus: 
+        httpStatus: 412,
       });
     } catch (err) {
       return next({

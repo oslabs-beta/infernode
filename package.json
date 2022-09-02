@@ -7,7 +7,7 @@
   "scripts": {
     "lint": " eslint . && eslint ./src/public/infernode/",
     "clean": "rimraf ./dist/*",
-    "resetdb": "rimraf ./database/captures/*.perf ./database/folded/*.folded ./database/SVGs/*.svg ./database/uploads/* ./database/captureDB.db",
+    "resetdb": "rimraf ./database/captures/*.perf ./database/captures/*.stacks ./database/folded/*.folded ./database/SVGs/*.svg ./database/uploads/* ./database/captureDB.db",
     "copy-assets": "cp -R ./src/assets ./dist/",
     "prebuild": "npm run lint && npm run clean && npm run copy-assets",
     "tsc": "tsc",
