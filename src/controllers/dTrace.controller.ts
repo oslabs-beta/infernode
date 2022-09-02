@@ -25,23 +25,40 @@ type DtraceControllerType = {
   // DO NOT EDIT THESE .pl FILES
 };
 
+type ReqBodyPID = {
+  pid?: number,
+  duration: number,
+};
+
 const DtraceController: DtraceControllerType = {
   runDtrace: (req: Request, res: Response, next: NextFunction) => {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const { pid, duration } = req.body;
+      const reqBody = req.body as ReqBodyPID;
+      const resLocals = res.locals as ReqBodyPID;
+      if ('pid' in reqBody) {
+        if (typeof reqBody.pid !== 'number') {
+          throw new Error();
+        }
+      }
+      let pid;
+      if ('pid' in reqBody || 'pid' in resLocals) {
+        pid = 'pid' in reqBody ? reqBody.pid : resLocals.pid;
+      } else {
+        throw new Error();
+      }
+
+      const { duration } = reqBody;
+
       const { id } = res.locals;
       if (typeof pid !== 'number' || typeof duration !== 'number' || typeof id !== 'number') {
-        throw TypeError('Check that PID and duration are numbers');
+        throw new Error('Check that PID and duration are numbers');
       }
       const probe = '-x ustackframes=100 -n';
       const predicate = `profile-150 /pid == ${pid} && arg1/ { @[ustack()] = count(); } tick-${duration}s { exit(0); }`;
       const output = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
       const result = execSync(`sudo dtrace ${probe} '${predicate}' -o ${output}`);
       console.log(result.toString());
-      // if (result.status === 0)
       return next();
-      // throw Error(`something went wrong in runDtrace: ${String(result.status)}`);
     } catch (err) {
       return next(new InfernodeError(
         'something failed while running the DTrace capture',
