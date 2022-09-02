@@ -54,13 +54,15 @@ export default class ApplicationController {
       result.on('spawn', () => {
         const { pid } = result;
         res.locals.pid = pid;
-        console.log('Dtrace pid:', pid);
+        console.log('child process pid:', pid);
         if (pid === undefined) throw new Error('Something is wrong with the pid');
         this.startProcess(pid);
         return next();
       });
 
-      result.on('close', () => {
+      result.on('exit', () => {
+        // no matter how the process ends, either on its own or from a command
+        // this will run when the child process terminates
         if (typeof res.locals.pid !== 'number') throw new Error();
         this.endProcess(res.locals.pid);
       });

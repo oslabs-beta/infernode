@@ -12,13 +12,13 @@ type ApplicationControllerType = {
 
 type ReqBody = {
   filePath: string;
-  duration: number;
+  // duration: number;
 };
 // note reqBody and Reqbody are not the same thing
 function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
   const hasFilePath = 'filePath' in reqBody && typeof reqBody.filePath === 'string';
-  const hasDuration = 'duration' in reqBody && typeof reqBody.duration === 'number';
-  if (hasFilePath && hasDuration) return true;
+  // const hasDuration = 'duration' in reqBody && typeof reqBody.duration === 'number';
+  if (hasFilePath /* && hasDuration */) return true;
   return false;
 }
 
@@ -36,17 +36,22 @@ const applicationController: ApplicationControllerType = {
     }
     try {
       const filepath: string = path.resolve(__dirname, `${reqBody.filePath}`);
-      res.locals.duration = reqBody.duration;
+      // res.locals.duration = reqBody.duration;
       res.locals.filepath = filepath;
       // refactor to match front end
       const result = spawn(`node ${filepath}`, { shell: true });
       // result will be a child process
       result.on('spawn', () => {
         const { pid } = result;
-        console.log('Dtrace pid:', pid);
+        console.log('child process started pid:', pid);
         // console.log(process);
         res.locals.pid = pid;
         return next();
+      });
+      result.on('exit', () => {
+        // if (typeof res.locals.pid !== 'number') throw new Error();
+        // this.endProcess(res.locals.pid);
+        console.log('child process exited gracefully - pid:', res.locals.pid);
       });
     } catch (err) {
       return next(new InfernodeError(
@@ -61,8 +66,8 @@ const applicationController: ApplicationControllerType = {
     // retrieve the pid from somewhere
     try {
       const { pid } = req.body;
-      process.kill(pid);
-      console.log('child process killed - pid:', pid);
+      const result = process.kill(pid);
+      console.log('child process killed?', result, ' - pid: ', pid);
       return next();
     } catch (err) {
       return next({
