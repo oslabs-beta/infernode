@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect, useState,
+} from 'react';
 // import Stack from 'react-bootstrap/Stack';
 // import Card from 'react-bootstrap/Card';
 import {
@@ -9,14 +11,23 @@ import {
   Col,
 } from 'react-bootstrap';
 import CaptureSidebar from './CaptureSidebar';
-import { startApp, stopApp, startCapture, checkIsAppRunning } from '../../store/appSlice';
+import {
+  startApp, stopApp, startCapture, checkIsAppRunning, checkIsAppCapturing,
+} from '../../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import AppStatusCircle from './AppStatusCircle';
 
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const { pid, appName, isAppRunning } = useAppSelector((state) => state.app);
+  const {
+    pid, appName, isAppRunning, isAppCapturing,
+  } = useAppSelector((state) => state.app);
   const [appId, setAppId] = useState<number | null>(null);
+  const [capId, setCapId] = useState<number | null>(null);
+
+  // const dispatchMemo = useCallback(dispatch, [dispatch]);
+  // const appIdMemo = useMemo(() => appId, [appId]);
+  // const capIdMemo = useMemo(() => capId, [capId]);
 
   console.log('start app polling 1', isAppRunning);
   useEffect(() => {
@@ -28,8 +39,23 @@ export default function CapturePage(): JSX.Element {
       console.log('start app polling 4');
       console.log('appId', appId);
       if (appId) clearInterval(appId);
+      if (capId) clearInterval(capId); // if app no longer running, stop cap imediately?
     }
-  },  [isAppRunning]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAppRunning]);
+
+  useEffect(() => {
+    if (isAppCapturing) {
+      const newCapId = setInterval(() => dispatch(checkIsAppCapturing()), 10000);
+      setCapId(Number(newCapId));
+      console.log('start cap polling 5');
+    } else {
+      console.log('start cap polling 6');
+      console.log('capId', capId);
+      if (capId) clearInterval(capId);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAppCapturing]);
 
   return (
     <div>
@@ -64,10 +90,11 @@ export default function CapturePage(): JSX.Element {
                       await dispatch(startApp({ appName: newAppName, relativePath }));
                     }
                   };
-                  func();
+                  // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                  func().catch((err) => console.log('Err in start app button', err));
                 }}
               >
-              Start Application 
+                Start Application
               </Button>
               <Button
                 variant="danger"
@@ -76,7 +103,7 @@ export default function CapturePage(): JSX.Element {
                   console.log('click on stop app button');
                   console.log('pid is', pid);
                   const func = () => dispatch(stopApp(pid));
-                  func();
+                  func().catch((err) => console.log('Err in stop app button', err));
                 }}
               >
                 Stop Application
@@ -109,7 +136,10 @@ export default function CapturePage(): JSX.Element {
                     console.log(duration);
                     console.log('pid is', pid);
                     const func = () => dispatch(startCapture({ pid, duration, appName }));
-                    func();
+                    func()
+                      .catch((err) => {
+                        console.log('Error in Start Capture onclick event: ', err);
+                      });
                   }
                 }}
               >
