@@ -10,7 +10,6 @@ type ProcessInfo = {
 
 type ReqBody = {
   filePath: string;
-  // duration: number;
 };
 
 type BodyWithPid = {
@@ -20,8 +19,7 @@ type BodyWithPid = {
 // note reqBody and Reqbody are not the same thing
 function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
   const hasFilePath = 'filePath' in reqBody && typeof reqBody.filePath === 'string';
-  // const hasDuration = 'duration' in reqBody && typeof reqBody.duration === 'number';
-  if (hasFilePath /* && hasDuration */) return true;
+  if (hasFilePath) return true;
   return false;
 }
 
@@ -65,11 +63,10 @@ class ApplicationController {
       ));
     }
     try {
-      const filepath: string = path.resolve(__dirname, `${reqBody.filePath}`);
-      // res.locals.duration = reqBody.duration;
-      res.locals.filepath = filepath;
+      const filePath: string = path.resolve(__dirname, `${reqBody.filePath}`);
+      res.locals.filePath = filePath;
       // refactor to match front end
-      const result = spawn(`node ${filepath}`, { shell: true });
+      const result = spawn(`node ${filePath}`, { shell: true });
       // result will be a child process
       result.on('spawn', () => {
         const { pid } = result;
