@@ -9,8 +9,12 @@ import {
   Col,
 } from 'react-bootstrap';
 import CaptureSidebar from './CaptureSidebar';
+import { useAppDispatch } from '../../store/hooks';
+import { setActivePage } from '../../store/configSlice';
 
 export default function CapturePage(): JSX.Element {
+  const dispatch = useAppDispatch();
+  dispatch(setActivePage('/capture'));
   return (
     <Stack direction="horizontal" gap={3}>
       <CaptureSidebar />

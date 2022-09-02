@@ -6,11 +6,13 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface ConfigState {
-  darkMode: boolean,
+  darkMode: boolean;
+  activePage: string;
 }
 
 const initialState: ConfigState = {
   darkMode: true,
+  activePage: '/history',
 };
 
 export const configSlice = createSlice({
@@ -23,8 +25,11 @@ export const configSlice = createSlice({
     toggleDarkMode: (state) => {
       state.darkMode = !state.darkMode;
     },
+    setActivePage: (state, action: PayloadAction<string>) => {
+      state.activePage = action.payload;
+    },
   },
 });
 
-export const { setDarkMode, toggleDarkMode } = configSlice.actions;
+export const { setDarkMode, toggleDarkMode, setActivePage } = configSlice.actions;
 export default configSlice.reducer;
