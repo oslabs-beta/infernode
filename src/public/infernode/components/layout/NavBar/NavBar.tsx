@@ -12,6 +12,7 @@ import { LoginButton, LogoutButton } from './Login';
 export default function NavBar(): JSX.Element {
   const isDarkMode = useAppSelector((state) => state.config.darkMode);
   const { authenticated } = useAppSelector((state) => state.user);
+  const { activePage } = useAppSelector((state) => state.config);
   const dispatch = useAppDispatch();
 
   let bg = 'light';
@@ -36,7 +37,7 @@ export default function NavBar(): JSX.Element {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
+          <Nav activeKey={activePage} className="me-auto">
             <LinkContainer to="/history">
               <Nav.Link>History</Nav.Link>
             </LinkContainer>
