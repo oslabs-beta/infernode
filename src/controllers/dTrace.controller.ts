@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { Request, Response, NextFunction } from 'express';
 import path from 'path';
-import { spawnSync, spawn, execSync } from 'child_process';
+import { spawnSync, execSync } from 'child_process';
 import { InfernodeError } from '../utils/globalErrorHandler';
 
 /*
@@ -21,8 +21,6 @@ sudo dtrace -x stackframes=100 -n 'profile-997 /arg0/ { @[stack()] = count(); } 
 */
 
 type DtraceControllerType = {
-  // launch the node application, retrieve the PID
-  // nodeLaunch: (req: Request, res: Response, next: NextFunction) => void;
   // run Dtrace on the given node application, using the pid
   runDtrace: (req: Request, res: Response, next: NextFunction) => void;
   // fold the Dtrace output to collapse matching stack frames
@@ -31,58 +29,15 @@ type DtraceControllerType = {
   // DO NOT EDIT THESE .pl FILES
 };
 
-type ReqBody = {
-  filePath: string;
-  duration: number;
-};
-// note reqBody and Reqbody are not the same thing
-function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
-  const hasFilePath = 'filePath' in reqBody && typeof reqBody.filePath === 'string';
-  const hasDuration = 'duration' in reqBody && typeof reqBody.duration === 'number';
-  if (hasFilePath && hasDuration) return true;
-  return false;
-}
-
 const DtraceController: DtraceControllerType = {
-  // nodeLaunch: (req: Request, res: Response, next: NextFunction) => {
-  //   // recieve executable filepath and second from user
-  //   const reqBody = req.body as ReqBody | object;
-  //   if (!isReqBody(reqBody)) {
-  //     return next(new InfernodeError(
-  //       'something failed while verifying req.body',
-  //       'user submitted invalid file path',
-  //       500,
-  //       'DtraceController',
-  //     ));
-  //   }
-  //   try {
-  //     const filepath: string = path.resolve(__dirname, `${reqBody.filePath}`);
-  //     res.locals.duration = reqBody.duration;
-  //     res.locals.filepath = filepath;
-  //     // refactor to match front end
-  //     const result = spawn(`node ${filepath}`, { shell: true });
-  //     // result will be a child process
-  //     result.on('spawn', () => {
-  //       const { pid } = result;
-  //       // console.log('Dtrace pid:', pid);
-  //       res.locals.pid = pid;
-  //       return next();
-  //     });
-  //   } catch (err) {
-  //     return next(new InfernodeError(
-  //       'something failed while launching the app via node',
-  //       'something broke in the DtraceController middleware',
-  //       500,
-  //       'nodeLaunch',
-  //     ));
-  //   }
-  // },
-
   runDtrace: (req: Request, res: Response, next: NextFunction) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { pid, duration } = req.body;
       const { id } = res.locals;
+      console.log(typeof pid);
+      console.log(typeof duration);
+      console.log(typeof id);
       if (typeof pid !== 'number' || typeof duration !== 'number' || typeof id !== 'number') {
         throw TypeError('Check that PID and duration are numbers');
       }
