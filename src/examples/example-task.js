@@ -7,7 +7,7 @@ console.log(`pid: ${process.pid}`);
 crypto.pbkdf2Sync(
   readFileSync(__filename),
   'example-task.js',
-  10000000,
+  5000000,
   512,
   'sha512'
 );
