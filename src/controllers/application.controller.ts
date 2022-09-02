@@ -38,6 +38,21 @@ class ApplicationController {
     delete this.runningProcesses[pid];
   }
 
+  public getStatus = (req: Request, res: Response, next: NextFunction) => {
+    const reqBody = req.body as object | BodyWithPid;
+    if (!('pid' in reqBody) || typeof reqBody.pid !== 'number') {
+      return next(new InfernodeError(
+        'There was an issue with the pid given to getStatus via req.body',
+        'check req.body',
+        500,
+        'Application Controller',
+      ));
+    }
+    res.locals.status = reqBody.pid in this.runningProcesses;
+    console.log(res.locals.status);
+    return next();
+  };
+
   public nodeLaunch = (req: Request, res: Response, next: NextFunction): void => {
     // recieve executable filepath and second from user
     const reqBody = req.body as ReqBody | object;
@@ -46,7 +61,7 @@ class ApplicationController {
         'something failed while verifying req.body',
         'user submitted invalid file path',
         500,
-        'DtraceController',
+        'Application Controller',
       ));
     }
     try {

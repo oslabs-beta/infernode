@@ -21,4 +21,13 @@ applicationRouter.get(
   },
 );
 
+// route to access the back-end state of current running node apps
+applicationRouter.get(
+  '/status',
+  ApplicationController.getStatus,
+  (_req: Request, res: Response) => {
+    res.status(200).send(res.locals.status);
+  },
+);
+
 export default applicationRouter;
