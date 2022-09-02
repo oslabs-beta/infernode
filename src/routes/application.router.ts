@@ -13,7 +13,7 @@ applicationRouter.post(
 );
 
 // stop the application
-applicationRouter.get(
+applicationRouter.post(
   '/stop',
   ApplicationController.nodeKill,
   (_req: Request, res: Response) => {
@@ -22,7 +22,7 @@ applicationRouter.get(
 );
 
 // route to access the back-end state of current running node apps
-applicationRouter.get(
+applicationRouter.post(
   '/status',
   ApplicationController.getStatus,
   (_req: Request, res: Response) => {

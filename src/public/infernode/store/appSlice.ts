@@ -6,13 +6,13 @@ interface AppSliceStateType {
   isAppCapturing: boolean,
   duration: number | null,
   appName: string | null,
-  relativePath: string | null,
+  filePath: string | null,
   pid: string | null,
 }
 
 interface StartAppPayloadType {
   appName: string | null;
-  relativePath: string | null;
+  filePath: string | null;
 }
 
 interface StartCapturePayloadType {
@@ -23,9 +23,17 @@ interface StartCapturePayloadType {
 
 const checkIsAppRunning = createAsyncThunk(
   'app/checkIsAppRunning',
-  async () => {
+  async (pid: string | null) => {
     console.log('start app polling action');
-    const appStatus = String(await fetch('/api/captures/isAppRunning').then((res) => res.json()));
+    const appStatus = Boolean(await fetch('/api/app/status', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        pid,
+      }),
+    }).then((res) => res.json()));
     console.log('app status is', appStatus);
     return appStatus;
   },
@@ -42,15 +50,16 @@ const startApp = createAsyncThunk(
   'api/startApp',
   async (args: StartAppPayloadType) => {
     console.log('start callback');
-    if (!args.appName || !args.relativePath) return new Error('invalid entries');
-    const pid = String(await fetch('/api/captures/startApp', {
+    // console.log('args before the fetch request to api/app/start', args);
+    if (!args.appName || !args.filePath) return new Error('invalid entries');
+    const pid = String(await fetch('/api/app/start', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json;charset-UTF-8',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         appName: args.appName,
-        relativePath: args.relativePath,
+        filePath: args.filePath,
       }),
     }).then((res) => res.json()));
     console.log('got pid back', pid);
@@ -62,10 +71,10 @@ const stopApp = createAsyncThunk(
   async (pid: string | null) => {
     if (!pid) throw new Error('pid doesn\'t exist');
     console.log('stop callback');
-    await fetch('/api/captures/stopApp', {
+    await fetch('/api/app/stop', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json;charset-UTF-8',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         pid,
@@ -78,10 +87,10 @@ const startCapture = createAsyncThunk(
   'api/startCapture',
   async (args: StartCapturePayloadType) => {
     console.log('start capture callback');
-    await fetch('/api/captures/startCapture', {
+    await fetch('/api/dTrace/flamegraph', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json;charset-UTF-8',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         duration: args.duration,
@@ -98,7 +107,7 @@ const initialState: AppSliceStateType = {
   isAppCapturing: false,
   duration: null,
   appName: null,
-  relativePath: null,
+  filePath: null,
   pid: null,
 };
 
@@ -107,15 +116,15 @@ const appSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(checkIsAppRunning.fulfilled, (state, action: PayloadAction<string>) => {
+    builder.addCase(checkIsAppRunning.fulfilled, (state, action: PayloadAction<boolean>) => {
       console.log('checkisapprunning action payload is ', action.payload, state.isAppRunning);
-      if (action.payload === 'finished' && state.isAppRunning) { // fake string
+      if (action.payload === false && state.isAppRunning) { // false: not running
         // update appSlice state
         state.isAppRunning = false;
         state.appName = null;
-        state.relativePath = null;
+        state.filePath = null;
         state.pid = null;
-        if (state.isAppCapturing) { // Luke said we don't need worry about it probably 9/1
+        if (state.isAppCapturing) {
           state.isAppCapturing = false;
           state.duration = null;
         }

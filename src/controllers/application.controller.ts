@@ -38,6 +38,7 @@ class ApplicationController {
 
   public getStatus = (req: Request, res: Response, next: NextFunction) => {
     const reqBody = req.body as object | BodyWithPid;
+    console.log('getStatus app controller req.body', reqBody);
     if (!('pid' in reqBody) || typeof reqBody.pid !== 'number') {
       return next(new InfernodeError(
         'There was an issue with the pid given to getStatus via req.body',
@@ -53,7 +54,9 @@ class ApplicationController {
 
   public nodeLaunch = (req: Request, res: Response, next: NextFunction): void => {
     // recieve executable filepath and second from user
+    // console.log('req.body is ', req.body);
     const reqBody = req.body as ReqBody | object;
+    // console.log('reqBody is ', reqBody);
     if (!isReqBody(reqBody)) {
       return next(new InfernodeError(
         'something failed while verifying req.body',
