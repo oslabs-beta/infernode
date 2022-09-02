@@ -104,9 +104,17 @@ class ApplicationController {
       // check if node process is currently running
       // if not, return an error
       if (typeof pid !== 'number') throw new TypeError('Incorrect type passed in to req.body');
-      const result = process.kill(pid);
-      console.log('child process killed?', result, ' - pid: ', pid);
-      return next();
+      if (reqBody.pid in this.runningProcesses) {
+        const result = process.kill(pid);
+        console.log('child process killed?', result, ' - pid: ', pid);
+        return next();
+      }
+      return next({
+        userMessage: 'attempted to stop process that is not running',
+        message: 'Process not found in runningProcesses',
+        controller: 'application.Controller',
+        httpStatus: 412,
+      });
     } catch (err) {
       return next({
         userMessage: 'something went wrong with the nodeStop command',
