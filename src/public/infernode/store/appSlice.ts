@@ -24,20 +24,16 @@ interface StartCapturePayloadType {
 const checkIsAppRunning = createAsyncThunk(
   'app/checkIsAppRunning',
   async () => {
-    console.log('start app polling action')
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const appStatus = await fetch('/api/captures/isAppRunning').then((res) => res.json());
-    console.log('app status is', appStatus)
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    console.log('start app polling action');
+    const appStatus = String(await fetch('/api/captures/isAppRunning').then((res) => res.json()));
+    console.log('app status is', appStatus);
     return appStatus;
   },
 );
 const checkIsAppCapturing = createAsyncThunk(
   'app/checkIsAppCapturing',
   async () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const captureStatus = await fetch('/api/appCapture').then((res) => res.json());
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    const captureStatus = String(await fetch('/api/appCapture').then((res) => res.json()));
     return captureStatus;
   },
 );
@@ -47,8 +43,7 @@ const startApp = createAsyncThunk(
   async (args: StartAppPayloadType) => {
     console.log('start callback');
     if (!args.appName || !args.relativePath) return new Error('invalid entries');
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const pid = await fetch('/api/captures/startApp', {
+    const pid = String(await fetch('/api/captures/startApp', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset-UTF-8',
@@ -57,9 +52,8 @@ const startApp = createAsyncThunk(
         appName: args.appName,
         relativePath: args.relativePath,
       }),
-    }).then((res) => res.json());
+    }).then((res) => res.json()));
     console.log('got pid back', pid);
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return pid;
   },
 );
@@ -68,7 +62,6 @@ const stopApp = createAsyncThunk(
   async (pid: string | null) => {
     if (!pid) throw new Error('pid doesn\'t exist');
     console.log('stop callback');
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     await fetch('/api/captures/stopApp', {
       method: 'POST',
       headers: {
@@ -85,7 +78,6 @@ const startCapture = createAsyncThunk(
   'api/startCapture',
   async (args: StartCapturePayloadType) => {
     console.log('start capture callback');
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     await fetch('/api/captures/startCapture', {
       method: 'POST',
       headers: {
@@ -116,8 +108,8 @@ const appSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(checkIsAppRunning.fulfilled, (state, action: PayloadAction<string>) => {
-      console.log('checkisapprunning action payload is ', action.payload, state.isAppRunning)
-      if (action.payload === 'finished' && state.isAppRunning ) { // fake string   
+      console.log('checkisapprunning action payload is ', action.payload, state.isAppRunning);
+      if (action.payload === 'finished' && state.isAppRunning) { // fake string
         // update appSlice state
         state.isAppRunning = false;
         state.appName = null;
@@ -138,13 +130,13 @@ const appSlice = createSlice({
       }
     });
 
-    builder.addCase(startApp.fulfilled, (state, action: PayloadAction<string>) => {
+    builder.addCase(startApp.fulfilled, (state, action: PayloadAction<string | Error>) => {
       state.isAppRunning = true;
-      state.pid = action.payload;
+      state.pid = String(action.payload);
       console.log('startApp is fullfilled state.pid is ', state.pid, state.isAppRunning);
     });
 
-    builder.addCase(startCapture.fulfilled, (state, action: PayloadAction<void>) => {
+    builder.addCase(startCapture.fulfilled, (state) => { // action: PayloadAction<void>
       state.isAppCapturing = true;
     });
 
@@ -152,7 +144,7 @@ const appSlice = createSlice({
     //   console.log('unable to start capture');
     // });
 
-    builder.addCase(stopApp.fulfilled, (state, action: PayloadAction<void>) => {
+    builder.addCase(stopApp.fulfilled, (state) => { // action: PayloadAction<void>
       state.isAppRunning = false;
       state.pid = null;
     });
