@@ -1,19 +1,22 @@
-/* eslint-disable max-len */
 import { Request, Response, NextFunction } from 'express';
 import process from 'process';
 import path from 'path';
 import { spawn } from 'child_process';
 import { InfernodeError } from '../utils/globalErrorHandler';
 
-type ApplicationControllerType = {
-  nodeLaunch: (req: Request, res: Response, next: NextFunction) => void;
-  nodeKill: (req: Request, res: Response, next: NextFunction) => void;
+type ProcessInfo = {
+  userId: number | null; // Can remove null as an option when auth is implemented
 };
 
 type ReqBody = {
   filePath: string;
   // duration: number;
 };
+
+type BodyWithPid = {
+  pid: number;
+};
+
 // note reqBody and Reqbody are not the same thing
 function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
   const hasFilePath = 'filePath' in reqBody && typeof reqBody.filePath === 'string';
@@ -22,8 +25,20 @@ function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
   return false;
 }
 
-const applicationController: ApplicationControllerType = {
-  nodeLaunch: (req: Request, res: Response, next: NextFunction) => {
+class ApplicationController {
+  private runningProcesses: { [pid: number]: ProcessInfo } = {};
+
+  private startProcess(pid: number) {
+    this.runningProcesses[pid] = {
+      userId: null,
+    };
+  }
+
+  private endProcess(pid: number) {
+    delete this.runningProcesses[pid];
+  }
+
+  public nodeLaunch = (req: Request, res: Response, next: NextFunction): void => {
     // recieve executable filepath and second from user
     const reqBody = req.body as ReqBody | object;
     if (!isReqBody(reqBody)) {
@@ -43,14 +58,18 @@ const applicationController: ApplicationControllerType = {
       // result will be a child process
       result.on('spawn', () => {
         const { pid } = result;
-        console.log('child process started pid:', pid);
-        // console.log(process);
         res.locals.pid = pid;
+        console.log('child process started pid:', pid);
+        if (pid === undefined) throw new Error('Something is wrong with the pid');
+        this.startProcess(pid);
         return next();
       });
+
       result.on('exit', () => {
-        // if (typeof res.locals.pid !== 'number') throw new Error();
-        // this.endProcess(res.locals.pid);
+        // no matter how the process ends, either on its own or from a command
+        // this will run when the child process terminates
+        if (typeof res.locals.pid !== 'number') throw new Error();
+        this.endProcess(res.locals.pid);
         console.log('child process exited gracefully - pid:', res.locals.pid);
       });
     } catch (err) {
@@ -61,11 +80,18 @@ const applicationController: ApplicationControllerType = {
         'nodeLaunch',
       ));
     }
-  },
-  nodeKill: (req: Request, res: Response, next: NextFunction) => {
-    // retrieve the pid from somewhere
+  };
+
+  public nodeKill = (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { pid } = req.body;
+      const reqBody: BodyWithPid | object = req.body as BodyWithPid | object;
+      if (!('pid' in reqBody)) {
+        throw new Error('There was an issue with the request body given to nodeKill');
+      }
+      const { pid } = reqBody;
+      // check if node process is currently running
+      // if not, return an error
+      if (typeof pid !== 'number') throw new TypeError('Incorrect type passed in to req.body');
       const result = process.kill(pid);
       console.log('child process killed?', result, ' - pid: ', pid);
       return next();
@@ -76,7 +102,7 @@ const applicationController: ApplicationControllerType = {
         controller: 'application.Controller',
       });
     }
-  },
-};
+  };
+}
 
-export default applicationController;
+export default new ApplicationController();
