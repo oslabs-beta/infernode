@@ -9,14 +9,15 @@ import {
   Col,
 } from 'react-bootstrap';
 import CaptureSidebar from './CaptureSidebar';
-import { startApp, stopApp, startCapture, checkIsAppRunning } from '../../store/appSlice';
+import { startApp, stopApp, startCapture, checkIsAppRunning, checkIsAppCapturing } from '../../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import AppStatusCircle from './AppStatusCircle';
 
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const { pid, appName, isAppRunning } = useAppSelector((state) => state.app);
+  const { pid, appName, isAppRunning, isAppCapturing } = useAppSelector((state) => state.app);
   const [appId, setAppId] = useState<number | null>(null);
+  const [capId, setCapId] = useState<number | null>(null);
 
   console.log('start app polling 1', isAppRunning);
   useEffect(() => {
@@ -28,8 +29,22 @@ export default function CapturePage(): JSX.Element {
       console.log('start app polling 4');
       console.log('appId', appId);
       if (appId) clearInterval(appId);
+      if (capId) clearInterval(capId); // if app no longer running, stop cap imediately?
     }
   },  [isAppRunning]);
+
+
+  useEffect(() => {
+    if (isAppCapturing) {
+      const newCapId = setInterval(() => dispatch(checkIsAppCapturing()), 10000);
+      setCapId(Number(newCapId));
+      console.log('start cap polling 5');
+    } else {
+      console.log('start cap polling 6');
+      console.log('capId', capId);
+      if (capId) clearInterval(capId);
+    }
+  },  [isAppCapturing]);
 
   return (
     <div>
