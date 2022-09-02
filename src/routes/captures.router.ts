@@ -11,7 +11,7 @@ const captureRouter = Router();
 
 // Create new flamegraph from a .perf
 captureRouter.post(
-  '/',
+  '/flamegraph',
   dbController.createEmptyRecord,
   fileController.addData,
   flamegraph.stackCollapse,
