@@ -3,7 +3,7 @@ import {
   Stack,
   Spinner,
 } from 'react-bootstrap';
-import { useAppSelector} from '../../store/hooks';
+import { useAppSelector } from '../../store/hooks';
 
 export default function AppStatusCircle() {
   const { isAppRunning } = useAppSelector((state) => state.app);
