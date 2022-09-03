@@ -9,13 +9,6 @@ import icicleController from '../controllers/icicle.controller';
 
 const captureRouter = Router();
 
-
-// fake reqeust to start app: response value is pid
-captureRouter.post('/startApp', /* req.body has appName, relativePath => middlewarelogic: start app, */ (req: Request, res: Response) => {
-  console.log('start App request sucessfully, req.body is ', req.body);
-  return res.status(200).json('12345');
-});
-
 // Create new flamegraph from a .perf
 captureRouter.post(
   '/flamegraph',

@@ -47,15 +47,13 @@ class ApplicationController {
       ));
     }
     res.locals.status = reqBody.pid in this.runningProcesses;
-    console.log('Node process -', reqBody.pid, 'is currently:', res.locals.status);
+    console.log(res.locals.status);
     return next();
   };
 
   public nodeLaunch = (req: Request, res: Response, next: NextFunction): void => {
     // recieve executable filepath and second from user
-    // console.log('req.body is ', req.body);
     const reqBody = req.body as ReqBody | object;
-    // console.log('reqBody is ', reqBody);
     if (!isReqBody(reqBody)) {
       return next(new InfernodeError(
         'something failed while verifying req.body',
@@ -67,6 +65,7 @@ class ApplicationController {
     try {
       const filePath: string = path.resolve(__dirname, `${reqBody.filePath}`);
       res.locals.filePath = filePath;
+      // refactor to match front end
       const result = spawn(`node ${filePath}`, { shell: true });
       // result will be a child process
       result.on('spawn', () => {
@@ -105,9 +104,17 @@ class ApplicationController {
       // check if node process is currently running
       // if not, return an error
       if (typeof pid !== 'number') throw new TypeError('Incorrect type passed in to req.body');
-      const result = process.kill(pid);
-      console.log('child process killed?', result, ' - pid: ', pid);
-      return next();
+      if (reqBody.pid in this.runningProcesses) {
+        const result = process.kill(pid);
+        console.log('child process killed?', result, ' - pid: ', pid);
+        return next();
+      }
+      return next({
+        userMessage: 'attempted to stop process that is not running',
+        message: 'Process not found in runningProcesses',
+        controller: 'application.Controller',
+        httpStatus: 412,
+      });
     } catch (err) {
       return next({
         userMessage: 'something went wrong with the nodeStop command',
