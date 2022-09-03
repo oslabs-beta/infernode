@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { execSync } from 'child_process';
 import logger from '../utils/logging';
+import os from 'os';
 
 /**
  * Detects environment configuration for later reference by other middleware
@@ -28,7 +29,11 @@ export default class EnvController {
         this.os = 'mac';
         return;
       case 'linux':
-        this.os = 'linux';
+        if (os.release().toLowerCase().includes('microsoft')) {
+          this.os = 'windows';
+        } else {
+          this.os = 'linux';
+        }
         return;
       case 'win32':
         this.os = 'windows';
@@ -57,7 +62,7 @@ export default class EnvController {
     switch (this.os) {
       case 'mac':
       case 'linux':
-        sudoCommands = execSync('sudo -l').toString();
+        sudoCommands = execSync('sudo -l -n').toString();
         sudoAll = /\(ALL : ALL\) NOPASSWD: ALL/.test(sudoCommands);
         logger.trace(`Checking sudo all on ${this.os}: ${(sudoAll ? 'sufficient' : 'insufficient')}`);
         break;
