@@ -2,28 +2,27 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AppSliceStateType {
-  isAppRunning: boolean,
-  isAppCapturing: boolean,
+  isAppRunning: boolean | null,
+  isAppCapturing: boolean | null,
   duration: number | null,
   appName: string | null,
   filePath: string | null,
-  pid: string | null,
+  pid: number | null,
 }
 
 interface StartAppPayloadType {
-  appName: string | null;
-  filePath: string | null;
+  appName: string | null,
+  filePath: string | null,
 }
 
 interface StartCapturePayloadType {
-  pid: string | null;
-  duration: number | null;
-  appName: string | null;
+  pid: number | null,
+  duration: number | null,
 }
 
 const checkIsAppRunning = createAsyncThunk(
   'app/checkIsAppRunning',
-  async (pid: string | null) => {
+  async (pid: number | null) => {
     console.log('start app polling action');
     const appStatus = Boolean(await fetch('/api/app/status', {
       method: 'POST',
@@ -41,7 +40,7 @@ const checkIsAppRunning = createAsyncThunk(
 const checkIsAppCapturing = createAsyncThunk(
   'app/checkIsAppCapturing',
   async () => {
-    const captureStatus = String(await fetch('/api/appCapture').then((res) => res.json()));
+    const captureStatus = Boolean(await fetch('/api/appCapture').then((res) => res.json()));
     return captureStatus;
   },
 );
@@ -51,8 +50,8 @@ const startApp = createAsyncThunk(
   async (args: StartAppPayloadType) => {
     console.log('start callback');
     // console.log('args before the fetch request to api/app/start', args);
-    if (!args.appName || !args.filePath) return new Error('invalid entries');
-    const pid = String(await fetch('/api/app/start', {
+    if (!args.appName || !args.filePath) console.log('entries not valid');
+    const pid = Number(await fetch('/api/app/start', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +67,7 @@ const startApp = createAsyncThunk(
 );
 const stopApp = createAsyncThunk(
   'api/stopApp',
-  async (pid: string | null) => {
+  async (pid: number | null) => {
     if (!pid) throw new Error('pid doesn\'t exist');
     console.log('stop callback');
     await fetch('/api/app/stop', {
@@ -86,7 +85,7 @@ const stopApp = createAsyncThunk(
 const startCapture = createAsyncThunk(
   'api/startCapture',
   async (args: StartCapturePayloadType) => {
-    console.log('start capture callback');
+    console.log('start capture callback', args, ' is args');
     await fetch('/api/dTrace/flamegraph', {
       method: 'POST',
       headers: {
@@ -95,7 +94,6 @@ const startCapture = createAsyncThunk(
       body: JSON.stringify({
         duration: args.duration,
         pid: args.pid,
-        appName: args.appName,
       }),
     }).then((res) => res.json());
     console.log('finished start capture callback');
@@ -103,8 +101,8 @@ const startCapture = createAsyncThunk(
 );
 
 const initialState: AppSliceStateType = {
-  isAppRunning: false,
-  isAppCapturing: false,
+  isAppRunning: null,
+  isAppCapturing: null,
   duration: null,
   appName: null,
   filePath: null,
@@ -131,17 +129,17 @@ const appSlice = createSlice({
       }
     });
 
-    builder.addCase(checkIsAppCapturing.fulfilled, (state, action: PayloadAction<string>) => {
-      if (action.payload === 'finished' && state.isAppCapturing) { // fake string
+    builder.addCase(checkIsAppCapturing.fulfilled, (state, action: PayloadAction<boolean>) => {
+      if (action.payload === false && state.isAppCapturing) {
         // update appSlice state
         state.isAppCapturing = false;
         state.duration = null;
       }
     });
 
-    builder.addCase(startApp.fulfilled, (state, action: PayloadAction<string | Error>) => {
+    builder.addCase(startApp.fulfilled, (state, action: PayloadAction<number | null>) => {
       state.isAppRunning = true;
-      state.pid = String(action.payload);
+      state.pid = action.payload;
       console.log('startApp is fullfilled state.pid is ', state.pid, state.isAppRunning);
     });
 
