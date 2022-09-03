@@ -22,6 +22,8 @@ export default function CapturePage(): JSX.Element {
   const {
     pid, appName, isAppRunning, isAppCapturing,
   } = useAppSelector((state) => state.app);
+
+  // useState hooker is used to persist interval id inside useEffect hooker
   const [appId, setAppId] = useState<number | null>(null);
   const [capId, setCapId] = useState<number | null>(null);
 
@@ -131,7 +133,7 @@ export default function CapturePage(): JSX.Element {
                     const duration = Number(durationString);
                     console.log(duration);
                     console.log('pid is', pid);
-                    const func = () => dispatch(startCapture({ pid, duration, appName }));
+                    const func = () => dispatch(startCapture({ pid, duration }));
                     func()
                       .catch((err) => {
                         console.log('Error in Start Capture onclick event: ', err);
