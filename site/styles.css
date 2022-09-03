@@ -1,0 +1,51 @@
+body {
+  background-color: rgb(3, 3, 10);
+}
+
+.overlay-text {
+  position: absolute;
+  top: 20%;
+  left: 5%;
+  /* transform: translate(-50%, 50%); */
+  font-size: 50px;
+  font-family: mont
+}
+
+.main-content {
+  position: relative;
+  text-align: center;
+  color: white;
+}
+
+.section-title {
+  font-size: 70px;
+  color: white;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
+
+.dev-team {
+  display: flex;
+  margin: 5%;
+  justify-content: space-evenly;
+}
+
+.dev-team-links {
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 40px;
+}
+
+.card-body {
+  background-color: gray;
+  border-color: gray;
+}
+
+.spacer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+  font-size: 50px;
+  color: gray;
+}

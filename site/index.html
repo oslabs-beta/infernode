@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Infernode: Convenient Flamegraphs</title>
+    <title>Infernode 🔥</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-  </head>
+    <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
+<!-- navbar -->
     <nav  class="navbar navbar-expand-lg bg-light">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">INFERNOde</a>
@@ -48,9 +49,142 @@
         </div>
       </div>
     </nav>
-
-
+<!-- end of navbar -->
+    <div class="main-content">
+      <img src="./images/blue-flame.jpg" class="img-fluid" class="main-content"width=100%/>
+      <div class="overlay-text">
+        <img src="./images/logo-light.png" width="500px">
+        <span>Performance optimization and flamegraph visualizing tool</span>
+      </div>
     </div>
+    <img src="./images/blue-flame-inverted.jpg" class="img-fluid" class="main-content" width=100%/>
+<!-- spacer between main content and carousel -->
+    <!-- <div class="main-content">
+      <p class="section-title">Node.js Optimization</p>
+    </div> -->
+<!-- carousel -->
+    <!-- <div style="background-image: url('./images/blue-flame-inverted.jpg');"> -->
+    <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="false" width="100px">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <!-- <iframe src="./images/flamegraph.svg" height="700px" class="d-block w-100" /> -->
+          <img src="./images/flamegraph.svg" height="500px" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Flamegraphs</h5>
+            <p>We automatically generate flamegraphs for you to quickly identify bottlenecks in your application</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="./images/icicle.svg" height="500px" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Icicle charts</h5>
+            <p>Use icicle charts to cool down those hot spots</p>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="./images/differential2.svg" height="500px" class="d-block w-100" alt="...">
+          <div class="carousel-caption d-none d-md-block">
+            <h5>Differential Flamegraphs</h5>
+            <p>Generate differential flamegraphs to find performance changes in different version of your application</p>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <!-- </div> -->
+<!-- end of carousel -->
+    <div class="spacer">
+      <p class="spacer">The Development Team</p>
+    </div>
+<!-- dev team cards -->
+    <div class="dev-team">
+      <div class="card" style="width: 18rem;">
+        <img src="./images/chase.jpeg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Chase Walters</h5>
+          <p class="card-text">Software Engineer</p>
+            <div class="dev-team-links">
+              <a href="https://www.linkedin.com/in/charleswwalters/">
+                <img src="./images/linkedin-logo.png" width="35">
+              <a href="https://github.com/seadubs">
+                <img src="./images/github-logo.png" width="35">
+              </a>
+            </div>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <img src="./images/Dzidupe.jpeg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Dzidupe Enin-Kattah</h5>
+          <p class="card-text">Software Engineer</p>
+            <div class="dev-team-links">
+              <a href="https://www.linkedin.com/in/dzidupe-enin-kattah-5049b2202/">
+                <img src="./images/linkedin-logo.png" width="35">
+              <a href="https://github.com/dzidupe">
+                <img src="./images/github-logo.png" width="35">
+              </a>
+            </div>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <img src="./images/Hui.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Hui Mu</h5>
+          <p class="card-text">Software Engineer</p>
+            <div class="dev-team-links">
+              <a href="https://www.linkedin.com/in/huimu/">
+                <img src="./images/linkedin-logo.png" width="35">
+              <a href="https://github.com/hui-mu">
+                <img src="./images/github-logo.png" width="35">
+              </a>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="dev-team">
+      <div class="card" style="width: 18rem;">
+        <img src="./images/Luke.jpeg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Luke Roberts</h5>
+          <p class="card-text">Software Engineer</p>
+            <div class="dev-team-links">
+              <a href="https://www.linkedin.com/in/luke-roberts0/">
+                <img src="./images/linkedin-logo.png" width="35">
+              <a href="https://github.com/8000meters">
+                <img src="./images/github-logo.png" width="35">
+              </a>
+            </div>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <img src="./images/Will.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Will Mack</h5>
+          <p class="card-text">Software Engineer</p>
+            <div class="dev-team-links">
+              <a href="">
+                <img src="./images/linkedin-logo.png" width="35">
+              <a href="https://github.com/willmackIII">
+                <img src="./images/github-logo.png" width="35">
+              </a>
+            </div>
+        </div>
+      </div>
+      </div>div>
+      
+    <!-- </div> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
   </body>
 </html>
