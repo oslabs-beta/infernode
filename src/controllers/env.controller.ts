@@ -61,7 +61,7 @@ export default class EnvController {
     switch (this.os) {
       case 'mac':
       case 'linux':
-        sudoCommands = execSync('sudo -l').toString();
+        sudoCommands = execSync('sudo -l -n').toString();
         sudoAll = /\(ALL : ALL\) NOPASSWD: ALL/.test(sudoCommands);
         console.log(`Checking sudo all on ${this.os}: ${(sudoAll ? 'sufficient' : 'insufficient')}`);
         break;
