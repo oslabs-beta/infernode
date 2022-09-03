@@ -4,6 +4,7 @@ import DtraceController from '../controllers/dTrace.controller';
 import flamegraphController from '../controllers/flamegraphController';
 import icicleController from '../controllers/icicle.controller';
 import applicationController from '../controllers/application.controller';
+import { envController } from '../controllers/controllers.module';
 
 const dtraceRouter = Router();
 
@@ -11,6 +12,7 @@ const dtraceRouter = Router();
 dtraceRouter.post(
   '/flamegraph',
   // applicationController.getPID
+  envController.detect,
   dbController.createEmptyRecord,
   DtraceController.runDtrace,
   DtraceController.foldDtrace,
@@ -24,6 +26,7 @@ dtraceRouter.post(
 dtraceRouter.post(
   '/icicle',
   // applicationController.getPID
+  envController.detect,
   dbController.createEmptyRecord,
   DtraceController.runDtrace,
   DtraceController.foldDtrace,
@@ -36,6 +39,7 @@ dtraceRouter.post(
 // start node app, create a new flamegraph with a dtrace
 dtraceRouter.post(
   '/run/flamegraph',
+  envController.detect,
   dbController.createEmptyRecord,
   applicationController.nodeLaunch,
   DtraceController.runDtrace,
@@ -49,6 +53,7 @@ dtraceRouter.post(
 // start node app, create a new icicle chart with a dtrace
 dtraceRouter.post(
   '/run/icicle',
+  envController.detect,
   dbController.createEmptyRecord,
   applicationController.nodeLaunch,
   DtraceController.runDtrace,
