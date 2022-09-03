@@ -25,7 +25,9 @@ export default function CapturePage(): JSX.Element {
   } = useAppSelector((state) => state.app);
   const [appId, setAppId] = useState<number | null>(null);
   const [capId, setCapId] = useState<number | null>(null);
-  dispatch(setActivePage('/capture'));
+  useEffect(() => {
+    dispatch(setActivePage('/capture'));
+  });
 
   // const dispatchMemo = useCallback(dispatch, [dispatch]);
   // const appIdMemo = useMemo(() => appId, [appId]);
