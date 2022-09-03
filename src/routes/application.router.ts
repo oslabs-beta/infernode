@@ -8,7 +8,7 @@ applicationRouter.post(
   '/start',
   ApplicationController.nodeLaunch,
   (_req: Request, res: Response) => {
-    res.status(200).send('node app launched');
+    res.status(200).json(res.locals.pid);
   },
 );
 
@@ -17,7 +17,7 @@ applicationRouter.post(
   '/stop',
   ApplicationController.nodeKill,
   (_req: Request, res: Response) => {
-    res.status(200).send('Congrats! Your child process was successfully murdered');
+    res.status(200).send('Congrats! Your child process was successfully killed');
   },
 );
 
@@ -26,7 +26,7 @@ applicationRouter.post(
   '/status',
   ApplicationController.getStatus,
   (_req: Request, res: Response) => {
-    res.status(200).send(res.locals.status);
+    res.status(200).json(res.locals.status);
   },
 );
 
