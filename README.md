@@ -1,5 +1,9 @@
 # infernode
+
 Current version: 1.0.0
+![build tests](https://github.com/oslabs-beta/infernode/actions/workflows/node.js.yml/badge.svg)
+![website deployment](https://github.com/oslabs-beta/infernode/actions/workflows/pages.yml/badge.svg)
+
 
 Flamegraph tool for node.js
 
