@@ -38,7 +38,6 @@ class ApplicationController {
 
   public getStatus = (req: Request, res: Response, next: NextFunction) => {
     const reqBody = req.body as object | BodyWithPid;
-    console.log('getStatus app controller req.body', reqBody);
     if (!('pid' in reqBody) || typeof reqBody.pid !== 'number') {
       return next(new InfernodeError(
         'There was an issue with the pid given to getStatus via req.body',
@@ -48,7 +47,7 @@ class ApplicationController {
       ));
     }
     res.locals.status = reqBody.pid in this.runningProcesses;
-    console.log(res.locals.status);
+    console.log('Node process -', reqBody.pid, 'is currently:', res.locals.status);
     return next();
   };
 
@@ -68,7 +67,6 @@ class ApplicationController {
     try {
       const filePath: string = path.resolve(__dirname, `${reqBody.filePath}`);
       res.locals.filePath = filePath;
-      // refactor to match front end
       const result = spawn(`node ${filePath}`, { shell: true });
       // result will be a child process
       result.on('spawn', () => {
