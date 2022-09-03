@@ -34,7 +34,7 @@ export default function CapturePage(): JSX.Element {
   console.log('start app polling 1', isAppRunning);
   useEffect(() => {
     if (isAppRunning) {
-      const newAppId = setInterval(() => dispatch(checkIsAppRunning()), 10000);
+      const newAppId = setInterval(() => dispatch(checkIsAppRunning(pid)), 10000);
       setAppId(Number(newAppId));
       console.log('start app polling 3');
     } else {
@@ -50,14 +50,26 @@ export default function CapturePage(): JSX.Element {
     if (isAppCapturing) {
       const newCapId = setInterval(() => dispatch(checkIsAppCapturing()), 10000);
       setCapId(Number(newCapId));
-      console.log('start cap polling 5');
+      // console.log('start cap polling 5');
     } else {
-      console.log('start cap polling 6');
-      console.log('capId', capId);
+      // console.log('start cap polling 6');
+      // console.log('capId', capId);
       if (capId) clearInterval(capId);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAppCapturing]);
+
+  const startAppEvent = async () => {
+    console.log('click start app button');
+    const appNameElement = document.getElementById('appName') as HTMLInputElement;
+    const relativePathElement = document.getElementById('relativePath') as HTMLInputElement;
+    if (appNameElement && relativePathElement) {
+      const newAppName: string = appNameElement.value;
+      const filePath: string = relativePathElement.value;
+      console.log('in click event view =>', appName, filePath);
+      await dispatch(startApp({ appName: newAppName, filePath }));
+    }
+  };
 
   return (
     <div>
@@ -81,19 +93,7 @@ export default function CapturePage(): JSX.Element {
                 variant="success"
                 size="lg"
                 onClick={() => {
-                  const func = async () => {
-                    console.log('click start app button');
-                    const appNameElement = document.getElementById('appName') as HTMLInputElement;
-                    const relativePathElement = document.getElementById('relativePath') as HTMLInputElement;
-                    if (appNameElement && relativePathElement) {
-                      const newAppName: string = appNameElement.value;
-                      const relativePath: string = relativePathElement.value;
-                      console.log('in click event view =>', appName, relativePath);
-                      await dispatch(startApp({ appName: newAppName, relativePath }));
-                    }
-                  };
-                  // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                  func().catch((err) => console.log('Err in start app button', err));
+                  startAppEvent().catch((err) => console.log('Err in start app button', err));
                 }}
               >
                 Start Application
@@ -137,7 +137,7 @@ export default function CapturePage(): JSX.Element {
                     const duration = Number(durationString);
                     console.log(duration);
                     console.log('pid is', pid);
-                    const func = () => dispatch(startCapture({ pid, duration, appName }));
+                    const func = () => dispatch(startCapture({ pid, duration }));
                     func()
                       .catch((err) => {
                         console.log('Error in Start Capture onclick event: ', err);

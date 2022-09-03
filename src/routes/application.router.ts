@@ -8,25 +8,25 @@ applicationRouter.post(
   '/start',
   ApplicationController.nodeLaunch,
   (_req: Request, res: Response) => {
-    res.status(200).send('node app launched');
+    res.status(200).json(res.locals.pid);
   },
 );
 
 // stop the application
-applicationRouter.get(
+applicationRouter.post(
   '/stop',
   ApplicationController.nodeKill,
   (_req: Request, res: Response) => {
-    res.status(200).send('Congrats! Your child process was successfully murdered');
+    res.status(200).send('Congrats! Your child process was successfully killed');
   },
 );
 
 // route to access the back-end state of current running node apps
-applicationRouter.get(
+applicationRouter.post(
   '/status',
   ApplicationController.getStatus,
   (_req: Request, res: Response) => {
-    res.status(200).send(res.locals.status);
+    res.status(200).json(res.locals.status);
   },
 );
 
