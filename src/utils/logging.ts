@@ -1,4 +1,3 @@
-import { Request, Response } from 'express';
 import pino from 'pino';
 import pinoHttp from 'pino-http';
 
@@ -24,12 +23,14 @@ const logger = pino(
 
 const httpLogger = pinoHttp({
   logger,
-  customLogLevel(req, res, err) {
+  customLogLevel(_req, res, err) {
     if (res.statusCode >= 400 && res.statusCode < 500) {
       return 'warn';
-    } if (res.statusCode >= 500 || err) {
+    }
+    if (res.statusCode >= 500 || err) {
       return 'error';
-    } if (res.statusCode >= 300 && res.statusCode < 400) {
+    }
+    if (res.statusCode >= 300 && res.statusCode < 400) {
       return 'debug';
     }
     return 'info';
