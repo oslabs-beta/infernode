@@ -3,9 +3,9 @@ import fs from 'fs';
 import path from 'path';
 
 import flamegraph from '../controllers/flamegraphController'
-import { fileController } from '../controllers/controllers.module'
 import dbControllerInstance from '../controllers/db.controller'
 import captureDB from '../models/captureModel';
+import logger from '../utils/logging';
 
 // please see official docs for reference: https://jestjs.io/docs/using-matchers
 
@@ -80,9 +80,9 @@ describe('Flamegraph generating controller test: requires valid .perf in db', ()
 
     xit('creates a .folded file that is not empty', async () => {
       const test = await fs.readFile(path.resolve(__dirname, `../..database/folded/${num}.folded`), (err, data) => {
-        console.log(data)
-       })
-      console.log(`test is ${test}`)
+        logger.debug(data)
+      })
+      logger.debug(`test is ${test}`)
       expect(test).toBeTruthy()
     });
   });

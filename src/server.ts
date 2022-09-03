@@ -2,7 +2,7 @@ import express, {
   Application, Router, ErrorRequestHandler,
 } from 'express';
 import path from 'path';
-import { httpLogger } from './utils/logging';
+import logger, { httpLogger } from './utils/logging';
 
 /**
  * Represents an Express.js server application with an api, health, and static file serving
@@ -85,8 +85,8 @@ export default class Server {
   public listen() {
     this.app.listen(this.port, () => {
       // eslint-disable-next-line no-console
-      console.log(
-        `${new Date().toLocaleString()}: Express.js listening on port ${this.port}`,
+      logger.info(
+        `Express.js listening on port ${this.port}`,
       );
     });
   }
