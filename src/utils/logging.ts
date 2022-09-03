@@ -1,3 +1,4 @@
+import { Request, Response } from 'express';
 import pino from 'pino';
 import pinoHttp from 'pino-http';
 
@@ -29,7 +30,7 @@ const httpLogger = pinoHttp({
     } if (res.statusCode >= 500 || err) {
       return 'error';
     } if (res.statusCode >= 300 && res.statusCode < 400) {
-      return 'silent';
+      return 'debug';
     }
     return 'info';
   },
