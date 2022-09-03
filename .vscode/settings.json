@@ -6,6 +6,7 @@
     "flamegraphs",
     "immer",
     "infernode",
+    "pino",
     "reduxjs"
   ]
 }
