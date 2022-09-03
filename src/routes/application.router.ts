@@ -8,7 +8,7 @@ applicationRouter.post(
   '/start',
   ApplicationController.nodeLaunch,
   (_req: Request, res: Response) => {
-    res.status(200).send('node app launched');
+    res.status(200).json(res.locals.pid);
   },
 );
 
