@@ -14,7 +14,7 @@ body {
 .main-content {
   position: relative;
   text-align: center;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 .section-title {
@@ -46,6 +46,6 @@ body {
   align-items: center;
   justify-content: center;
   margin-top: 10%;
-  font-size: 50px;
+  font-size: 70px;
   color: gray;
 }
