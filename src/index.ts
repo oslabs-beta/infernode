@@ -4,14 +4,6 @@ import apiRouter from './routes/api.router';
 import HealthRouter from './routes/health.router';
 import NotFoundRouter from './routes/notFound.router';
 import { globalErrorHandler } from './utils/globalErrorHandler';
-import { detectOS, detectSudo, detectSupport } from './utils/detectOS';
-
-// Test OS support
-const os = detectOS();
-const support = detectSupport();
-const sudo = detectSudo();
-console.log(`STARTUP: detected ${(support ? 'supported' : 'unsupported')} OS: ${os}`);
-console.log(`STARTUP: sudo configuration is ${(sudo ? 'sufficient' : 'insufficient')}`);
 
 dotenv.config();
 
