@@ -30,6 +30,7 @@ module.exports = {
     "coverage/",
     "src/public",
     "src/examples/",
+    "./site/"
   ],
   env: {
     browser: true,

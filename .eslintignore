@@ -3,3 +3,4 @@ jest-setup.js
 jest-teardown.js
 webpack.*.js
 node_modules/**/*
+/site
