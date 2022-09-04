@@ -43,6 +43,13 @@ body {
 }
 /* rtl:end:ignore */
 
+.dev-team-header {
+  font-size: 300%;
+  display: flex;
+  justify-content: center;
+  margin-top: 15%;
+  margin-bottom: 10%;
+}
 
 /* Featurettes
 ------------------------- */
@@ -80,4 +87,17 @@ body {
   .featurette-heading {
     margin-top: 7rem;
   }
+}
+
+.spacer {
+  margin-top:10%;
+}
+
+.header-gh-spacer {
+  margin-right: .9rem;
+  margin-left: .6rem;
+}
+.header-li-spacer {
+  margin-right: .8rem;
+  margin-left: .6rem;
 }
