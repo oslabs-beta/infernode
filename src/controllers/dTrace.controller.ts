@@ -32,6 +32,11 @@ type ReqBodyPID = {
 
 const DtraceController: DtraceControllerType = {
   runDtrace: (req: Request, res: Response, next: NextFunction) => {
+    if (res.locals?.envOS !== 'mac') {
+      console.log('Skipping dtrace capture due to OS');
+      return next();
+    }
+    if (!res.locals?.envSudo) throw new Error('skipping dtrace capture due to insufficient sudo permissions');
     try {
       const reqBody = req.body as ReqBodyPID;
       const resLocals = res.locals as ReqBodyPID;
@@ -70,6 +75,10 @@ const DtraceController: DtraceControllerType = {
   },
 
   foldDtrace: (req: Request, res: Response, next: NextFunction) => {
+    if (res.locals?.envOS !== 'mac') {
+      console.log('Skipping dtrace folding due to OS');
+      return next();
+    }
     try {
       const { id } = res.locals;
       if (typeof id !== 'number') {
