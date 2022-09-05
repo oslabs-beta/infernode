@@ -1,0 +1,12 @@
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+main > .container {
+  padding: 60px 15px 0;
+}
+
+.header-li-spacer {
+  margin-right: .4rem;
+  margin-left: .4rem;
+}
