@@ -18,6 +18,8 @@ interface StartAppPayloadType {
 interface StartCapturePayloadType {
   pid: number | null,
   duration: number | null,
+  appName: string | null,
+  graphType: string;
 }
 
 const checkIsAppRunning = createAsyncThunk(
@@ -85,8 +87,9 @@ const stopApp = createAsyncThunk(
 const startCapture = createAsyncThunk(
   'api/startCapture',
   async (args: StartCapturePayloadType) => {
+    const endpoint = `/api/dTrace/${args.graphType}`;
     console.log('start capture callback', args, ' is args');
-    await fetch('/api/dTrace/flamegraph', {
+    await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -94,6 +97,7 @@ const startCapture = createAsyncThunk(
       body: JSON.stringify({
         duration: args.duration,
         pid: args.pid,
+        appName: args.appName,
       }),
     }).then((res) => res.json());
     console.log('finished start capture callback');

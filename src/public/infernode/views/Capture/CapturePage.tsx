@@ -114,7 +114,13 @@ export default function CapturePage(): JSX.Element {
             <AppStatusCircle />
           </Card>
           <Card>
-            <h4>Predetermined Capture Length</h4>
+            <Stack direction="horizontal" gap={3}>
+              <h4>Predetermined Capture Length</h4>
+              <Form.Select aria-label="Default select example" id="graphtype">
+                <option value="flamegraph">Capture a Flamegraph!</option>
+                <option value="icicle">Capture an Icegraph!</option>
+              </Form.Select>
+            </Stack>
             <Col>
               <Form.Group className="mb-3" controlId="AppDuration">
                 <Form.Label>Duration of Capture</Form.Label>
@@ -132,12 +138,16 @@ export default function CapturePage(): JSX.Element {
                   // grab duration
                   console.log('click the start capture button');
                   const durationElement = document.getElementById('duration') as HTMLInputElement;
+                  const graphTypeElement = document.getElementById('graphtype') as HTMLInputElement;
                   if (durationElement) {
                     const durationString: string = durationElement.value;
                     const duration = Number(durationString);
+                    const graphType: string = graphTypeElement.value;
                     console.log(duration);
                     console.log('pid is', pid);
-                    const func = () => dispatch(startCapture({ pid, duration }));
+                    const func = () => dispatch(startCapture({
+                      pid, duration, appName, graphType,
+                    }));
                     func()
                       .catch((err) => {
                         console.log('Error in Start Capture onclick event: ', err);
