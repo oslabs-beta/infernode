@@ -99,13 +99,13 @@
         <div>
           <!-- <input class="div-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
           <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
-          <a href="https://github.com/oslabs-beta/infernode"  class="header-gh-spacer">
-            <img src="../../images/Github-Logo-White.png" width="35"  class="header-gh-spacer">
+          <a href="https://github.com/oslabs-beta/infernode"  class="header-li-spacer" target="_blank">
+            <img src="../../images/Github-Logo-White.png" width="35"  class="header-li-spacer">
           </a>
-          <a href="https://www.linkedin.com/in/charleswwalters/" class="header-li-spacer">
+          <a href="https://www.linkedin.com/in/charleswwalters/" class="header-li-spacer" target="_blank">
             <img src="../../images/linkedin-logo.png" width="35" class="header-li-spacer">
           </a>
-          <a href="https://twitter.com/INFERNOde_dev" class="header-li-spacer">
+          <a href="https://twitter.com/INFERNOde_dev" class="header-li-spacer" target="_blank">
             <img src="../../images/twitter.png" width="45" class="header-li-spacer">
           </a>
         </div>
@@ -115,7 +115,7 @@
 </header>
 
 <aside class="bd-aside sticky-xl-top text-muted align-self-start mb-3 mb-xl-5 px-2">
-  <h2 class="h6 pt-4 pb-3 mb-4 border-bottom">On this page</h2>
+  <h2 class="h6 pt-4 pb-3 mb-4 border-bottom">INFERNOde Documentation</h2>
   <nav class="small" id="toc">
     <ul class="list-unstyled">
       <li class="my-2">
@@ -130,20 +130,15 @@
         <ul class="list-unstyled ps-3 collapse" id="forms-collapse">
           <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Uploading-Perf-Captures">Uploading Perf Captures</a></li>
           <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Dtrace">Dtrace</a></li>
-          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Making-Flamegraphs">Making Flamegraphs</a></li>
-          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Making-Icicle-Charts">Making Icicle Charts</a></li>
           <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Making-Differential-Flamegraphs">Making Differential Flamegraphs</a></li>
         </ul>
       </li>
       <li class="my-2">
-        <button class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#components-collapse" aria-controls="components-collapse">How to read the graphs</button>
+        <button class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#components-collapse" aria-controls="components-collapse">How to Read The Graphs</button>
         <ul class="list-unstyled ps-3 collapse" id="components-collapse">
-          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#buttons">Buttons</a></li>
-          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#card">Card</a></li>
-          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#carousel">Carousel</a></li>
-          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#dropdowns">Dropdowns</a></li>
-          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#progress">Progress</a></li>
-          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#scrollspy">Scrollspy</a></li>
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Flamegraphs">Flamegraphs</a></li>
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Icicle-Charts">Icicle Charts</a></li>
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Differential-Flamegraphs">Differential Flamegraphs</a></li>
         </ul>
       </li>
     </ul>
@@ -328,7 +323,7 @@
       </div>
     </article> 
     <!-- end of uploading perf captures tab-->
-
+<!-- start of dtrace tab -->
     <article class="my-3" id="Dtrace">
       <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
         <h3>Dtrace</h3>
@@ -379,7 +374,7 @@
                 </h4>
                 <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                   <div class="accordion-body">
-                    This is ideal if you want to include the first few seconds of your application's runtime in the dtrace. To do this, simply use the ____ 
+                    This is ideal if you your app has a short runtime or you want to include the first few seconds of your application's runtime in the dtrace. To do this, simply use the ____ 
                     option on the capture page. Provide a relative path to the application, the number of seconds you want the dtrace to run, and choose between
                     an icicle chart or a flamegraph. We will take care of the rest.
                   </div>
@@ -422,375 +417,159 @@
     </article> 
 <!-- end of dtrace tab -->
 
-<article class="my-3" id="Making-Flamegraphs">
-  <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-    <h3>Making Flamegraphs</h3>
-  </div>
+<!-- start of differntial flamegraph tab -->
 
-  <div>
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p class="display-1">Display 1</p>
-    <p class="display-2">Display 2</p>
-    <p class="display-3">Display 3</p>
-    <p class="display-4">Display 4</p>
-    <p class="display-5">Display 5</p>
-    <p class="display-6">Display 6</p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p class="h1">Heading 1</p>
-    <p class="h2">Heading 2</p>
-    <p class="h3">Heading 3</p>
-    <p class="h4">Heading 4</p>
-    <p class="h5">Heading 5</p>
-    <p class="h6">Heading 6</p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p class="lead">
-      This is a lead paragraph. It stands out from regular paragraphs.
-    </p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p>You can use the mark tag to <mark>highlight</mark> text.</p>
-    <p><del>This line of text is meant to be treated as deleted text.</del></p>
-    <p><s>This line of text is meant to be treated as no longer accurate.</s></p>
-    <p><ins>This line of text is meant to be treated as an addition to the document.</ins></p>
-    <p><u>This line of text will render as underlined.</u></p>
-    <p><small>This line of text is meant to be treated as fine print.</small></p>
-    <p><strong>This line rendered as bold text.</strong></p>
-    <p><em>This line rendered as italicized text.</em></p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <hr>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <blockquote class="blockquote">
-      <p>A well-known quote, contained in a blockquote element.</p>
-      <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-    </blockquote>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <ul class="list-unstyled">
-      <li>This is a list.</li>
-      <li>It appears completely unstyled.</li>
-      <li>Structurally, it's still a list.</li>
-      <li>However, this style only applies to immediate child elements.</li>
-      <li>Nested lists:
-        <ul>
-          <li>are unaffected by this style</li>
-          <li>will still show a bullet</li>
-          <li>and have appropriate left margin</li>
-        </ul>
-      </li>
-      <li>This may still come in handy in some situations.</li>
-    </ul>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <ul class="list-inline">
-      <li class="list-inline-item">This is a list item.</li>
-      <li class="list-inline-item">And another one.</li>
-      <li class="list-inline-item">But they're displayed inline.</li>
-    </ul>
-    </div></div>
-
-  </div>
-</article> 
-<!-- end of making flamegraphs tab -->
-
-<article class="my-3" id="Making-Icicle-Charts">
-  <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-    <h3>Making Icicle Charts</h3>
-  </div>
-
-  <div>
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p class="display-1">Display 1</p>
-    <p class="display-2">Display 2</p>
-    <p class="display-3">Display 3</p>
-    <p class="display-4">Display 4</p>
-    <p class="display-5">Display 5</p>
-    <p class="display-6">Display 6</p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p class="h1">Heading 1</p>
-    <p class="h2">Heading 2</p>
-    <p class="h3">Heading 3</p>
-    <p class="h4">Heading 4</p>
-    <p class="h5">Heading 5</p>
-    <p class="h6">Heading 6</p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p class="lead">
-      This is a lead paragraph. It stands out from regular paragraphs.
-    </p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p>You can use the mark tag to <mark>highlight</mark> text.</p>
-    <p><del>This line of text is meant to be treated as deleted text.</del></p>
-    <p><s>This line of text is meant to be treated as no longer accurate.</s></p>
-    <p><ins>This line of text is meant to be treated as an addition to the document.</ins></p>
-    <p><u>This line of text will render as underlined.</u></p>
-    <p><small>This line of text is meant to be treated as fine print.</small></p>
-    <p><strong>This line rendered as bold text.</strong></p>
-    <p><em>This line rendered as italicized text.</em></p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <hr>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <blockquote class="blockquote">
-      <p>A well-known quote, contained in a blockquote element.</p>
-      <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-    </blockquote>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <ul class="list-unstyled">
-      <li>This is a list.</li>
-      <li>It appears completely unstyled.</li>
-      <li>Structurally, it's still a list.</li>
-      <li>However, this style only applies to immediate child elements.</li>
-      <li>Nested lists:
-        <ul>
-          <li>are unaffected by this style</li>
-          <li>will still show a bullet</li>
-          <li>and have appropriate left margin</li>
-        </ul>
-      </li>
-      <li>This may still come in handy in some situations.</li>
-    </ul>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <ul class="list-inline">
-      <li class="list-inline-item">This is a list item.</li>
-      <li class="list-inline-item">And another one.</li>
-      <li class="list-inline-item">But they're displayed inline.</li>
-    </ul>
-    </div></div>
-
-  </div>
-</article> 
-<!-- end of icicle charts tab -->
-
-<article class="my-3" id="#Making-Differential-Flamegraphs">
-  <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-    <h3>Making Differential Flamegraphs</h3>
-  </div>
-
-  <div>
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p class="display-1">Display 1</p>
-    <p class="display-2">Display 2</p>
-    <p class="display-3">Display 3</p>
-    <p class="display-4">Display 4</p>
-    <p class="display-5">Display 5</p>
-    <p class="display-6">Display 6</p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p class="h1">Heading 1</p>
-    <p class="h2">Heading 2</p>
-    <p class="h3">Heading 3</p>
-    <p class="h4">Heading 4</p>
-    <p class="h5">Heading 5</p>
-    <p class="h6">Heading 6</p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p class="lead">
-      This is a lead paragraph. It stands out from regular paragraphs.
-    </p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <p>You can use the mark tag to <mark>highlight</mark> text.</p>
-    <p><del>This line of text is meant to be treated as deleted text.</del></p>
-    <p><s>This line of text is meant to be treated as no longer accurate.</s></p>
-    <p><ins>This line of text is meant to be treated as an addition to the document.</ins></p>
-    <p><u>This line of text will render as underlined.</u></p>
-    <p><small>This line of text is meant to be treated as fine print.</small></p>
-    <p><strong>This line rendered as bold text.</strong></p>
-    <p><em>This line rendered as italicized text.</em></p>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <hr>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <blockquote class="blockquote">
-      <p>A well-known quote, contained in a blockquote element.</p>
-      <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-    </blockquote>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <ul class="list-unstyled">
-      <li>This is a list.</li>
-      <li>It appears completely unstyled.</li>
-      <li>Structurally, it's still a list.</li>
-      <li>However, this style only applies to immediate child elements.</li>
-      <li>Nested lists:
-        <ul>
-          <li>are unaffected by this style</li>
-          <li>will still show a bullet</li>
-          <li>and have appropriate left margin</li>
-        </ul>
-      </li>
-      <li>This may still come in handy in some situations.</li>
-    </ul>
-    </div></div>
-
-
-    <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-    <ul class="list-inline">
-      <li class="list-inline-item">This is a list item.</li>
-      <li class="list-inline-item">And another one.</li>
-      <li class="list-inline-item">But they're displayed inline.</li>
-    </ul>
-    </div></div>
-
-  </div>
-</article> 
-
-  </section>
-
-  <section id="graphs">
-    <h2 class="sticky-xl-top fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3">Graphs</h2>
-
-    <article class="my-3" id="accordion">
+    <article class="my-3" id="Making-Differential-Flamegraphs">
       <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-        <h3>Accordion</h3>
+        <h3>Making Differential Flamegraphs</h3>
       </div>
-
       <div>
         <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        <div class="accordion" id="accordionExample">
-          <div class="accordion-item">
-            <h4 class="accordion-header" id="headingOne">
-              <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                Accordion Item #1
-              </button>
-            </h4>
-            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-              <div class="accordion-body">
-                <strong>This is the first item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h4 class="accordion-header" id="headingTwo">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                Accordion Item #2
-              </button>
-            </h4>
-            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-              <div class="accordion-body">
-                <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-              </div>
-            </div>
-          </div>
-          <div class="accordion-item">
-            <h4 class="accordion-header" id="headingThree">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                Accordion Item #3
-              </button>
-            </h4>
-            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-              <div class="accordion-body">
-                <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-              </div>
-            </div>
-          </div>
+        <p class="lead">
+          Want to compare two versions of your code?
+        </p>
+        </div></div>
+
+
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <p>We can take any two flamegraphs and compare them to create a differential flamegraph that highlights what has changed.
+          All it takes is two existing flamegraphs. Navigate to the History page, then select the two flamegraphs you want to compare.
+          Keep in mind that it matters which graph you choose first. Differential flamegraphs are created using a 2-1 delta. 
+          The first graph you select will provide the starting point for the comparison.
+          The second graph will be evaluated <em>relative to the first graph.</em> This means that any part of the call stack that ran slower in the second graph,
+          when compared to the first graph, will be shaded red. While parts that ran faster will be shaded blue. 
+        </p>
+        For more on interpreting differential flamegraphs, check out the section below on how to read flamegraphs.
+        </div></div>
+        
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <hr>
         </div>
         </div></div>
 
+    </article> 
+<!-- end of diff charts tab -->
+
+
+
+  </section>
+<!-- start of 'how to read graphs' section -->
+  <section id="graphs">
+    <h2 class="sticky-xl-top fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3">Graphs</h2>
+    <!-- how to read flamegraphs -->
+    <article class="my-3" id="Flamegraphs">
+      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+        <h3>Flamegraphs</h3>
       </div>
-    </article>
+
+      <div>
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+
+          <div>
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+            <p class="lead">
+              Interpreting Flamegraphs
+            </p><br>
+            </div></div>
     
-    <article class="my-3" id="buttons">
-      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-        <h3>Buttons</h3>
-        <a class="d-flex align-items-center" href="../components/buttons/">Documentation</a>
+    
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+            <p>Understanding flamegraphs can be a bit confusing at first. So you came to the right place!
+            </p>
+            <p>
+              Flamegraphs are a visualization of stack traces of a profiled software application. They allow developers to quickly and easily identify
+              hot-spots in the code that are occupying too much time and generating excessive CPU demand. 
+              </p>
+              <p> Each rectangle on a flamechart represents a stack frame, but not necessarily one instance of that stack frame.
+                Flamegraphs are made by taking a sample of stack traces and collapsing matching stack frames
+                 together. So a function that appears on the call stack multiple times may only be represented by one single 
+                 stack frame in a flamegraph, where the total width of the single stack frame represents the total combined width of each of those individual stack frames.
+              </p>
+              <p>
+                 Because of this, the x-axis does not represent time. But rather, a <em>percentage</em> of time. The wider a stack frame is on a flamegraph,
+                 the more time it spent on the call stack, relative to the total application run time that was captured in the stack trace. 
+                 So if the bottom call frame on your flamegraph covers the full width of the graph, that means it was present at the bottom of the call
+                 stack for the entire duration of the application profiling.
+                 The x-axis is sorted alphabetically, and the wider a stack frame is, the more often it was present in the stacks.
+            </p>
+            <p>
+              Flamegraphs are made to be interactive. Not only can you see the function names for each stack frame, but if you click on it the graph will zoom
+              in on that stack frame. This makes it easier to focus in on certain areas of the stack trace to identify hot-spots.
+            </p>
+            <p>
+              The shading in a flamegraph does not have any significance other than looking cool, and providing visual differentiation between stack frames.
+              Check out the example flamegraph below.
+            </p><br>
+
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+              <figure class="figure">
+                <!-- <image> -->
+                  <!-- <title>Placeholder</title> -->
+                  <!-- <rect width="100%" height="100%" fill="#868e96"/> -->
+                  <!-- <image href="../../images/flamegraph-2.svg"></image> -->
+                  <!-- <text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text> -->
+                  <iframe src="../../images/flamegraph-2.svg" width="1000px"></iframe>
+                <!-- </image> -->
+      
+                <figcaption class="figure-caption">Click on any frame to zoom in! The plateau in the middle of this flamegraph is ripe for optimization.</figcaption>
+              </figure>
+              </div></div>
+            </div></div><br><br>
+
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+              <p class="lead">
+                Now that we have this beautiful data visualization, what do we do with it?
+              </p><br>
+              <p>
+                The purpose of this visual tool is to identify areas of the call stack where your application is spending 
+                <em>too much time.</em> That means you want to look for stack frames that are particularly wide. 
+                But not just any wide frame. The bottom stack frame might be the widest, but that doesn't necessarily
+                mean it is inefficient if it is spending all of it's time calling the other functions above it. 
+                </p>
+                <p>
+                The most inefficient areas
+                are indicated by plateaus in the flamegraph. A stack frame that is wide, and <em>on top</em> of the call stack
+                is what you want to look for. That indicates a process that is taking a long time to run itself. 
+              </p>
+                Take the example above.
+                Looking at the plateau in the center shows several stack frames that are present on the call stack a lot. 
+                Specifically the 
+                <code>LazyCompile:*get /home/ubuntu/CodeSmith/node-example-flamegraph/node_modules/fast-levenshtein/levenshtein.js:27</code>
+                call frame, and the ones above it. If you hover over this frame, you will see that it is present on the call stack 58.79% of the time.
+                12.63% of that is just this frame itself (to the left, where there are no frames above it). There are several frames above this one 
+                that also spend a lot of time running on the call stack. These are areas that need to be improved to optimize the overall
+                efficiency of this particular application. 
+
+              <br>
+              </div></div>
+              <br>
+            
+              <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+                <hr>
+              </div>
+              </div>
+
+          </div>
+        </div></div>
       </div>
 
-      <div>
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        
-        <button type="button" class="btn btn-primary">Primary</button>
-        <button type="button" class="btn btn-secondary">Secondary</button>
-        <button type="button" class="btn btn-success">Success</button>
-        <button type="button" class="btn btn-danger">Danger</button>
-        <button type="button" class="btn btn-warning">Warning</button>
-        <button type="button" class="btn btn-info">Info</button>
-        <button type="button" class="btn btn-light">Light</button>
-        <button type="button" class="btn btn-dark">Dark</button>
-
-        <button type="button" class="btn btn-link">Link</button>
-        </div></div>
-
-
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        
-        <button type="button" class="btn btn-outline-primary">Primary</button>
-        <button type="button" class="btn btn-outline-secondary">Secondary</button>
-        <button type="button" class="btn btn-outline-success">Success</button>
-        <button type="button" class="btn btn-outline-danger">Danger</button>
-        <button type="button" class="btn btn-outline-warning">Warning</button>
-        <button type="button" class="btn btn-outline-info">Info</button>
-        <button type="button" class="btn btn-outline-light">Light</button>
-        <button type="button" class="btn btn-outline-dark">Dark</button>
-        </div></div>
-
-
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        <button type="button" class="btn btn-primary btn-sm">Small button</button>
-        <button type="button" class="btn btn-primary">Standard button</button>
-        <button type="button" class="btn btn-primary btn-lg">Large button</button>
-        </div></div>
-
-      </div>
+      
     </article>
 
-    <article class="my-3" id="card">
+    <article class="my-3" id="Icicle-Charts">
       <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-        <h3>Card</h3>
-        <a class="d-flex align-items-center" href="../components/card/">Documentation</a>
+        <h3>Icicle Charts</h3>
       </div>
 
       <div>
+        
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <p class="lead">
+            Interpreting Flamegraphs
+          </p><br>
+          </div></div>
+
+
         <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
         <div class="row  row-cols-1 row-cols-md-2 g-4">
           <div class="col">
@@ -858,10 +637,9 @@
 
       </div>
     </article>
-    <article class="my-3" id="carousel">
+    <article class="my-3" id="Differential-Flamegraphs">
       <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-        <h3>Carousel</h3>
-        <a class="d-flex align-items-center" href="../components/carousel/">Documentation</a>
+        <h3>Differential-Flamegraphs</h3>
       </div>
 
       <div>
@@ -909,273 +687,6 @@
         </div>
         </div></div>
 
-      </div>
-    </article>
-    <article class="my-3" id="dropdowns">
-      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-        <h3>Dropdowns</h3>
-        <a class="d-flex align-items-center" href="../components/dropdowns/">Documentation</a>
-      </div>
-
-      <div>
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        <div class="btn-group w-100 align-items-center justify-content-between flex-wrap">
-          <div class="dropdown">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown button
-            </button>
-            <ul class="dropdown-menu">
-              <li><h6 class="dropdown-header">Dropdown header</h6></li>
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-          </div>
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown button
-            </button>
-            <ul class="dropdown-menu">
-              <li><h6 class="dropdown-header">Dropdown header</h6></li>
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-          </div>
-          <div class="dropdown">
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown button
-            </button>
-            <ul class="dropdown-menu">
-              <li><h6 class="dropdown-header">Dropdown header</h6></li>
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-          </div>
-        </div>
-        </div></div>
-
-
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        <div class="btn-group">
-          <button type="button" class="btn btn-primary">Primary</button>
-          <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="visually-hidden">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div><!-- /btn-group -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-secondary">Secondary</button>
-          <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="visually-hidden">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div><!-- /btn-group -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-success">Success</button>
-          <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="visually-hidden">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div><!-- /btn-group -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-info">Info</button>
-          <button type="button" class="btn btn-info dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="visually-hidden">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div><!-- /btn-group -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-warning">Warning</button>
-          <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="visually-hidden">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div><!-- /btn-group -->
-        <div class="btn-group">
-          <button type="button" class="btn btn-danger">Danger</button>
-          <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="visually-hidden">Toggle Dropdown</span>
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </div><!-- /btn-group -->
-        </div></div>
-
-
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        <div class="btn-group w-100 align-items-center justify-content-between flex-wrap">
-          <div class="dropend">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropend button
-            </button>
-            <ul class="dropdown-menu">
-              <li><h6 class="dropdown-header">Dropdown header</h6></li>
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-          </div>
-          <div class="dropup">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropup button
-            </button>
-            <ul class="dropdown-menu">
-              <li><h6 class="dropdown-header">Dropdown header</h6></li>
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-          </div>
-          <div class="dropstart">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropstart button
-            </button>
-            <ul class="dropdown-menu">
-              <li><h6 class="dropdown-header">Dropdown header</h6></li>
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-          </div>
-        </div>
-        </div></div>
-
-
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        <div class="btn-group">
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              End-aligned menu
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><h6 class="dropdown-header">Dropdown header</h6></li>
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Separated link</a></li>
-            </ul>
-          </div>
-        </div>
-        </div></div>
-
-      </div>
-    </article>
-
- 
-
-    <article class="my-3" id="progress">
-      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-        <h3>Progress</h3>
-        <a class="d-flex align-items-center" href="../components/progress/">Documentation</a>
-      </div>
-
-      <div>
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        <div class="progress mb-3">
-          <div class="progress-bar" role="progressbar" aria-label="Example with label" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-        </div>
-        <div class="progress mb-3">
-          <div class="progress-bar bg-success w-25" role="progressbar" aria-label="Success example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
-        </div>
-        <div class="progress mb-3">
-          <div class="progress-bar text-bg-info w-50" role="progressbar" aria-label="Info example with label" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">50%</div>
-        </div>
-        <div class="progress mb-3">
-          <div class="progress-bar text-bg-warning w-75" role="progressbar" aria-label="Warning example with label" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75%</div>
-        </div>
-        <div class="progress">
-          <div class="progress-bar bg-danger w-100" role="progressbar" aria-label="Danger example with label" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">100%</div>
-        </div>
-        </div></div>
-
-
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" aria-label="Segment one - default example" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
-          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" aria-label="Segment two - animated striped success example" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        </div></div>
-
-      </div>
-    </article>
-    <article class="my-3" id="scrollspy">
-      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
-        <h3>Scrollspy</h3>
-        <a class="d-flex align-items-center" href="../components/scrollspy/">Documentation</a>
-      </div>
-
-      <div>
-        <div class="bd-example">
-          <nav id="navbar-example2" class="navbar bg-light px-3">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <ul class="nav nav-pills">
-              <li class="nav-item">
-                <a class="nav-link active" href="#scrollspyHeading1">First</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#scrollspyHeading2">Second</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Dropdown</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#scrollspyHeading3">Third</a></li>
-                  <li><a class="dropdown-item" href="#scrollspyHeading4">Fourth</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#scrollspyHeading5">Fifth</a></li>
-                </ul>
-              </li>
-            </ul>
-          </nav>
-        <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" class="scrollspy-example position-relative mt-2 overflow-auto" tabindex="0">
-            <h4 id="scrollspyHeading1">First heading</h4>
-            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.</p>
-            <h4 id="scrollspyHeading2">Second heading</h4>
-            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.</p>
-            <h4 id="scrollspyHeading3">Third heading</h4>
-            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.</p>
-            <h4 id="scrollspyHeading4">Fourth heading</h4>
-            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.</p>
-            <h4 id="scrollspyHeading5">Fifth heading</h4>
-            <p>This is some placeholder content for the scrollspy page. Note that as you scroll down the page, the appropriate navigation link is highlighted. It's repeated throughout the component example. We keep adding some more example copy here to emphasize the scrolling and highlighting.</p>
-          </div>
-        </div>
       </div>
     </article>
    
