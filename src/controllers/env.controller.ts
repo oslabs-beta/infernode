@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { execSync } from 'child_process';
+import logger from '../utils/logging';
 import os from 'os';
 
 /**
@@ -17,8 +18,8 @@ export default class EnvController {
     this.detectOS();
     this.detectSupport();
     this.detectSudo();
-    console.log(`envController startup: detected ${(this.supported ? 'supported' : 'unsupported')} OS: ${this.os}`);
-    console.log(`envController startup: sudo configuration is ${(this.sudo ? 'sufficient' : 'insufficient')}`);
+    logger.debug(`envController startup: detected ${(this.supported ? 'supported' : 'unsupported')} OS: ${this.os}`);
+    logger.debug(`envController startup: sudo configuration is ${(this.sudo ? 'sufficient' : 'insufficient')}`);
   }
 
   private detectOS() {
@@ -63,29 +64,29 @@ export default class EnvController {
       case 'linux':
         sudoCommands = execSync('sudo -l -n').toString();
         sudoAll = /\(ALL : ALL\) NOPASSWD: ALL/.test(sudoCommands);
-        console.log(`Checking sudo all on ${this.os}: ${(sudoAll ? 'sufficient' : 'insufficient')}`);
+        logger.trace(`Checking sudo all on ${this.os}: ${(sudoAll ? 'sufficient' : 'insufficient')}`);
         break;
       case 'windows':
-        console.log('Sudo all unnecessary on windows');
+        logger.trace('Sudo all unnecessary on windows');
         break;
       default:
-        console.log('Unable to check sudo all on unsupported OS');
+        logger.trace('Unable to check sudo all on unsupported OS');
     }
 
     switch (this.os) {
       case 'mac':
         sudoTrace = /\(ALL\) NOPASSWD:.*\/usr\/sbin\/dtrace/.test(sudoCommands);
-        console.log(`Checking dtrace sudo on ${this.os}: ${(sudoTrace ? 'sufficient' : 'insufficient')}`);
+        logger.trace(`Checking dtrace sudo on ${this.os}: ${(sudoTrace ? 'sufficient' : 'insufficient')}`);
         break;
       case 'linux':
         sudoTrace = /\(ALL\) NOPASSWD:.*\/usr\/sbin\/perf/.test(sudoCommands);
-        console.log(`Checking perf sudo on ${this.os}: ${(sudoTrace ? 'sufficient' : 'insufficient')}`);
+        logger.trace(`Checking perf sudo on ${this.os}: ${(sudoTrace ? 'sufficient' : 'insufficient')}`);
         break;
       case 'windows':
-        console.log('Specific sudo unnecessary on windows');
+        logger.trace('Specific sudo unnecessary on windows');
         break;
       default:
-        console.log('Unable to check specific sudo on unsupported OS');
+        logger.trace('Unable to check specific sudo on unsupported OS');
     }
 
     this.sudo = (sudoAll || sudoTrace);

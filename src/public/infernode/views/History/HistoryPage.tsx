@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Card from 'react-bootstrap/Card';
 import HistorySidebar from './HistorySidebar';
@@ -8,7 +8,9 @@ import { setActivePage } from '../../store/configSlice';
 export default function HistoryPage(): JSX.Element {
   const { current } = useAppSelector((state) => state.captures);
   const dispatch = useAppDispatch();
-  dispatch(setActivePage('/history'));
+  useEffect(() => {
+    dispatch(setActivePage('/history'));
+  });
 
   let realid = 0;
   let haveid = false;
