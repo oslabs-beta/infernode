@@ -359,11 +359,60 @@
   
         </div>
         <!-- <br> -->
-        <p>Make sure the file path you provide is relative to the dtrace.controller.js file in the dist folder of INFERNOde. 
+        <p>There are two ways we can run a dtrace on your application. 
+        </p>
+<!-- start of accordian content -->
+        <article class="my-3" id="accordion">
+          <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+          </div>
+    
+          <div>
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+            <div class="accordion" id="accordionExample">
+
+
+              <div class="accordion-item">
+                <h4 class="accordion-header" id="headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    1. Start your app and a dtrace at the same time.
+                  </button>
+                </h4>
+                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    This is ideal if you want to include the first few seconds of your application's runtime in the dtrace. To do this, simply use the ____ 
+                    option on the capture page. Provide a relative path to the application, the number of seconds you want the dtrace to run, and choose between
+                    an icicle chart or a flamegraph. We will take care of the rest.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h4 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    2. Start your app, then start a dtrace at any time.
+                  </button>
+                </h4>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                   This is the best option if your application requires user interaction once it has launched. We can launch the application,
+                   then start the dtrace whenever you're ready. To do this you will need to use the ___ option on the capture page. Provide the 
+                   relative file path, then hit 'Start App'. Then when you're ready to start the dtrace, simply provide a time and hit 'Start dtrace'
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            </div></div>
+    
+          </div>
+          
+        </article> 
+        <!-- end of accordian content -->
+
+        <p> Make sure the file path you provide is relative to the <code>dtrace.controller.js</code> file in the <code>dist</code> folder of INFERNOde. 
           Then choose whether you want an icicle chart or a flamegraph, and provide the number of seconds you want the dtrace to run.
           Then then sit back and relax while we do all the work for you. If the application has a finite runtime, and the duration you provide
-          happens to be longer, dont worry. Dtrace will continue running for the time you enter, but it wont affect your results.
-        </p>
+          happens to be longer, there is no need to worry. Dtrace will continue running for the time you enter, but it wont affect your results.</p>
 
         <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
         <hr>
