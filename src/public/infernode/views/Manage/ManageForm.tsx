@@ -53,7 +53,7 @@ export default function ManageForm(): JSX.Element {
     dispatch(setLoading(true));
     dispatch(setProgress(0));
     axios
-      .post('/api/captures/', formData, {
+      .post('/api/captures/flamegraph', formData, {
         onUploadProgress: (progressEvent: ProgressEvent) => {
           const loaded: number = progressEvent.loaded
             ? Number(progressEvent.loaded)
