@@ -101,3 +101,8 @@ body {
   margin-right: .4rem;
   margin-left: .4rem;
 }
+
+a {
+  text-decoration: none;
+  color: blue
+}
