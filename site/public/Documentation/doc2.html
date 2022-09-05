@@ -511,7 +511,9 @@
                   <iframe src="../../images/flamegraph-2.svg" width="1000px"></iframe>
                 <!-- </image> -->
       
-                <figcaption class="figure-caption">Click on any frame to zoom in! The plateau in the middle of this flamegraph is ripe for optimization.</figcaption>
+                <figcaption class="figure-caption">Click on any frame to zoom in! The plateau in the middle of this flamegraph is ripe for optimization. 
+                  Click 'reset zoom' in the top left corner to zoom back out.
+                </figcaption>
               </figure>
               </div></div>
             </div></div><br><br>
@@ -531,6 +533,7 @@
                 are indicated by plateaus in the flamegraph. A stack frame that is wide, and <em>on top</em> of the call stack
                 is what you want to look for. That indicates a process that is taking a long time to run itself. 
               </p>
+              <p>
                 Take the example above.
                 Looking at the plateau in the center shows several stack frames that are present on the call stack a lot. 
                 Specifically the 
@@ -539,7 +542,12 @@
                 12.63% of that is just this frame itself (to the left, where there are no frames above it). There are several frames above this one 
                 that also spend a lot of time running on the call stack. These are areas that need to be improved to optimize the overall
                 efficiency of this particular application. 
-
+            </p>
+              <p>
+                Interested in learning more about flamegraphs? Head on over to Brendan Gregg's <a href="https://www.brendangregg.com/flamegraphs.html">site</a>, 
+                the inventor of flamegraphs and inspiration
+                for INFERNOde!
+              </p>
               <br>
               </div></div>
               <br>
@@ -565,75 +573,51 @@
         
         <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
           <p class="lead">
-            Interpreting Flamegraphs
-          </p><br>
+            Interpreting Icicle Charts
+          </p>
           </div></div>
 
 
-        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-        <div class="row  row-cols-1 row-cols-md-2 g-4">
-          <div class="col">
-            <div class="card">
-              <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"/><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text></svg>
-
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <div class="card-header">
-                Featured
-              </div>
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
-              </div>
-              <div class="card-footer text-muted">
-                2 days ago
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item">An item</li>
-                <li class="list-group-item">A second item</li>
-                <li class="list-group-item">A third item</li>
-              </ul>
-              <div class="card-body">
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="card">
-              <div class="row g-0">
-                <div class="col-md-4">
-                  <svg class="bd-placeholder-img" width="100%" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#868e96"/><text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image</text></svg>
-
-                </div>
-                <div class="col-md-8">
-                  <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+          <div>
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+    
+              <div>
+        
+        
+                <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+                <p>Icicle charts are actually just flamegraphs, flipped upside down.
+                </p>
+                <p>
+                  These are handy for especially deep stacks. The flamegraph GUI starts at the top, so it can be annoying to scroll all the way down
+                  every time a graph loads. Flamegraphs are .SVG files, and how they display will vary depending on the browser.
+                  Icicle charts solve that problem by flipping the graph. 
+                  </p><br>
+    
+                <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+                  <figure class="figure">
+                    <!-- <image> -->
+                      <!-- <title>Placeholder</title> -->
+                      <!-- <rect width="100%" height="100%" fill="#868e96"/> -->
+                      <!-- <image href="../../images/flamegraph-2.svg"></image> -->
+                      <!-- <text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text> -->
+                      <iframe src="../../images/icicle-2.svg" width="1000px"></iframe>
+                    <!-- </image> -->
+          
+                    <figcaption class="figure-caption">The call stacks on the left side of this graph are quite deep. 
+                      Using an icicle chart keeps you from having to scroll down to the bottom.
+                    </figcaption>
+                  </figure>
+                  </div></div>
+                </div></div><br><br>
+                
+                  <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+                    <hr>
                   </div>
-                </div>
+                  </div>
+    
               </div>
-            </div>
+            </div></div>
           </div>
-        </div>
-        </div></div>
 
       </div>
     </article>
