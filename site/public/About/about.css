@@ -2,7 +2,7 @@
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 body {
-  background-image: url(../../images/orange-flame.jpg) ;
+  background-image: url(../images/orange-flame.jpg) ;
   background-attachment: fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
