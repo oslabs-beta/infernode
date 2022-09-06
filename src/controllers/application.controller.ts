@@ -103,12 +103,7 @@ class ApplicationController {
         'nodeLaunch',
       ));
     }
-    return next(new InfernodeError(
-      'something failed while launching the app via node',
-      'something broke in the DtraceController middleware',
-      500,
-      'nodeLaunch',
-    ));
+    return undefined;
   };
 
   public nodeKill = (req: Request, res: Response, next: NextFunction) => {
