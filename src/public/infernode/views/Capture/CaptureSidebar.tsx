@@ -2,15 +2,18 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
 import CaptureFileItem from './CaptureFileItem';
+import { useAppSelector } from '../../store/hooks';
 
 export default function CaptureSidebar(): JSX.Element {
-  const captureList = [{ captureName: 'Test 1' }, { captureName: 'Test 2' }];
+  const { captureList, current } = useAppSelector((state) => state.captures);
+
   const CaptureFileList: JSX.Element[] = [];
   for (let i = 0; i < captureList.length; i++) {
     CaptureFileList.push(<CaptureFileItem
       name={captureList[i].captureName}
       display={() => console.log('pressed button')}
       key={i}
+      date={captureList[i].date}
     />);
   }
 
@@ -23,7 +26,6 @@ export default function CaptureSidebar(): JSX.Element {
           {CaptureFileList}
         </Form.Group>
       </Form>
-      {/* <img alt="mock capture page menu" src="/mocks/capture-menu.png" /> */}
     </Card>
   );
 }
