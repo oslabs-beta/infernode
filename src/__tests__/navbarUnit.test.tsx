@@ -27,7 +27,7 @@ describe('Navbar unit tests', () => {
       // using regex instead of strings will prevent tests failing due to capitalization
       expect(screen.getByRole('link', { name: /history/i })).toBeInTheDocument()
       expect(screen.getByRole('link', { name: /capture/i })).toBeInTheDocument()
-      expect(screen.getByRole('link', { name: /manage/i })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /upload/i })).toBeInTheDocument()
       expect(screen.getByRole('link', { name: /help/i })).toBeInTheDocument()
     })
 
@@ -37,7 +37,7 @@ describe('Navbar unit tests', () => {
     test('the links have nav-link class from bootstrap', () => {
       expect(screen.getByRole('link', { name: /history/i })).toHaveClass('nav-link')
       expect(screen.getByRole('link', { name: /capture/i })).toHaveClass('nav-link')
-      expect(screen.getByRole('link', { name: /manage/i })).toHaveClass('nav-link')
+      expect(screen.getByRole('link', { name: /upload/i })).toHaveClass('nav-link')
       expect(screen.getByRole('link', { name: /help/i })).toHaveClass('nav-link')
     })
   })
@@ -50,7 +50,7 @@ describe('Navbar unit tests', () => {
       expect(screen.getByRole('link', { name: /capture/i })).toHaveAttribute('href', '/capture')
     })
     test('manage button routes to the manage page', () => {
-      expect(screen.getByRole('link', { name: /manage/i })).toHaveAttribute('href', '/manage')
+      expect(screen.getByRole('link', { name: /upload/i })).toHaveAttribute('href', '/manage')
     })
     test('help button routes to the help page', () => {
       expect(screen.getByRole('link', { name: /help/i })).toHaveAttribute('href', '/help')
