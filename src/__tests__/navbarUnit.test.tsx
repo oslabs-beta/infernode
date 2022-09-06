@@ -27,7 +27,7 @@ describe('Navbar unit tests', () => {
       // using regex instead of strings will prevent tests failing due to capitalization
       expect(screen.getByRole('link', { name: /history/i })).toBeInTheDocument()
       expect(screen.getByRole('link', { name: /capture/i })).toBeInTheDocument()
-      expect(screen.getByRole('link', { name: /manage/i })).toBeInTheDocument()
+      expect(screen.getByRole('link', { name: /upload/i })).toBeInTheDocument()
       expect(screen.getByRole('link', { name: /help/i })).toBeInTheDocument()
     })
 
