@@ -45,7 +45,7 @@ export default function NavBar(): JSX.Element {
               <Nav.Link>Capture</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/manage">
-              <Nav.Link>Manage</Nav.Link>
+              <Nav.Link>Upload</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/help">
               <Nav.Link>Help</Nav.Link>
