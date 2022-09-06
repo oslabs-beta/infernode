@@ -90,7 +90,7 @@ body {
 }
 
 .spacer {
-  margin-top:10%;
+  margin-top:7%;
 }
 
 /* .header-gh-spacer {
@@ -105,4 +105,9 @@ body {
 a {
   text-decoration: none;
   color: blue
+}
+
+#left-side-footer {
+  text-decoration: none;
+  list-style: none;
 }

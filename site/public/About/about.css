@@ -43,3 +43,8 @@ a {
   min-width: 50%;
   min-height: 50%;
 }
+
+#left-side-footer {
+  text-decoration: none;
+  list-style: none;
+}

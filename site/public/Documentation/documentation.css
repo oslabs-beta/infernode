@@ -180,3 +180,8 @@ a {
   text-decoration: none;
   color: blue
 }
+
+#left-side-footer {
+  text-decoration: none;
+  list-style: none;
+}

@@ -162,7 +162,7 @@
 
         <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
         <p>All you need to do is navigate to the root of your project repo, then <mark><code>npm install infernode</code></mark> as a development dependency for your project.
-        Using INFERNOde will require accurate relative filepaths from INFERNOde to the application you are testing, 
+        Using INFERNOde will require an accurate relative file path from INFERNOde to the application you are testing, 
         so be sure it is installed at the correct level of your repo.</p>
         </div></div>
         
@@ -425,7 +425,7 @@
       <div>
         <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
         <p class="lead">
-          Want to compare two versions of your code?
+          Compare two versions of your code
         </p>
         </div></div>
 
@@ -438,7 +438,7 @@
           The second graph will be evaluated <em>relative to the first graph.</em> This means that any part of the call stack that ran slower in the second graph,
           when compared to the first graph, will be shaded red. While parts that ran faster will be shaded blue. 
         </p>
-        For more on interpreting differential flamegraphs, check out the section below on how to read flamegraphs.
+        For more on interpreting differential flamegraphs, check out the section below.
         </div></div>
         
         <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
@@ -473,13 +473,11 @@
     
     
             <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
-            <p>Understanding flamegraphs can be a bit confusing at first. So you came to the right place!
-            </p>
             <p>
               Flamegraphs are a visualization of stack traces of a profiled software application. They allow developers to quickly and easily identify
               hot-spots in the code that are occupying too much time and generating excessive CPU demand. 
               </p>
-              <p> Each rectangle on a flamechart represents a stack frame, but not necessarily one instance of that stack frame.
+              <p> Each rectangle on a flamegraph represents a stack frame, but not necessarily one instance of that stack frame.
                 Flamegraphs are made by taking a sample of stack traces and collapsing matching stack frames
                  together. So a function that appears on the call stack multiple times may only be represented by one single 
                  stack frame in a flamegraph, where the total width of the single stack frame represents the total combined width of each of those individual stack frames.
@@ -510,7 +508,7 @@
                   <iframe src="../../images/flamegraph-2.svg" width="1000px"></iframe>
                 <!-- </image> -->
       
-                <figcaption class="figure-caption">Click on any frame to zoom in! The plateau in the middle of this flamegraph is ripe for optimization. 
+                <figcaption class="figure-caption">Click on any frame to zoom in. The plateau in the middle of this flamegraph is ripe for optimization. 
                   Click 'reset zoom' in the top left corner to zoom back out.
                 </figcaption>
               </figure>
@@ -534,7 +532,7 @@
               </p>
               <p>
                 Take the example above.
-                Looking at the plateau in the center shows several stack frames that are present on the call stack a lot. 
+                Looking at the plateau in the center shows several stack frames that are frequently present on the call stack. 
                 Specifically the 
                 <code>LazyCompile:*get /home/ubuntu/CodeSmith/node-example-flamegraph/node_modules/fast-levenshtein/levenshtein.js:27</code>
                 call frame, and the ones above it. If you hover over this frame, you will see that it is present on the call stack 58.79% of the time.
@@ -545,7 +543,7 @@
               <p>
                 Interested in learning more about flamegraphs? Head on over to Brendan Gregg's <a href="https://www.brendangregg.com/flamegraphs.html" target="blank">site</a>, 
                 the inventor of flamegraphs and inspiration
-                for INFERNOde!
+                for INFERNOde.
               </p>
               <br>
               </div></div>
@@ -692,12 +690,9 @@
   <!-- FOOTER -->
   <div class="container">
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-      <p class="col-md-4 mb-0 text-muted">&copy; 2022 Open Source Labs</p>
-  
-      <a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-      </a>
-  
+      <li class="col-md-4 mb-0 text-muted nav-item"  id="left-side-footer">2022 
+        <a href="https://opensourcelabs.io" target="_blank" class="text-muted">Open Source Labs</a>
+      </li>
       <ul class="nav col-md-4 justify-content-end">
         <li class="nav-item"><a href="../index.html" class="nav-link px-2 text-muted">Home</a></li>
         <li class="nav-item"><a href="#top" class="nav-link px-2 text-muted">Back to the top</a></li>
