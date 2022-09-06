@@ -1,0 +1,50 @@
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+body {
+  background-image: url(../images/orange-flame.jpg) ;
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+main > .container {
+  padding: 60px 15px 0;
+  color: rgb(255, 255, 255);
+  /* -webkit-text-stroke-width: 0.3px;
+  -webkit-text-stroke-color: white; */
+}
+
+.header-li-spacer {
+  margin-right: .4rem;
+  margin-left: .4rem;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(90, 90, 255)
+}
+
+#bg {
+  position: fixed; 
+  top: -50%; 
+  left: -50%; 
+  width: 100%; 
+  height: 100%;
+}
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+}
+
+#left-side-footer {
+  text-decoration: none;
+  list-style: none;
+}
