@@ -17,6 +17,7 @@ import {
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import AppStatusCircle from './AppStatusCircle';
 import { setActivePage } from '../../store/configSlice';
+import { fetchAllCaptures } from '../../store/captureSlice';
 
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -149,6 +150,9 @@ export default function CapturePage(): JSX.Element {
                       pid, duration, appName, graphType,
                     }));
                     func()
+                      .then(async () => {
+                        await dispatch(fetchAllCaptures());
+                      })
                       .catch((err) => {
                         console.log('Error in Start Capture onclick event: ', err);
                       });
