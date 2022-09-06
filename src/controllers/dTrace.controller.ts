@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { spawnSync, execSync } from 'child_process';
 import { InfernodeError } from '../utils/globalErrorHandler';
+import logger from '../utils/logging';
 
 /*
 Dtrace command to convert .txt to .svg
@@ -33,10 +34,10 @@ type ReqBodyPID = {
 const DtraceController: DtraceControllerType = {
   runDtrace: (req: Request, res: Response, next: NextFunction) => {
     if (res.locals?.envOS !== 'mac') {
-      console.log('Skipping dtrace capture due to OS');
+      logger.debug('Skipping dtrace capture due to OS');
       return next();
     }
-    if (!res.locals?.envSudo) throw new Error('skipping dtrace capture due to insufficient sudo permissions');
+    if (!res.locals?.envSudo) logger.error('skipping dtrace capture due to insufficient sudo permissions');
     try {
       const reqBody = req.body as ReqBodyPID;
       const resLocals = res.locals as ReqBodyPID;

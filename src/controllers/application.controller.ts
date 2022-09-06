@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import process from 'process';
 import path from 'path';
-import { spawn } from 'child_process';
+import { spawn, execSync } from 'child_process';
 import { InfernodeError } from '../utils/globalErrorHandler';
+import { existsSync } from 'fs-extra';
+import logger from '../utils/logging';
 
 type ProcessInfo = {
   userId: number | null; // Can remove null as an option when auth is implemented
@@ -66,7 +68,12 @@ class ApplicationController {
       const filePath: string = path.resolve(__dirname, `${reqBody.filePath}`);
       res.locals.filePath = filePath;
       // refactor to match front end
-      const result = spawn(`node ${filePath}`, { shell: true });
+      if (!existsSync(filePath)) {
+        logger.error(`Specified node app does not exist: ${filePath}`);
+      }
+      const nodePath = execSync(`which node`).toString().replace(/(\r\n|\n|\r)/gm, "");
+      logger.debug(`${nodePath} ${filePath}`);
+      const result = spawn(`${nodePath}`, [filePath]);
       // result will be a child process
       result.on('spawn', () => {
         const { pid } = result;
@@ -83,6 +90,10 @@ class ApplicationController {
         if (typeof res.locals.pid !== 'number') throw new Error();
         this.endProcess(res.locals.pid);
         console.log('child process exited gracefully - pid:', res.locals.pid);
+      });
+      result.on('error', (err) => {
+        logger.error('error spawning child process');
+        console.log(err);
       });
     } catch (err) {
       return next(new InfernodeError(
