@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import process from 'process';
 import path from 'path';
 import { spawn, execSync } from 'child_process';
-import { InfernodeError } from '../utils/globalErrorHandler';
 import { existsSync } from 'fs-extra';
+import { InfernodeError } from '../utils/globalErrorHandler';
 import logger from '../utils/logging';
 
 type ProcessInfo = {
@@ -71,7 +71,7 @@ class ApplicationController {
       if (!existsSync(filePath)) {
         logger.error(`Specified node app does not exist: ${filePath}`);
       }
-      const nodePath = execSync(`which node`).toString().replace(/(\r\n|\n|\r)/gm, "");
+      const nodePath = execSync('which node').toString().replace(/(\r\n|\n|\r)/gm, '');
       logger.debug(`${nodePath} ${filePath}`);
       const result = spawn(`${nodePath}`, [filePath]);
       // result will be a child process
@@ -103,6 +103,12 @@ class ApplicationController {
         'nodeLaunch',
       ));
     }
+    return next(new InfernodeError(
+      'something failed while launching the app via node',
+      'something broke in the DtraceController middleware',
+      500,
+      'nodeLaunch',
+    ));
   };
 
   public nodeKill = (req: Request, res: Response, next: NextFunction) => {

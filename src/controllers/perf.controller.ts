@@ -2,10 +2,9 @@
 import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { spawnSync, execSync } from 'child_process';
+import fs from 'fs';
 import { InfernodeError } from '../utils/globalErrorHandler';
 import logger from '../utils/logging';
-import fs from 'fs';
-import os from 'os';
 
 type PerfControllerType = {
   runPerf: (req: Request, res: Response, next: NextFunction) => void;
@@ -19,7 +18,6 @@ type ReqBodyPID = {
 
 const perfController: PerfControllerType = {
   runPerf: (req: Request, res: Response, next: NextFunction) => {
-
     // Verify appropriate OS and permissions
     if (res.locals?.envOS !== 'linux') {
       logger.debug('Skipping perf capture due to OS');
@@ -32,32 +30,30 @@ const perfController: PerfControllerType = {
       const resLocals = res.locals as ReqBodyPID;
       if ('pid' in reqBody) {
         if (typeof reqBody.pid !== 'number') {
-          logger.error(`perfController received non-numeric pid: ${reqBody.pid}`);
+          logger.error('perfController received non-numeric pid');
         }
       }
       let pid;
       if ('pid' in reqBody || 'pid' in resLocals) {
         pid = 'pid' in reqBody ? reqBody.pid : resLocals.pid;
       } else {
-        logger.error('perfController did not receive a pid')
+        logger.error('perfController did not receive a pid');
       }
-      
+
       const { duration } = reqBody;
-      
-      const { id } = res.locals;
+
+      const id = Number(res.locals.id);
       if (typeof pid !== 'number' || typeof duration !== 'number' || typeof id !== 'number') {
         logger.error('non-numeric PID or duration');
       }
 
-      // const {uid, gid}  = os.userInfo();
       const output = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
-      const perfCommand = `perf record -o ${output}.raw -F99 -p ${pid} -g  -- sleep ${duration}`
+      const perfCommand = `perf record -o ${output}.raw -F99 -p ${pid || 'unknown'} -g  -- sleep ${duration}`;
       logger.debug(`Running: ${perfCommand}`);
       execSync(`${perfCommand}`);
-      // fs.chown(`${output}.raw`, uid, gid, (err) => logger.error(`Unable to chown ${output} to ${uid}:${gid}: `, err));
       execSync(`perf script --input ${output}.raw > ${output}`);
       if (!fs.existsSync(output)) {
-        logger.error(`perf capture output file does not exist: ${output}`)
+        logger.error(`perf capture output file does not exist: ${output}`);
       }
       return next();
     } catch (err) {

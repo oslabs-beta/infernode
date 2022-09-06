@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { execSync } from 'child_process';
-import logger from '../utils/logging';
 import os from 'os';
+import logger from '../utils/logging';
 
 /**
  * Detects environment configuration for later reference by other middleware
