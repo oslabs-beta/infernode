@@ -37,7 +37,7 @@ describe('Navbar unit tests', () => {
     test('the links have nav-link class from bootstrap', () => {
       expect(screen.getByRole('link', { name: /history/i })).toHaveClass('nav-link')
       expect(screen.getByRole('link', { name: /capture/i })).toHaveClass('nav-link')
-      expect(screen.getByRole('link', { name: /manage/i })).toHaveClass('nav-link')
+      expect(screen.getByRole('link', { name: /upload/i })).toHaveClass('nav-link')
       expect(screen.getByRole('link', { name: /help/i })).toHaveClass('nav-link')
     })
   })

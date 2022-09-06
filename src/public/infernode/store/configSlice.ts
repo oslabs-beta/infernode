@@ -8,6 +8,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 export interface FeatureFlags {
   loginUi: boolean,
   captureSidebar: boolean,
+  uploadSidebar: boolean,
 }
 
 type FeatureName = 'loginUi' | 'captureSidebar';
@@ -23,6 +24,7 @@ const initialState: ConfigState = {
   features: {
     loginUi: false,
     captureSidebar: false,
+    uploadSidebar: false,
   },
 };
 
