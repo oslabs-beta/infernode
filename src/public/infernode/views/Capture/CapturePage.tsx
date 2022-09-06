@@ -53,10 +53,8 @@ export default function CapturePage(): JSX.Element {
       const newCapId = setInterval(() => dispatch(checkIsAppCapturing()), 10000);
       setCapId(Number(newCapId));
       // console.log('start cap polling 5');
-    } else {
-      // console.log('start cap polling 6');
-      // console.log('capId', capId);
-      if (capId) clearInterval(capId);
+    } else if (capId) {
+      clearInterval(capId);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAppCapturing]);
