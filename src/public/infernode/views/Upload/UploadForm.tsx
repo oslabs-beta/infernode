@@ -17,7 +17,7 @@ import {
 } from '../../store/uploadSlice';
 import { fetchAllCaptures } from '../../store/captureSlice';
 
-export default function ManageForm(): JSX.Element {
+export default function UploadForm(): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const formData = new FormData();
