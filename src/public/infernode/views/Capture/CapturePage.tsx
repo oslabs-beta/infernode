@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 import CaptureSidebar from './CaptureSidebar';
 import {
-  startApp, stopApp, startCapture, checkIsAppRunning, checkIsAppCapturing,
+  startApp, stopApp, startCapture, startAppAndCapture, checkIsAppRunning, checkIsAppCapturing,
 } from '../../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import AppStatusCircle from './AppStatusCircle';
@@ -148,6 +148,66 @@ export default function CapturePage(): JSX.Element {
                     console.log('pid is', pid);
                     const func = () => dispatch(startCapture({
                       pid, duration, appName, graphType,
+                    }));
+                    func()
+                      .then(async () => {
+                        await dispatch(fetchAllCaptures());
+                      })
+                      .catch((err) => {
+                        console.log('Error in Start Capture onclick event: ', err);
+                      });
+                  }
+                }}
+              >
+                Start
+              </Button>
+            </Col>
+          </Card>
+          <Card>
+            <Stack direction="horizontal" gap={3}>
+              <h4>Start an App and a Capture at the same time!</h4>
+              <Form.Select aria-label="Default select example" id="graphtypecombo">
+                <option value="flamegraph">Capture a Flamegraph!</option>
+                <option value="icicle">Capture an Icegraph!</option>
+              </Form.Select>
+            </Stack>
+            <Col>
+              <Form.Group className="mb-3" controlId="durationcombo">
+                <Form.Label>Duration of Capture</Form.Label>
+                <Form.Control type="text" placeholder="Enter Duration" id="durationcombo" />
+                <Form.Text className="text-muted">
+                  Please enter the duration you would like to capture in seconds.
+                </Form.Text>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group className="mb-3" controlId="filepathcombo">
+                <Form.Label>App Relative Filepath</Form.Label>
+                <Form.Control type="text" placeholder="relative filepath" id="filepathcombo" />
+                <Form.Text className="text-muted">
+                  Please enter the relative Filepath.
+                </Form.Text>
+              </Form.Group>
+            </Col>
+            <Col>
+              <Button
+                variant="success"
+                size="lg"
+                onClick={() => {
+                  // grab duration
+                  console.log('click the start capture button');
+                  const durationElement = document.getElementById('durationcombo') as HTMLInputElement;
+                  const graphTypeElement = document.getElementById('graphtypecombo') as HTMLInputElement;
+                  const filePathElement = document.getElementById('filepathcombo') as HTMLInputElement;
+                  if (durationElement) {
+                    const durationString: string = durationElement.value;
+                    const duration = Number(durationString);
+                    const graphType: string = graphTypeElement.value;
+                    const filePath: string = filePathElement.value;
+                    console.log(duration);
+                    console.log('pid is', pid);
+                    const func = () => dispatch(startAppAndCapture({
+                      filePath, duration, appName, graphType,
                     }));
                     func()
                       .then(async () => {

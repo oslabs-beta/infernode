@@ -22,6 +22,13 @@ interface StartCapturePayloadType {
   graphType: string;
 }
 
+interface StartAppAndCapturePayloadType {
+  filePath: string | null,
+  duration: number | null,
+  appName: string | null,
+  graphType: string;
+}
+
 const checkIsAppRunning = createAsyncThunk(
   'app/checkIsAppRunning',
   async (pid: number | null) => {
@@ -104,6 +111,26 @@ const startCapture = createAsyncThunk(
   },
 );
 
+const startAppAndCapture = createAsyncThunk(
+  'api/startAppAndCapture',
+  async (args: StartAppAndCapturePayloadType) => {
+    const endpoint = `/api/dTrace/run/${args.graphType}`;
+    console.log('start app and capture callback', args, ' is args');
+    await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        duration: args.duration,
+        filePath: args.filePath,
+        appName: args.appName,
+      }),
+    }).then((res) => res.json());
+    console.log('finished start capture callback');
+  },
+);
+
 const initialState: AppSliceStateType = {
   isAppRunning: null,
   isAppCapturing: null,
@@ -166,7 +193,7 @@ const appSlice = createSlice({
 });
 
 export {
-  checkIsAppCapturing, checkIsAppRunning, startApp, startCapture, stopApp,
+  checkIsAppCapturing, checkIsAppRunning, startApp, startCapture, stopApp, startAppAndCapture,
 };
 
 export default appSlice.reducer;
