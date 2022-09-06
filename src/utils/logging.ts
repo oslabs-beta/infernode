@@ -31,9 +31,9 @@ const httpLogger = pinoHttp({
       return 'error';
     }
     if (res.statusCode >= 300 && res.statusCode < 400) {
-      return 'debug';
+      return 'silent';
     }
-    return 'info';
+    return 'silent';
   },
 });
 
