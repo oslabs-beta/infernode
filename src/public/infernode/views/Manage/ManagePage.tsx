@@ -7,6 +7,7 @@ import ManageForm from './ManageForm';
 import { setActivePage } from '../../store/configSlice';
 
 export default function ManagePage(): JSX.Element {
+  const { captureSidebar } = useAppSelector((state) => state.config.features);
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(setActivePage('/manage'));
@@ -16,7 +17,7 @@ export default function ManagePage(): JSX.Element {
 
   return (
     <Stack direction="horizontal" gap={3}>
-      <ManageSidebar />
+      { captureSidebar ? <ManageSidebar /> : <></>}
       {!loading ? <ManageForm /> : <ProgressCard fileName={file} progress={progress} />}
     </Stack>
   );
