@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import dbController from '../controllers/db.controller';
 import DtraceController from '../controllers/dTrace.controller';
+import perfController from '../controllers/perf.controller';
 import flamegraphController from '../controllers/flamegraphController';
 import icicleController from '../controllers/icicle.controller';
 import applicationController from '../controllers/application.controller';
@@ -15,7 +16,9 @@ dtraceRouter.post(
   envController.detect,
   dbController.createEmptyRecord,
   DtraceController.runDtrace,
+  perfController.runPerf,
   DtraceController.foldDtrace,
+  perfController.foldPerf,
   flamegraphController.toSVG,
   (_req: Request, res: Response) => {
     res.status(200).send('test successful');
@@ -29,7 +32,9 @@ dtraceRouter.post(
   envController.detect,
   dbController.createEmptyRecord,
   DtraceController.runDtrace,
+  perfController.runPerf,
   DtraceController.foldDtrace,
+  perfController.foldPerf,
   icicleController.toIcicleSVG,
   (_req: Request, res: Response) => {
     res.status(200).send('test successful');
@@ -43,7 +48,9 @@ dtraceRouter.post(
   dbController.createEmptyRecord,
   applicationController.nodeLaunch,
   DtraceController.runDtrace,
+  perfController.runPerf,
   DtraceController.foldDtrace,
+  perfController.foldPerf,
   flamegraphController.toSVG,
   (_req: Request, res: Response) => {
     res.status(200).send('test successful');
@@ -57,7 +64,9 @@ dtraceRouter.post(
   dbController.createEmptyRecord,
   applicationController.nodeLaunch,
   DtraceController.runDtrace,
+  perfController.runPerf,
   DtraceController.foldDtrace,
+  perfController.foldPerf,
   icicleController.toIcicleSVG,
   (_req: Request, res: Response) => {
     res.status(200).send('test successful');
