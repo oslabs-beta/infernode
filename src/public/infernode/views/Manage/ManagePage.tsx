@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import ManageSidebar from './ManageSidebar';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
@@ -8,7 +8,10 @@ import { setActivePage } from '../../store/configSlice';
 
 export default function ManagePage(): JSX.Element {
   const dispatch = useAppDispatch();
-  dispatch(setActivePage('/manage'));
+  useEffect(() => {
+    dispatch(setActivePage('/manage'));
+  });
+
   const { file, loading, progress } = useAppSelector((state) => state.upload);
 
   return (

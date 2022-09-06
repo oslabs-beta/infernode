@@ -3,17 +3,17 @@ import {
   NextFunction, Router, Request, Response,
 } from 'express';
 import captureRouter from './captures.router';
-import controlRouter from './control.router';
 import dtraceRouter from './dtrace.router';
 import diffRouter from './diff.router';
 import applicationRouter from './application.router';
+import logger from '../utils/logging';
 
 const apiRouter = Router();
 
 // API Root
 apiRouter.get('/', (req: Request, res: Response, next: NextFunction) => {
-  console.log(
-    `${new Date().toLocaleString()}: API Root apiRouter handling ${req.method} ${
+  logger.trace(
+    `API Root apiRouter handling ${req.method} ${
       req.url
     }`,
   );
@@ -36,11 +36,6 @@ apiRouter.use(
 apiRouter.use(
   '/dtrace',
   dtraceRouter,
-);
-
-apiRouter.use(
-  '/control',
-  controlRouter,
 );
 
 // creating differential flamegraphs

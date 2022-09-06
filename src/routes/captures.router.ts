@@ -6,6 +6,7 @@ import flamegraph from '../controllers/flamegraphController';
 import { fileController } from '../controllers/controllers.module';
 import dbController from '../controllers/db.controller';
 import icicleController from '../controllers/icicle.controller';
+import logger from '../utils/logging';
 
 const captureRouter = Router();
 
@@ -33,8 +34,8 @@ captureRouter.post(
 captureRouter.put(
   '/:id',
   (req: Request, _res: Response, next: NextFunction) => {
-    console.log(
-      `${new Date().toLocaleString()}: Create by ID apiRouter handling ${
+    logger.trace(
+      `Create by ID apiRouter handling ${
         req.method
       } ${req.url}`,
     );

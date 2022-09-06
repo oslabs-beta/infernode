@@ -2,6 +2,7 @@ import {
   Request, Response, ErrorRequestHandler,
 } from 'express';
 import process from 'node:process';
+import logger from './logging';
 
 export class InfernodeError extends Error {
   userMessage?: string;
@@ -31,12 +32,7 @@ export const globalErrorHandler: ErrorRequestHandler = (
   const errObject: InfernodeError = { ...err };
   if (errObject.httpStatus === undefined) errObject.httpStatus = 500;
   if (errObject.userMessage === undefined) errObject.userMessage = 'an unknown error occurred';
-  // eslint-disable-next-line no-console
-  console.table({
-    ...err,
-    req_method: req.method,
-    req_path: req.path,
-  });
+  logger.error(err);
   if (process.env.NODE_ENV === 'development') {
     return res
       .status(errObject.httpStatus)
