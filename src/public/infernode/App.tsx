@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
-import { Container } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import './App.scss';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Link } from 'react-router-dom';
 import NavBar from './components/layout/NavBar/NavBar';
 import CapturePage from './views/Capture/CapturePage';
 import HelpPage from './views/Help/HelpPage';
@@ -31,16 +33,21 @@ export default function App(): JSX.Element {
           <Route path="capture" element={<CapturePage />} />
           <Route path="manage" element={<ManagePage />} />
           <Route path="help" element={<HelpPage />}>
-            <Route index element={<HelpPages.HelpTOC />} />
+            <Route index element={<HelpPages.HelpFlamegraphs />} />
             <Route path="flamegraphs" element={<HelpPages.HelpFlamegraphs />} />
             <Route path="perf" element={<HelpPages.HelpPerf />} />
-            <Route path="profiling" element={<HelpPages.HelpProfiling />} />
-            <Route path="resources" element={<HelpPages.HelpResources />} />
+            <Route path="dtrace" element={<HelpPages.HelpDtrace />} />
           </Route>
           <Route path="*" element={<HistoryPage />} />
         </Routes>
       </Container>
-      <Container>v1.0.0</Container>
+      <Container fluid className="position-absolute bottom-0 bg-light p-2">
+        <Row>
+          <Col sm="auto" className="text-muted">v1.0.0</Col>
+          <Col />
+          <Col sm="auto" className="text-right"><a href="https://www.infernode.dev/">infernode.dev</a></Col>
+        </Row>
+      </Container>
     </>
   );
 }
