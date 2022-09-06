@@ -5,7 +5,9 @@ import CaptureFileItem from './CaptureFileItem';
 import { useAppSelector } from '../../store/hooks';
 
 export default function CaptureSidebar(): JSX.Element {
-  const { captureList, current } = useAppSelector((state) => state.captures);
+  const { features } = useAppSelector((state) => state.config);
+  const { captureList } = useAppSelector((state) => state.captures);
+  if (!features.captureSidebar) return <div />;
 
   const CaptureFileList: JSX.Element[] = [];
   for (let i = 0; i < captureList.length; i++) {
