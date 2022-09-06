@@ -34,7 +34,9 @@ export default function ManageForm(): JSX.Element {
   const submitForm = (event: React.SyntheticEvent) => {
     event.preventDefault();
     console.log('submitEvent');
-    console.log(event);
+    // console.log(event);
+    const graphTypeElement = document.getElementById('graphType') as HTMLInputElement;
+    const graphType: string = graphTypeElement.value;
     const fileElement = document.getElementById(
       'captureFile',
     ) as HTMLInputElement;
@@ -53,7 +55,7 @@ export default function ManageForm(): JSX.Element {
     dispatch(setLoading(true));
     dispatch(setProgress(0));
     axios
-      .post('/api/captures/flamegraph', formData, {
+      .post(`/api/captures/${graphType}`, formData, {
         onUploadProgress: (progressEvent: ProgressEvent) => {
           const loaded: number = progressEvent.loaded
             ? Number(progressEvent.loaded)
@@ -79,6 +81,13 @@ export default function ManageForm(): JSX.Element {
         <Form.Group controlId="captureFile" className="m-3">
           <Form.Label>Capture file</Form.Label>
           <Form.Control type="file" />
+        </Form.Group>
+        <Form.Group controlId="data" className="m-3">
+          <Form.Label>Graph Type</Form.Label>
+          <Form.Select aria-label="Default select example" id="graphType">
+            <option value="flamegraph">Capture a Flamegraph!</option>
+            <option value="icicle">Capture an Icegraph!</option>
+          </Form.Select>
         </Form.Group>
         <Form.Group controlId="captureName" className="m-3">
           <Form.Label>Capture name</Form.Label>
