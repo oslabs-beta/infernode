@@ -52,6 +52,7 @@ dtraceRouter.post(
   DtraceController.foldDtrace,
   perfController.foldPerf,
   flamegraphController.toSVG,
+  applicationController.nodeKill,
   (_req: Request, res: Response) => {
     res.status(200).send('test successful');
   },
@@ -68,6 +69,7 @@ dtraceRouter.post(
   DtraceController.foldDtrace,
   perfController.foldPerf,
   icicleController.toIcicleSVG,
+  applicationController.nodeKill,
   (_req: Request, res: Response) => {
     res.status(200).send('test successful');
   },
