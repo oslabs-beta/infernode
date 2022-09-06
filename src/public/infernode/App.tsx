@@ -7,7 +7,7 @@ import CapturePage from './views/Capture/CapturePage';
 import HelpPage from './views/Help/HelpPage';
 import * as HelpPages from './views/Help/HelpPages';
 import HistoryPage from './views/History/HistoryPage';
-import ManagePage from './views/Manage/ManagePage';
+import UploadPage from './views/Upload/UploadPage';
 import { useAppDispatch } from './store/hooks';
 import { fetchAllCaptures } from './store/captureSlice';
 
@@ -29,7 +29,7 @@ export default function App(): JSX.Element {
           <Route index element={<HistoryPage />} />
           <Route path="history" element={<HistoryPage />} />
           <Route path="capture" element={<CapturePage />} />
-          <Route path="manage" element={<ManagePage />} />
+          <Route path="upload" element={<UploadPage />} />
           <Route path="help" element={<HelpPage />}>
             <Route index element={<HelpPages.HelpTOC />} />
             <Route path="flamegraphs" element={<HelpPages.HelpFlamegraphs />} />
