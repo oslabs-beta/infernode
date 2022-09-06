@@ -116,41 +116,41 @@
 <main class="flex-shrink-0" >
   <div class="container">
     
-    <h2 class="mt-5">Why we made INFERNOde</h2>
+    <h2 class="mt-5 fw-bold">Why we made INFERNOde</h2>
     <br><br>
 
-    <p class="lead">
+    <p class="lead fw-bold">
       As a software developer, it can be difficult to quickly identify hot spots in your codebase that 
       are the cause of performance bottlenecking. Flamegraphs provide a unique solution to this problem
       by taking tens of thousands of lines of data from stack traces and turning it into 
       a easily understandable visual that lets you quickly identify areas of your application that 
       need improving. 
     </p>
-    <p class="lead">
+    <p class="lead fw-bold">
       However flamegraphs alone dont provide the complete solution. Making a flamegraph requires
-      a CPU profile from an application. Making a stack traces from CPU profiling can be complicated and time-consuming,
+      a CPU profile from an application which can be complicated and time-consuming,
       especially if you've never done it before. That means that making and using flamegraphs isn't 
       necessarily accessible for every developer if they lack the skills or the time.
     </p>
-    <p class="lead">
+    <p class="lead fw-bold">
       This is where INFERNOde comes in. 
       We take the difficult task of performance optimization, and make it accessible to developers of any 
       skill level, without requiring any in-depth knowledge of Linux sub-systems, Dtrace, Node child processes, or Node event loop ticks.
     </p>
-    <p class="lead">
+    <p class="lead fw-bold">
       With INFERNOde, all you have you to do is tell it where the Node.js application is you want to test, and watch the magic happen. INFERNOde
       gives you access to the full power of flamegraphs, without any need to know how they are made.
     </p><br><br>
     <h2 class="mt-5">How we made INFERNOde</h2>
     <br><br>
     
-    <p class="lead">
+    <p class="lead fw-bold">
       We want to give credit where credit is due. INFERNOde would not be possible without the amazing work of 
       <a href="https://www.brendangregg.com/overview.html" target="_blank">Brendan Gregg</a> to build off of. He 
       is the creator of flamegraphs, and part of the main inspiration for this project. If you haven't already
       visited his github repo on flamegraphs, <a href="https://github.com/brendangregg/FlameGraph" target="blank">check it out!</a>
 
-      <p class="lead">
+      <p class="lead fw-bold">
         We started with some of the flamegraph work from Brendan Gregg, and built an application around it that can create flamegraphs,
         icicle charts, and differential flamegraphs, all using linux perf captures and dtrace. We accomplished this by using typescript to 
         build an intuitive 
