@@ -50,7 +50,7 @@ describe('Navbar unit tests', () => {
       expect(screen.getByRole('link', { name: /capture/i })).toHaveAttribute('href', '/capture')
     })
     test('manage button routes to the manage page', () => {
-      expect(screen.getByRole('link', { name: /manage/i })).toHaveAttribute('href', '/manage')
+      expect(screen.getByRole('link', { name: /upload/i })).toHaveAttribute('href', '/manage')
     })
     test('help button routes to the help page', () => {
       expect(screen.getByRole('link', { name: /help/i })).toHaveAttribute('href', '/help')
