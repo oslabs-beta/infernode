@@ -7,7 +7,7 @@ diffRouter.post(
   '/',
   diffController.flamegraphDiff,
   (_req: Request, res: Response) => {
-    res.status(200).send('diffing successful');
+    res.status(200).json(res.locals.diffID);
   },
 );
 
