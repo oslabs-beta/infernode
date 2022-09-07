@@ -42,8 +42,8 @@ function SidebarItem(props: SidebarItemProps) {
       <Card.Footer className="p-1">
         <Stack direction="horizontal">
           <ButtonGroup className="mx-auto">
-            <Button className="p-1 fs-6" variant="secondary" onClick={display}>Display</Button>
-            <Button className="p-1 fs-6" variant="warning" onClick={remove}>Remove</Button>
+            <Button className="p-1 fs-6" variant="outline-primary" onClick={display}>Display</Button>
+            <Button className="p-1 fs-6" variant="outline-secondary" onClick={remove}>Remove</Button>
           </ButtonGroup>
         </Stack>
       </Card.Footer>
