@@ -32,7 +32,7 @@ function SidebarItem(props: SidebarItemProps) {
   return (
     <Card className="my-1">
       <Card.Header
-        className={(active ? 'p-1 fs-6 fw-semibold text-center bg-secondary text-light' : 'p-1 fs-6 fw-semibold text-center')}
+        className={(active ? 'p-1 fs-6 fw-semibold text-center bg-primary text-light' : 'p-1 fs-6 fw-semibold text-center')}
       >
         {name || 'untitled'}
       </Card.Header>
@@ -42,8 +42,8 @@ function SidebarItem(props: SidebarItemProps) {
       <Card.Footer className="p-1">
         <Stack direction="horizontal">
           <ButtonGroup className="mx-auto">
-            <Button className="p-1 fs-6" variant="primary" onClick={display}>Display</Button>
-            <Button className="p-1 fs-6" variant="warning" onClick={remove}>Remove</Button>
+            <Button className="p-1 fs-6" variant="outline-primary" onClick={display}>Display</Button>
+            <Button className="p-1 fs-6" variant="outline-secondary" onClick={remove}>Remove</Button>
           </ButtonGroup>
         </Stack>
       </Card.Footer>
@@ -116,7 +116,7 @@ export default function ListSidebar(): JSX.Element {
   }
 
   return (
-    <Card className="align-self-start" style={{ width: '240px' }}>
+    <Card className="align-self-start flex-grow-0 flex-shrink-0" style={{ width: '240px' }}>
       <Card.Header className="h5">History</Card.Header>
       <Card.Body className="p-1">
         {ItemList}

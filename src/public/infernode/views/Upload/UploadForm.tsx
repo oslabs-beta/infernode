@@ -84,9 +84,9 @@ export default function UploadForm(): JSX.Element {
         </Form.Group>
         <Form.Group controlId="data" className="m-3">
           <Form.Label>Graph Type</Form.Label>
-          <Form.Select aria-label="Default select example" id="graphType">
-            <option value="flamegraph">Capture a Flamegraph!</option>
-            <option value="icicle">Capture an Icegraph!</option>
+          <Form.Select aria-label="select graph type" id="graphType">
+            <option value="flamegraph">Flame Graph</option>
+            <option value="icicle">Icicle Graph</option>
           </Form.Select>
         </Form.Group>
         <Form.Group controlId="captureName" className="m-3">
