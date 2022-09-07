@@ -16,6 +16,7 @@ import {
 } from '../../store/captureSlice';
 
 import { setActiveListPage } from '../../store/configSlice';
+import { current } from '@reduxjs/toolkit';
 
 type SidebarItemProps = {
   name: string,
@@ -42,6 +43,11 @@ function SidebarItem(props: SidebarItemProps) {
     dispatch(setComparison(null));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    dispatch(fetchAllCaptures()).catch((err) => console.error(err));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current]);
 
   return (
     <Card className="my-1">
@@ -152,8 +158,6 @@ export default function DifferentialSidebar(): JSX.Element {
           onClick={() => {
             dispatch(getComparisonCapture(comparison))
               .catch((err) => console.error('dispatch geComaprionsCapture error: ', err));
-            // dispatch(fetchAllCaptures())
-            //   .catch((err) => console.error('dispatch fetchAllCaptures error: ', err));
           }}
         >
           Compare
