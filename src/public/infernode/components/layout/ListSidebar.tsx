@@ -85,7 +85,6 @@ export default function ListSidebar(): JSX.Element {
       />);
     }
   }
-  if (ItemList.length === 0) navigate('/capture', { replace: true });
   return (
     <Card className="align-self-start flex-shrink-0 flex-grow-0">
       <Card.Header className="h5">History</Card.Header>
