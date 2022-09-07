@@ -84,7 +84,7 @@ function RunApplicationForm(): JSX.Element {
       <div className="d-grid gap-2">
         {!isAppRunning && !isAppCapturing ? (
           <CapButton
-            variant="success"
+            variant="primary"
             onClick={() => {
               startAppEvent().catch((err) => console.log('Err in start app button', err));
             }}
@@ -92,13 +92,13 @@ function RunApplicationForm(): JSX.Element {
             Start Application
           </CapButton>
         ) : (
-          <CapButton variant="success" disabled>
+          <CapButton variant="primary" disabled>
             <LabeledSpinner label="Running..." />
           </CapButton>
         )}
 
         <CapButton
-          variant="danger"
+          variant="secondary"
           disabled={!isAppRunning}
           onClick={() => {
             const func = () => dispatch(stopApp(pid));
@@ -165,11 +165,11 @@ function FixedLengthCaptureForm(): JSX.Element {
         </Form.Group>
       </Stack>
       {!isAppCapturing ? (
-        <CapButton variant="success" onClick={() => startCaptureEvent()}>
+        <CapButton variant="primary" onClick={() => startCaptureEvent()}>
           Start
         </CapButton>
       ) : (
-        <CapButton variant="success" disabled>
+        <CapButton variant="primary" disabled>
           <LabeledSpinner label="Capturing..." />
         </CapButton>
       )}
@@ -257,11 +257,11 @@ function AppAndCaptureForm(): JSX.Element {
       </Col>
       <Col>
         {!isAppRunning && !isAppCapturing ? (
-          <CapButton variant="success" onClick={() => AppAndCapHandler()}>
+          <CapButton variant="primary" onClick={() => AppAndCapHandler()}>
             Start
           </CapButton>
         ) : (
-          <CapButton variant="success" disabled>
+          <CapButton variant="primary" disabled>
             <LabeledSpinner label="Running..." />
           </CapButton>
         )}
@@ -280,9 +280,9 @@ function ManualCaptureForm(): JSX.Element {
         <div className="row">
           <div className="col-6">
             {!isAppCapturing ? (
-              <CapButton variant="success">Start</CapButton>
+              <CapButton variant="primary">Start</CapButton>
             ) : (
-              <CapButton variant="success" disabled>
+              <CapButton variant="primary" disabled>
                 <LabeledSpinner label="Capturing..." />
               </CapButton>
             )}
@@ -291,7 +291,7 @@ function ManualCaptureForm(): JSX.Element {
         </div>
         <div className="row">
           <div className="col-6">
-            <CapButton variant="danger" disabled={!isAppCapturing}>
+            <CapButton variant="secondary" disabled={!isAppCapturing}>
               Stop
             </CapButton>
           </div>
