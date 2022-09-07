@@ -5,7 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 
 export default function HelpSidebar(): JSX.Element {
   return (
-    <Card className="flex-shrink-0 align-self-start">
+    <Card className="align-self-start flex-grow-0 flex-shrink-0" style={{ width: '240px' }}>
       <Nav variant="pills" defaultActiveKey="/help/flamegraphs" className="flex-column">
         <LinkContainer to="/help/flamegraphs">
           <Nav.Link>Flamegraphs</Nav.Link>
