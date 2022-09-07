@@ -58,11 +58,11 @@ export default function ListSidebar(): JSX.Element {
   const navigate = useNavigate();
 
   const ItemList: JSX.Element[] = [];
+  const appNameRegex = new RegExp(filters.appName);
+  const captureNameRegex = new RegExp(filters.captureName);
+  const creatorRegex = new RegExp(filters.creator);
+  const dateRegex = new RegExp(filters.date);
   for (let i = 0; i < captureList.length; i++) {
-    const appNameRegex = new RegExp(filters.appName);
-    const captureNameRegex = new RegExp(filters.captureName);
-    const creatorRegex = new RegExp(filters.creator);
-    const dateRegex = new RegExp(filters.date);
     if (appNameRegex.test(captureList[i].appName)
       && captureNameRegex.test(captureList[i].captureName)
       && dateRegex.test(captureList[i].date)
