@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Form, Stack, Card,
+  Button, Form, Stack, Card, Col, Tab, Tabs, Nav,
 } from 'react-bootstrap';
 import {
   startApp,
@@ -8,6 +8,7 @@ import {
   startCapture,
   checkIsAppRunning,
   setAppCapturing,
+  startAppAndCapture,
 } from '../../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import LabeledSpinner from '../../components/LabeledSpinner';
@@ -44,6 +45,72 @@ CapButton.defaultProps = {
   disabled: false,
   children: null,
 };
+
+function RunApplicationForm(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const { pid, isAppRunning, isAppCapturing } = useAppSelector(
+    (state) => state.app,
+  );
+  const startAppEvent = async () => {
+    const appNameElement = document.getElementById(
+      'appName',
+    ) as HTMLInputElement;
+    const relativePathElement = document.getElementById(
+      'relativePath',
+    ) as HTMLInputElement;
+    if (appNameElement && relativePathElement) {
+      const newAppName: string = appNameElement.value;
+      const filePath: string = relativePathElement.value;
+      await dispatch(startApp({ appName: newAppName, filePath }));
+    }
+  };
+
+  return (
+    <>
+      <h4>Choose Your App</h4>
+      <Form>
+        <Form.Group className="mb-3" controlId="appName">
+          <Form.Label>App Name</Form.Label>
+          <Form.Control type="text" placeholder="Enter App Name" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="relativePath">
+          <Form.Label>Relative Path of Entry Point</Form.Label>
+          <Form.Control
+            type="text"
+            defaultValue="../../src/examples/app-test.js"
+          />
+        </Form.Group>
+      </Form>
+      <div className="d-grid gap-2">
+        {!isAppRunning && !isAppCapturing ? (
+          <CapButton
+            variant="success"
+            onClick={() => {
+              startAppEvent().catch((err) => console.log('Err in start app button', err));
+            }}
+          >
+            Start Application
+          </CapButton>
+        ) : (
+          <CapButton variant="success" disabled>
+            <LabeledSpinner label="Running..." />
+          </CapButton>
+        )}
+
+        <CapButton
+          variant="danger"
+          disabled={!isAppRunning}
+          onClick={() => {
+            const func = () => dispatch(stopApp(pid));
+            func().catch((err) => console.log('Err in stop app button', err));
+          }}
+        >
+          Stop Application
+        </CapButton>
+      </div>
+    </>
+  );
+}
 
 function FixedLengthCaptureForm(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -82,110 +149,132 @@ function FixedLengthCaptureForm(): JSX.Element {
     }
   }
   return (
-    <Card className="p-3">
-      <Form>
-        <h4>Predetermined Capture Length</h4>
-        <Stack direction="horizontal" gap={3}>
-          <Form.Group className="mb-3" controlId="duration">
-            <Form.Label>Duration of Capture</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="duration in seconds"
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="graphType">
-            <Form.Label>Type of Graph</Form.Label>
-            <Form.Select aria-label="select graph type">
-              <option value="flamegraph">Flame Graph</option>
-              <option value="icicle">Icicle Graph</option>
-            </Form.Select>
-          </Form.Group>
-        </Stack>
-        {!isAppCapturing ? (
-          <CapButton variant="success" onClick={() => startCaptureEvent()}>
-            Start
-          </CapButton>
-        ) : (
-          <CapButton variant="success" disabled>
-            <LabeledSpinner label="Capturing..." />
-          </CapButton>
-        )}
-      </Form>
-    </Card>
+    <Form>
+      <h4>Predetermined Capture Length</h4>
+      <Stack direction="horizontal" gap={3}>
+        <Form.Group className="mb-3" controlId="duration">
+          <Form.Label>Duration of Capture</Form.Label>
+          <Form.Control type="text" placeholder="duration in seconds" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="graphType">
+          <Form.Label>Type of Graph</Form.Label>
+          <Form.Select aria-label="select graph type">
+            <option value="flamegraph">Flame Graph</option>
+            <option value="icicle">Icicle Graph</option>
+          </Form.Select>
+        </Form.Group>
+      </Stack>
+      {!isAppCapturing ? (
+        <CapButton variant="success" onClick={() => startCaptureEvent()}>
+          Start
+        </CapButton>
+      ) : (
+        <CapButton variant="success" disabled>
+          <LabeledSpinner label="Capturing..." />
+        </CapButton>
+      )}
+    </Form>
   );
 }
 
-function RunApplicationForm(): JSX.Element {
+function AppAndCaptureForm(): JSX.Element {
   const dispatch = useAppDispatch();
-  const { pid, isAppRunning } = useAppSelector((state) => state.app);
-  const startAppEvent = async () => {
-    const appNameElement = document.getElementById(
-      'appName',
+  const {
+    pid, appName, isAppRunning, isAppCapturing,
+  } = useAppSelector(
+    (state) => state.app,
+  );
+
+  function AppAndCapHandler() {
+    // grab duration
+    console.log('click the start capture button');
+    const durationElement = document.getElementById(
+      'durationCombo',
     ) as HTMLInputElement;
-    const relativePathElement = document.getElementById(
-      'relativePath',
+    const graphTypeElement = document.getElementById(
+      'graphTypeCombo',
     ) as HTMLInputElement;
-    if (appNameElement && relativePathElement) {
-      const newAppName: string = appNameElement.value;
-      const filePath: string = relativePathElement.value;
-      await dispatch(startApp({ appName: newAppName, filePath }));
+    const filePathElement = document.getElementById(
+      'filepathCombo',
+    ) as HTMLInputElement;
+    if (durationElement) {
+      const durationString: string = durationElement.value;
+      const duration = Number(durationString);
+      const graphType: string = graphTypeElement.value;
+      const filePath: string = filePathElement.value;
+      console.log(duration);
+      console.log('pid is', pid);
+      const func = () => {
+        dispatch(setAppCapturing(true));
+        return dispatch(
+          startAppAndCapture({
+            filePath,
+            duration,
+            appName,
+            graphType,
+          }),
+        );
+      };
+      func()
+        .then(async () => {
+          dispatch(setAppCapturing(false));
+          await dispatch(fetchAllCaptures());
+        })
+        .catch((err) => {
+          console.log('Error in Start Capture onclick event: ', err);
+        });
     }
-  };
+  }
 
   return (
-    <Card className="p-3">
-      <h4>Choose Your App</h4>
-      <Form>
-        <Form.Group className="mb-3" controlId="appName">
-          <Form.Label>App Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter App Name" />
+    <>
+      <h4>Start an App and a Capture at the same time!</h4>
+      <Stack direction="horizontal" gap={3}>
+        <Form.Group className="mb-3" controlId="durationCombo">
+          <Form.Label>Duration of Capture</Form.Label>
+          <Form.Control type="text" placeholder="duration in seconds" />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="relativePath">
-          <Form.Label>Relative Path of Entry Point</Form.Label>
+        <Form.Group className="mb-3" controlId="graphTypeCombo">
+          <Form.Label>Type of Graph</Form.Label>
+          <Form.Select aria-label="select graph type">
+            <option value="flamegraph">Flame Graph</option>
+            <option value="icicle">Icicle Graph</option>
+          </Form.Select>
+        </Form.Group>
+      </Stack>
+
+      <Col>
+        <Form.Group className="mb-3" controlId="filepathCombo">
+          <Form.Label>App Relative Filepath</Form.Label>
           <Form.Control
             type="text"
             defaultValue="../../src/examples/app-test.js"
           />
+          <Form.Text className="text-muted">
+            Please enter the relative Filepath.
+          </Form.Text>
         </Form.Group>
-      </Form>
-      <div className="d-grid gap-2">
-        {!isAppRunning ? (
-          <CapButton
-            variant="success"
-            onClick={() => {
-              startAppEvent().catch((err) => console.log('Err in start app button', err));
-            }}
-          >
-            Start Application
+      </Col>
+      <Col>
+        {!isAppRunning && !isAppCapturing ? (
+          <CapButton variant="success" onClick={() => AppAndCapHandler()}>
+            Start
           </CapButton>
         ) : (
           <CapButton variant="success" disabled>
             <LabeledSpinner label="Running..." />
           </CapButton>
         )}
-
-        <CapButton
-          variant="danger"
-          disabled={!isAppRunning}
-          onClick={() => {
-            const func = () => dispatch(stopApp(pid));
-            func().catch((err) => console.log('Err in stop app button', err));
-          }}
-        >
-          Stop Application
-        </CapButton>
-      </div>
-    </Card>
+      </Col>
+    </>
   );
 }
 
 function ManualCaptureForm(): JSX.Element {
   // const dispatch = useAppDispatch();
-  const { isAppCapturing } = useAppSelector(
-    (state) => state.app,
-  );
+  const { isAppCapturing } = useAppSelector((state) => state.app);
   return (
-    <Card className="p-3">
+    <>
       <h4>Custom Length Capture</h4>
       <div className="d-grid gap-2">
         <div className="row">
@@ -209,15 +298,13 @@ function ManualCaptureForm(): JSX.Element {
           <div className="col-6" />
         </div>
       </div>
-    </Card>
+    </>
   );
 }
 
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const { pid, isAppRunning } = useAppSelector(
-    (state) => state.app,
-  );
+  const { pid, isAppRunning } = useAppSelector((state) => state.app);
   const [appId, setAppId] = useState<number | null>(null);
   const [capId, setCapId] = useState<number | null>(null);
   useEffect(() => {
@@ -249,15 +336,40 @@ export default function CapturePage(): JSX.Element {
   // }, [isAppCapturing]);
 
   return (
-    <Stack direction="horizontal" gap={3}>
+    <Stack direction="horizontal" gap={3} className="mb-5">
       <ListSidebar />
-      <Card className="p-3 w-100 bg-light">
-        <Stack direction="vertical" gap={3}>
-          <RunApplicationForm />
-          <FixedLengthCaptureForm />
-          <ManualCaptureForm />
-        </Stack>
-      </Card>
+      <Stack>
+        <Card className="w-100">
+          <Tab.Container defaultActiveKey="basic">
+            <Card.Header>
+              <Nav variant="tabs" defaultActiveKey="basic">
+                <Nav.Item>
+                  <Nav.Link eventKey="basic">Basic</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="advanced">Advanced</Nav.Link>
+                </Nav.Item>
+              </Nav>
+            </Card.Header>
+            <Tab.Content>
+              <Tab.Pane eventKey="basic">
+                <Stack direction="vertical" gap={3} className="p-3">
+                  <AppAndCaptureForm />
+                </Stack>
+              </Tab.Pane>
+              <Tab.Pane eventKey="advanced">
+                <Stack direction="vertical" gap={3} className="p-3">
+                  <RunApplicationForm />
+                  <hr />
+                  <FixedLengthCaptureForm />
+                  <hr />
+                  <ManualCaptureForm />
+                </Stack>
+              </Tab.Pane>
+            </Tab.Content>
+          </Tab.Container>
+        </Card>
+      </Stack>
     </Stack>
   );
 }
