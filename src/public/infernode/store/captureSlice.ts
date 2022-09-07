@@ -13,13 +13,34 @@ export interface CaptureState {
   captureList: Capture[];
   current: number | null;
   loading: boolean;
+  comparison: (number | null)[];
 }
 
 const initialState: CaptureState = {
   captureList: [],
   current: null,
   loading: false,
+  comparison: [],
 };
+
+export const getComparisonCapture = createAsyncThunk(
+  'captures/getComparionCapture',
+  async (comparison: (number | null)[]) => {
+    console.log('comparison id is ', comparison);
+    const id = Number(await fetch('/api/diff', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id1: comparison[0],
+        id2: comparison[1],
+      }),
+    }).then((res) => res.json()).catch((err) => console.error(err)));
+    console.log('compare capture id is ', id);
+    return id;
+  },
+);
 
 export const fetchAllCaptures = createAsyncThunk<Capture[]>(
   'captures/fetchAll',
@@ -56,6 +77,19 @@ export const captureSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setComparison: (state, action: PayloadAction<number | null>) => {
+      console.log('setComparion invoked ', state.comparison, ' is comaprison value');
+      // Differentials page initilization
+      if (!action.payload) state.comparison = [];
+      // Compare two flamegraphs
+      else state.comparison.push(action.payload);
+      console.log('setComparions executed ', state.comparison, ' is comaprison value');
+    },
+    removeComparison: (state, action: PayloadAction<number>) => {
+      console.log('removeComparion invoked ', state.comparison, ' is comaprison value');
+      state.comparison = state.comparison.filter((element) => element !== action.payload);
+      console.log('removeComparions executed ', state.comparison, ' is comaprison value');
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllCaptures.fulfilled, (state, action) => {
@@ -88,8 +122,18 @@ export const captureSlice = createSlice({
       console.log('REJECTED', JSON.stringify(action));
       console.log('deleteCapture resolved to error: ', action.payload || action.error);
     });
+    builder.addCase(getComparisonCapture.fulfilled, (state, action) => {
+      console.log('fullfulled', JSON.stringify(action));
+      state.current = action.payload;
+    });
+    builder.addCase(getComparisonCapture.rejected, (state, action) => {
+      console.log('rejected', JSON.stringify(action));
+      console.log('getComparisonCapture resolved to error: ', action.payload || action.error);
+    });
   },
 });
 
-export const { setCurrent, setLoading } = captureSlice.actions;
+export const {
+  setCurrent, setLoading, setComparison, removeComparison,
+} = captureSlice.actions;
 export default captureSlice.reducer;
