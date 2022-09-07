@@ -15,7 +15,7 @@ type ReqBody = {
 };
 
 type BodyWithPid = {
-  pid: number;
+  pid?: number;
 };
 
 // note reqBody and Reqbody are not the same thing
@@ -108,15 +108,23 @@ class ApplicationController {
 
   public nodeKill = (req: Request, res: Response, next: NextFunction) => {
     try {
-      const reqBody: BodyWithPid | object = req.body as BodyWithPid | object;
-      if (!('pid' in reqBody)) {
-        throw new Error('There was an issue with the request body given to nodeKill');
+      const reqBody = req.body as BodyWithPid;
+      const resLocals = res.locals as BodyWithPid;
+      if ('pid' in reqBody) {
+        if (typeof reqBody.pid !== 'number') {
+          throw new Error();
+        }
       }
-      const { pid } = reqBody;
+      let pid;
+      if ('pid' in reqBody || 'pid' in resLocals) {
+        pid = 'pid' in reqBody ? reqBody.pid : resLocals.pid;
+      } else {
+        throw new Error();
+      }
       // check if node process is currently running
       // if not, return an error
       if (typeof pid !== 'number') throw new TypeError('Incorrect type passed in to req.body');
-      if (reqBody.pid in this.runningProcesses) {
+      if (pid in this.runningProcesses) {
         const result = process.kill(pid);
         console.log('child process killed?', result, ' - pid: ', pid);
         return next();

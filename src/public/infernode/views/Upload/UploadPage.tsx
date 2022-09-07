@@ -1,24 +1,23 @@
 import React, { useEffect } from 'react';
 import Stack from 'react-bootstrap/Stack';
-import ManageSidebar from './ManageSidebar';
+import ListSidebar from '../../components/layout/ListSidebar';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import ProgressCard from '../../components/layout/ProgressCard';
-import ManageForm from './ManageForm';
+import UploadForm from './UploadForm';
 import { setActivePage } from '../../store/configSlice';
 
-export default function ManagePage(): JSX.Element {
-  const { uploadSidebar } = useAppSelector((state) => state.config.features);
+export default function UploadPage(): JSX.Element {
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(setActivePage('/manage'));
+    dispatch(setActivePage('/upload'));
   });
 
   const { file, loading, progress } = useAppSelector((state) => state.upload);
 
   return (
     <Stack direction="horizontal" gap={3}>
-      { uploadSidebar ? <ManageSidebar /> : <></>}
-      {!loading ? <ManageForm /> : <ProgressCard fileName={file} progress={progress} />}
+      <ListSidebar />
+      {!loading ? <UploadForm /> : <ProgressCard fileName={file} progress={progress} />}
     </Stack>
   );
 }
