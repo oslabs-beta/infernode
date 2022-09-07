@@ -1,8 +1,6 @@
 import React, {
   useEffect, useState,
 } from 'react';
-// import Stack from 'react-bootstrap/Stack';
-// import Card from 'react-bootstrap/Card';
 import {
   Button,
   Form,
@@ -10,12 +8,12 @@ import {
   Card,
   Col,
 } from 'react-bootstrap';
-import CaptureSidebar from './CaptureSidebar';
 import {
   startApp, stopApp, startCapture, checkIsAppRunning, checkIsAppCapturing,
 } from '../../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import AppStatusCircle from './AppStatusCircle';
+import ListSidebar from '../../components/layout/ListSidebar';
 import { setActivePage } from '../../store/configSlice';
 import { fetchAllCaptures } from '../../store/captureSlice';
 
@@ -75,7 +73,7 @@ export default function CapturePage(): JSX.Element {
   return (
     <div>
       <Stack direction="horizontal" gap={3}>
-        <CaptureSidebar />
+        <ListSidebar />
         <Stack direction="vertical" gap={3}>
           <Card>
             <h4>Choose Your App</h4>

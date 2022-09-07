@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Card from 'react-bootstrap/Card';
 import { useNavigate } from 'react-router-dom';
-import HistorySidebar from './HistorySidebar';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { setActivePage } from '../../store/configSlice';
+import ListSidebar from '../../components/layout/ListSidebar';
 
 export default function HistoryPage(): JSX.Element {
   const { current } = useAppSelector((state) => state.captures);
@@ -20,10 +20,10 @@ export default function HistoryPage(): JSX.Element {
     realid = current;
     haveid = true;
   }
-  if (haveid === false) navigate('/capture', { replace: true });
+  if (!haveid) navigate('/capture', { replace: true });
   return (
     <Stack direction="horizontal" gap={3}>
-      <HistorySidebar />
+      <ListSidebar />
       <Card>
         {haveid && <iframe src={`/api/captures/${realid}`} title="flamegraph" width="1000" height="800" />}
       </Card>

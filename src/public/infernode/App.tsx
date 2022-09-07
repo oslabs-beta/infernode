@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './App.scss';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/layout/NavBar/NavBar';
 import CapturePage from './views/Capture/CapturePage';
 import HelpPage from './views/Help/HelpPage';
@@ -41,7 +41,7 @@ export default function App(): JSX.Element {
           <Route path="*" element={<HistoryPage />} />
         </Routes>
       </Container>
-      <Container fluid className="position-absolute bottom-0 bg-light p-2">
+      <Container fluid className="fixed-bottom bg-light p-2">
         <Row>
           <Col sm="auto" className="text-muted">v1.0.0</Col>
           <Col />
