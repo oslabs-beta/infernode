@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Button, Form, Stack, Card, Col, Tab, Tabs, Nav,
+  Button, Form, Stack, Card, Col, Tab, Nav,
 } from 'react-bootstrap';
 import {
   startApp,
