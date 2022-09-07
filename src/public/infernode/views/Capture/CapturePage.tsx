@@ -1,193 +1,263 @@
-import React, {
-  useEffect, useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Button,
-  Form,
-  Stack,
-  Card,
-  Col,
+  Button, Form, Stack, Card,
 } from 'react-bootstrap';
 import {
-  startApp, stopApp, startCapture, checkIsAppRunning, checkIsAppCapturing,
+  startApp,
+  stopApp,
+  startCapture,
+  checkIsAppRunning,
+  setAppCapturing,
 } from '../../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import AppStatusCircle from './AppStatusCircle';
+import LabeledSpinner from '../../components/LabeledSpinner';
 import ListSidebar from '../../components/layout/ListSidebar';
 import { setActivePage } from '../../store/configSlice';
 import { fetchAllCaptures } from '../../store/captureSlice';
 
+type CapButtonProps = {
+  variant: string;
+  disabled?: boolean;
+  onClick?: () => void | null;
+  children?: React.ReactNode;
+};
+
+function CapButton(props: CapButtonProps): JSX.Element {
+  const {
+    variant, disabled, onClick, children,
+  } = props;
+  return (
+    <Button
+      variant={variant}
+      disabled={disabled}
+      onClick={onClick}
+      size="lg"
+      style={{ width: '200px' }}
+    >
+      {children}
+    </Button>
+  );
+}
+
+CapButton.defaultProps = {
+  onClick: null,
+  disabled: false,
+  children: null,
+};
+
+function FixedLengthCaptureForm(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const { pid, appName, isAppCapturing } = useAppSelector((state) => state.app);
+
+  function startCaptureEvent(): void {
+    const durationElement = document.getElementById(
+      'duration',
+    ) as HTMLInputElement;
+    const graphTypeElement = document.getElementById(
+      'graphType',
+    ) as HTMLInputElement;
+    if (durationElement) {
+      const durationString: string = durationElement.value;
+      const duration = Number(durationString);
+      const graphType: string = graphTypeElement.value;
+      const func = () => {
+        dispatch(setAppCapturing(true));
+        return dispatch(
+          startCapture({
+            pid,
+            duration,
+            appName,
+            graphType,
+          }),
+        );
+      };
+      func()
+        .then(async () => {
+          dispatch(setAppCapturing(false));
+          await dispatch(fetchAllCaptures());
+        })
+        .catch((err) => {
+          console.log('Error in Start Capture onclick event: ', err);
+        });
+    }
+  }
+  return (
+    <Card className="p-3">
+      <Form>
+        <h4>Predetermined Capture Length</h4>
+        <Stack direction="horizontal" gap={3}>
+          <Form.Group className="mb-3" controlId="duration">
+            <Form.Label>Duration of Capture</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="duration in seconds"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="graphType">
+            <Form.Label>Type of Graph</Form.Label>
+            <Form.Select aria-label="select graph type">
+              <option value="flamegraph">Flame Graph</option>
+              <option value="icicle">Icicle Graph</option>
+            </Form.Select>
+          </Form.Group>
+        </Stack>
+        {!isAppCapturing ? (
+          <CapButton variant="success" onClick={() => startCaptureEvent()}>
+            Start
+          </CapButton>
+        ) : (
+          <CapButton variant="success" disabled>
+            <LabeledSpinner label="Capturing..." />
+          </CapButton>
+        )}
+      </Form>
+    </Card>
+  );
+}
+
+function RunApplicationForm(): JSX.Element {
+  const dispatch = useAppDispatch();
+  const { pid, isAppRunning } = useAppSelector((state) => state.app);
+  const startAppEvent = async () => {
+    const appNameElement = document.getElementById(
+      'appName',
+    ) as HTMLInputElement;
+    const relativePathElement = document.getElementById(
+      'relativePath',
+    ) as HTMLInputElement;
+    if (appNameElement && relativePathElement) {
+      const newAppName: string = appNameElement.value;
+      const filePath: string = relativePathElement.value;
+      await dispatch(startApp({ appName: newAppName, filePath }));
+    }
+  };
+
+  return (
+    <Card className="p-3">
+      <h4>Choose Your App</h4>
+      <Form>
+        <Form.Group className="mb-3" controlId="appName">
+          <Form.Label>App Name</Form.Label>
+          <Form.Control type="text" placeholder="Enter App Name" />
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="relativePath">
+          <Form.Label>Relative Path of Entry Point</Form.Label>
+          <Form.Control
+            type="text"
+            defaultValue="../../src/examples/app-test.js"
+          />
+        </Form.Group>
+      </Form>
+      <div className="d-grid gap-2">
+        {!isAppRunning ? (
+          <CapButton
+            variant="success"
+            onClick={() => {
+              startAppEvent().catch((err) => console.log('Err in start app button', err));
+            }}
+          >
+            Start Application
+          </CapButton>
+        ) : (
+          <CapButton variant="success" disabled>
+            <LabeledSpinner label="Running..." />
+          </CapButton>
+        )}
+
+        <CapButton
+          variant="danger"
+          disabled={!isAppRunning}
+          onClick={() => {
+            const func = () => dispatch(stopApp(pid));
+            func().catch((err) => console.log('Err in stop app button', err));
+          }}
+        >
+          Stop Application
+        </CapButton>
+      </div>
+    </Card>
+  );
+}
+
+function ManualCaptureForm(): JSX.Element {
+  // const dispatch = useAppDispatch();
+  const { isAppCapturing } = useAppSelector(
+    (state) => state.app,
+  );
+  return (
+    <Card className="p-3">
+      <h4>Custom Length Capture</h4>
+      <div className="d-grid gap-2">
+        <div className="row">
+          <div className="col-6">
+            {!isAppCapturing ? (
+              <CapButton variant="success">Start</CapButton>
+            ) : (
+              <CapButton variant="success" disabled>
+                <LabeledSpinner label="Capturing..." />
+              </CapButton>
+            )}
+          </div>
+          <div className="col-6" />
+        </div>
+        <div className="row">
+          <div className="col-6">
+            <CapButton variant="danger" disabled={!isAppCapturing}>
+              Stop
+            </CapButton>
+          </div>
+          <div className="col-6" />
+        </div>
+      </div>
+    </Card>
+  );
+}
+
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const {
-    pid, appName, isAppRunning, isAppCapturing,
-  } = useAppSelector((state) => state.app);
+  const { pid, isAppRunning } = useAppSelector(
+    (state) => state.app,
+  );
   const [appId, setAppId] = useState<number | null>(null);
   const [capId, setCapId] = useState<number | null>(null);
   useEffect(() => {
     dispatch(setActivePage('/capture'));
   });
 
-  // const dispatchMemo = useCallback(dispatch, [dispatch]);
-  // const appIdMemo = useMemo(() => appId, [appId]);
-  // const capIdMemo = useMemo(() => capId, [capId]);
-
-  console.log('start app polling 1', isAppRunning);
   useEffect(() => {
     if (isAppRunning) {
-      const newAppId = setInterval(() => dispatch(checkIsAppRunning(pid)), 10000);
+      const newAppId = setInterval(
+        () => dispatch(checkIsAppRunning(pid)),
+        1000,
+      );
       setAppId(Number(newAppId));
-      console.log('start app polling 3');
     } else {
-      console.log('start app polling 4');
-      console.log('appId', appId);
       if (appId) clearInterval(appId);
-      if (capId) clearInterval(capId); // if app no longer running, stop cap imediately?
+      if (capId) clearInterval(capId);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAppRunning]);
 
-  useEffect(() => {
-    if (isAppCapturing) {
-      const newCapId = setInterval(() => dispatch(checkIsAppCapturing()), 10000);
-      setCapId(Number(newCapId));
-      // console.log('start cap polling 5');
-    } else if (capId) {
-      clearInterval(capId);
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAppCapturing]);
-
-  const startAppEvent = async () => {
-    console.log('click start app button');
-    const appNameElement = document.getElementById('appName') as HTMLInputElement;
-    const relativePathElement = document.getElementById('relativePath') as HTMLInputElement;
-    if (appNameElement && relativePathElement) {
-      const newAppName: string = appNameElement.value;
-      const filePath: string = relativePathElement.value;
-      console.log('in click event view =>', appName, filePath);
-      await dispatch(startApp({ appName: newAppName, filePath }));
-    }
-  };
+  // useEffect(() => {
+  //   if (isAppCapturing) {
+  //     const newCapId = setInterval(() => dispatch(checkIsAppCapturing()), 1000);
+  //     setCapId(Number(newCapId));
+  //   } else if (capId) {
+  //     clearInterval(capId);
+  //   }
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isAppCapturing]);
 
   return (
-    <div>
-      <Stack direction="horizontal" gap={3}>
-        <ListSidebar />
+    <Stack direction="horizontal" gap={3}>
+      <ListSidebar />
+      <Card className="p-3 w-100 bg-light">
         <Stack direction="vertical" gap={3}>
-          <Card>
-            <h4>Choose Your App</h4>
-            <Form>
-              <Form.Group className="mb-3" controlId="formGroupAppName">
-                <Form.Label>App Name</Form.Label>
-                <Form.Control type="text" id="appName" placeholder="Enter App Name" />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formGroupPath">
-                <Form.Label>Relative Path of Entry Point</Form.Label>
-                <Form.Control type="text" id="relativePath" placeholder="/enter/relative/path" />
-              </Form.Group>
-            </Form>
-            <div className="d-grid gap-2">
-              <Button
-                variant="success"
-                size="lg"
-                onClick={() => {
-                  startAppEvent().catch((err) => console.log('Err in start app button', err));
-                }}
-              >
-                Start Application
-              </Button>
-              <Button
-                variant="danger"
-                size="lg"
-                onClick={() => {
-                  console.log('click on stop app button');
-                  console.log('pid is', pid);
-                  const func = () => dispatch(stopApp(pid));
-                  func().catch((err) => console.log('Err in stop app button', err));
-                }}
-              >
-                Stop Application
-              </Button>
-            </div>
-            <AppStatusCircle />
-          </Card>
-          <Card>
-            <Stack direction="horizontal" gap={3}>
-              <h4>Predetermined Capture Length</h4>
-              <Form.Select aria-label="Default select example" id="graphtype">
-                <option value="flamegraph">Capture a Flamegraph!</option>
-                <option value="icicle">Capture an Icegraph!</option>
-              </Form.Select>
-            </Stack>
-            <Col>
-              <Form.Group className="mb-3" controlId="AppDuration">
-                <Form.Label>Duration of Capture</Form.Label>
-                <Form.Control type="text" placeholder="Enter Duration" id="duration" />
-                <Form.Text className="text-muted">
-                  Please enter the duration you would like to capture in seconds.
-                </Form.Text>
-              </Form.Group>
-            </Col>
-            <Col>
-              <Button
-                variant="success"
-                size="lg"
-                onClick={() => {
-                  // grab duration
-                  console.log('click the start capture button');
-                  const durationElement = document.getElementById('duration') as HTMLInputElement;
-                  const graphTypeElement = document.getElementById('graphtype') as HTMLInputElement;
-                  if (durationElement) {
-                    const durationString: string = durationElement.value;
-                    const duration = Number(durationString);
-                    const graphType: string = graphTypeElement.value;
-                    console.log(duration);
-                    console.log('pid is', pid);
-                    const func = () => dispatch(startCapture({
-                      pid, duration, appName, graphType,
-                    }));
-                    func()
-                      .then(async () => {
-                        await dispatch(fetchAllCaptures());
-                      })
-                      .catch((err) => {
-                        console.log('Error in Start Capture onclick event: ', err);
-                      });
-                  }
-                }}
-              >
-                Start
-              </Button>
-            </Col>
-          </Card>
-          <Card>
-            <h4>Custom Length Capture</h4>
-            <div className="d-grid gap-2">
-              <div className="row">
-                <div className="col-6">
-                  <Button variant="success" size="lg">
-                    Start
-                  </Button>
-                </div>
-                <div className="col-6">
-                  <h6>Click this button to start your capture!</h6>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-6">
-                  <Button variant="danger" size="lg">
-                    Stop
-                  </Button>
-                </div>
-                <div className="col-6">
-                  <h6>Click this button to Stop your capture!</h6>
-                </div>
-              </div>
-            </div>
-          </Card>
+          <RunApplicationForm />
+          <FixedLengthCaptureForm />
+          <ManualCaptureForm />
         </Stack>
-      </Stack>
-    </div>
+      </Card>
+    </Stack>
   );
 }

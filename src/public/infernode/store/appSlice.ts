@@ -2,12 +2,14 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface AppSliceStateType {
-  isAppRunning: boolean | null,
-  isAppCapturing: boolean | null,
+  isAppRunning: boolean,
+  isAppCapturing: boolean,
   duration: number | null,
   appName: string | null,
   filePath: string | null,
   pid: number | null,
+  appId: number | null,
+  capId: number | null,
 }
 
 interface StartAppPayloadType {
@@ -25,7 +27,6 @@ interface StartCapturePayloadType {
 const checkIsAppRunning = createAsyncThunk(
   'app/checkIsAppRunning',
   async (pid: number | null) => {
-    console.log('start app polling action');
     const appStatus = Boolean(await fetch('/api/app/status', {
       method: 'POST',
       headers: {
@@ -35,7 +36,6 @@ const checkIsAppRunning = createAsyncThunk(
         pid,
       }),
     }).then((res) => res.json()));
-    console.log('app status is', appStatus);
     return appStatus;
   },
 );
@@ -50,9 +50,6 @@ const checkIsAppCapturing = createAsyncThunk(
 const startApp = createAsyncThunk(
   'api/startApp',
   async (args: StartAppPayloadType) => {
-    console.log('start callback');
-    // console.log('args before the fetch request to api/app/start', args);
-    if (!args.appName || !args.filePath) console.log('entries not valid');
     const pid = Number(await fetch('/api/app/start', {
       method: 'POST',
       headers: {
@@ -63,7 +60,6 @@ const startApp = createAsyncThunk(
         filePath: args.filePath,
       }),
     }).then((res) => res.json()));
-    console.log('got pid back', pid);
     return pid;
   },
 );
@@ -71,7 +67,6 @@ const stopApp = createAsyncThunk(
   'api/stopApp',
   async (pid: number | null) => {
     if (!pid) throw new Error('pid doesn\'t exist');
-    console.log('stop callback');
     await fetch('/api/app/stop', {
       method: 'POST',
       headers: {
@@ -88,7 +83,6 @@ const startCapture = createAsyncThunk(
   'api/startCapture',
   async (args: StartCapturePayloadType) => {
     const endpoint = `/api/dTrace/${args.graphType}`;
-    console.log('start capture callback', args, ' is args');
     await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -100,28 +94,40 @@ const startCapture = createAsyncThunk(
         appName: args.appName,
       }),
     }).then((res) => res.json());
-    console.log('finished start capture callback');
   },
 );
 
 const initialState: AppSliceStateType = {
-  isAppRunning: null,
-  isAppCapturing: null,
+  isAppRunning: false,
+  isAppCapturing: false,
   duration: null,
   appName: null,
   filePath: null,
   pid: null,
+  appId: null,
+  capId: null,
 };
 
 const appSlice = createSlice({
   name: 'appSlice',
   initialState,
-  reducers: {},
+  reducers: {
+    setAppCapturing: (state, action: PayloadAction<boolean>) => {
+      state.isAppCapturing = action.payload;
+    },
+    setAppRunning: (state, action: PayloadAction<boolean>) => {
+      state.isAppRunning = action.payload;
+    },
+    setAppId: (state, action: PayloadAction<number>) => {
+      state.appId = action.payload;
+    },
+    setCapId: (state, action: PayloadAction<number>) => {
+      state.capId = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(checkIsAppRunning.fulfilled, (state, action: PayloadAction<boolean>) => {
-      console.log('checkisapprunning action payload is ', action.payload, state.isAppRunning);
-      if (action.payload === false && state.isAppRunning) { // false: not running
-        // update appSlice state
+      if (action.payload === false && state.isAppRunning) {
         state.isAppRunning = false;
         state.appName = null;
         state.filePath = null;
@@ -135,7 +141,6 @@ const appSlice = createSlice({
 
     builder.addCase(checkIsAppCapturing.fulfilled, (state, action: PayloadAction<boolean>) => {
       if (action.payload === false && state.isAppCapturing) {
-        // update appSlice state
         state.isAppCapturing = false;
         state.duration = null;
       }
@@ -144,29 +149,30 @@ const appSlice = createSlice({
     builder.addCase(startApp.fulfilled, (state, action: PayloadAction<number | null>) => {
       state.isAppRunning = true;
       state.pid = action.payload;
-      console.log('startApp is fullfilled state.pid is ', state.pid, state.isAppRunning);
     });
 
-    builder.addCase(startCapture.fulfilled, (state) => { // action: PayloadAction<void>
+    builder.addCase(startCapture.fulfilled, (state) => {
       state.isAppCapturing = true;
     });
+    builder.addCase(startCapture.rejected, (state, action) => {
+      state.isAppCapturing = false;
+      console.log('unable to start capture', action.error);
+    });
 
-    // builder.addCase(startCapture.rejected, (state, action: PayloadAction<void>) => {
-    //   console.log('unable to start capture');
-    // });
-
-    builder.addCase(stopApp.fulfilled, (state) => { // action: PayloadAction<void>
+    builder.addCase(stopApp.fulfilled, (state) => {
       state.isAppRunning = false;
       state.pid = null;
     });
-    // builder.addCase(stopApp.rejected, (state, action: PayloadAction<void>) => {
-    //   console.log('start capture is rejected')
-    // });
+    builder.addCase(stopApp.rejected, (_state, action) => {
+      console.log('unable to stop app', action.error);
+    });
   },
 });
 
 export {
   checkIsAppCapturing, checkIsAppRunning, startApp, startCapture, stopApp,
 };
-
+export const {
+  setAppCapturing, setAppRunning, setCapId, setAppId,
+} = appSlice.actions;
 export default appSlice.reducer;
