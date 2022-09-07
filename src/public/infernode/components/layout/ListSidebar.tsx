@@ -3,12 +3,15 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Stack from 'react-bootstrap/Stack';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Pagination from 'react-bootstrap/Pagination';
 import { useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import {
   deleteCapture, fetchAllCaptures,
   setCurrent,
 } from '../../store/captureSlice';
+
+import { setActiveListPage } from '../../store/configSlice';
 
 type SidebarItemProps = {
   name: string,
@@ -53,7 +56,7 @@ export default function ListSidebar(): JSX.Element {
     captureList,
     current,
   } = useAppSelector((state) => state.captures);
-  const { filters } = useAppSelector((state) => state.config);
+  const { filters, activeListPage } = useAppSelector((state) => state.config);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -62,7 +65,20 @@ export default function ListSidebar(): JSX.Element {
   const captureNameRegex = new RegExp(filters.captureName);
   const creatorRegex = new RegExp(filters.creator);
   const dateRegex = new RegExp(filters.date);
-  for (let i = 0; i < captureList.length; i++) {
+
+  const perPage = 5;
+  const pageStart = perPage * (activeListPage - 1);
+  const pageEnd = perPage * (activeListPage);
+
+  // todo: Figure out how to change pages only when current is updated
+  // useEffect(() => {
+  //   const idxOfCurrent = captureList.findIndex((ele) => ele.id === current);
+  //   if (current !== null && (idxOfCurrent < pageStart || idxOfCurrent >= pageEnd)) {
+  //     dispatch(setActiveListPage(Math.ceil((idxOfCurrent + 1) / perPage)));
+  //   }
+  // }, [current])
+
+  for (let i = pageStart; i < captureList.length && i < pageEnd; i++) {
     if (appNameRegex.test(captureList[i].appName)
       && captureNameRegex.test(captureList[i].captureName)
       && dateRegex.test(captureList[i].date)
@@ -85,12 +101,30 @@ export default function ListSidebar(): JSX.Element {
       />);
     }
   }
+
+  const paginationArray = [];
+  for (let i = 1; i <= Math.ceil(captureList.length / 5); i++) {
+    paginationArray.push(
+      <Pagination.Item
+        key={i}
+        active={i === activeListPage}
+        onClick={() => dispatch(setActiveListPage(i))}
+      >
+        {i}
+      </Pagination.Item>,
+    );
+  }
+
   return (
-    <Card className="align-self-start flex-shrink-0 flex-grow-0">
+    <Card className="align-self-start" style={{ width: '240px' }}>
       <Card.Header className="h5">History</Card.Header>
       <Card.Body className="p-1">
         {ItemList}
+        <Pagination>
+          {paginationArray}
+        </Pagination>
       </Card.Body>
+
     </Card>
   );
 }

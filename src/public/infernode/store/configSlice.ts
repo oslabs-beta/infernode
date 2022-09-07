@@ -7,8 +7,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface FeatureFlags {
   loginUi: boolean,
-  captureSidebar: boolean,
-  uploadSidebar: boolean,
 }
 
 export interface Filters {
@@ -18,12 +16,14 @@ export interface Filters {
   date: string,
 }
 
-type FeatureName = 'loginUi' | 'captureSidebar';
+type FeatureName = 'loginUi';
+
 export interface ConfigState {
   darkMode: boolean;
   activePage: string;
   features: FeatureFlags;
   filters: Filters;
+  activeListPage: number;
 }
 
 const initialState: ConfigState = {
@@ -31,8 +31,6 @@ const initialState: ConfigState = {
   activePage: '/history',
   features: {
     loginUi: false,
-    captureSidebar: false,
-    uploadSidebar: false,
   },
   filters: {
     appName: '.*',
@@ -40,6 +38,7 @@ const initialState: ConfigState = {
     creator: '.*',
     date: '.*',
   },
+  activeListPage: 1,
 };
 
 export const configSlice = createSlice({
@@ -48,6 +47,9 @@ export const configSlice = createSlice({
   reducers: {
     setDarkMode: (state, action: PayloadAction<boolean>) => {
       state.darkMode = action.payload;
+    },
+    setActiveListPage: (state, action: PayloadAction<number>) => {
+      state.activeListPage = action.payload;
     },
     toggleDarkMode: (state) => {
       state.darkMode = !state.darkMode;
@@ -75,6 +77,7 @@ export const configSlice = createSlice({
 
 export const {
   setDarkMode,
+  setActiveListPage,
   toggleDarkMode,
   setActivePage,
   updateAppNameFilter,
