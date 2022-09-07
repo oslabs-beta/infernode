@@ -11,11 +11,19 @@ export interface FeatureFlags {
   uploadSidebar: boolean,
 }
 
+export interface Filters {
+  appName: string,
+  captureName: string,
+  creator: string,
+  date: string,
+}
+
 type FeatureName = 'loginUi' | 'captureSidebar';
 export interface ConfigState {
   darkMode: boolean;
   activePage: string;
   features: FeatureFlags;
+  filters: Filters;
 }
 
 const initialState: ConfigState = {
@@ -25,6 +33,12 @@ const initialState: ConfigState = {
     loginUi: false,
     captureSidebar: false,
     uploadSidebar: false,
+  },
+  filters: {
+    appName: '.*',
+    captureName: '.*',
+    creator: '.*',
+    date: '.*',
   },
 };
 
@@ -44,8 +58,27 @@ export const configSlice = createSlice({
     toggleFeature: (state, action: PayloadAction<FeatureName>) => {
       state.features[action.payload] = !state.features[action.payload];
     },
+    updateAppNameFilter: (state, action: PayloadAction<string>) => {
+      state.filters.appName = action.payload;
+    },
+    updateCaptureNameFilter: (state, action: PayloadAction<string>) => {
+      state.filters.captureName = action.payload;
+    },
+    updateCreatorFilter: (state, action: PayloadAction<string>) => {
+      state.filters.creator = action.payload;
+    },
+    updateDateFilter: (state, action: PayloadAction<string>) => {
+      state.filters.date = action.payload;
+    },
   },
 });
 
-export const { setDarkMode, toggleDarkMode, setActivePage } = configSlice.actions;
+export const {
+  setDarkMode,
+  toggleDarkMode,
+  setActivePage,
+  updateAppNameFilter,
+  updateCaptureNameFilter,
+  updateCreatorFilter,
+} = configSlice.actions;
 export default configSlice.reducer;
