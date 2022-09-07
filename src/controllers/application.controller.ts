@@ -5,7 +5,6 @@ import { spawn, execSync } from 'child_process';
 import { existsSync } from 'fs-extra';
 import { InfernodeError } from '../utils/globalErrorHandler';
 import logger from '../utils/logging';
-import { resourceLimits } from 'worker_threads';
 
 type ProcessInfo = {
   userId: number | null; // Can remove null as an option when auth is implemented
