@@ -44,11 +44,6 @@ function SidebarItem(props: SidebarItemProps) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    dispatch(fetchAllCaptures()).catch((err) => console.error(err));
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current]);
-
   return (
     <Card className="my-1">
       <Card.Header
@@ -111,7 +106,7 @@ export default function DifferentialSidebar(): JSX.Element {
 
   for (let i = pageStart; i < captureList.length && i < pageEnd; i++) {
     // differentials have prefix 99 as its id, differential page won't show them in the sidebar
-    if (!/^99/.test(String(captureList[i].id))) {
+    if (captureList[i].data !== 'differential') { // data is type field in the db, values include: flamegraphs, differentials, icicles
       if (appNameRegex.test(captureList[i].appName)
         && captureNameRegex.test(captureList[i].captureName)
         && dateRegex.test(captureList[i].date)
@@ -133,7 +128,8 @@ export default function DifferentialSidebar(): JSX.Element {
           active={(current === captureList[i].id)}
           id={captureList[i].id}
         />);
-      }}
+      }
+    }
   }
   const paginationArray = [];
   for (let i = 1; i <= Math.ceil(captureList.length / 5); i++) {
@@ -154,10 +150,13 @@ export default function DifferentialSidebar(): JSX.Element {
       <Card.Body className="p-1">
         <Button
           variant="primary"
-          disabled={comparison.length !== 2 ? true : false}
+          disabled={comparison.length !== 2}
           onClick={() => {
             dispatch(getComparisonCapture(comparison))
-              .catch((err) => console.error('dispatch geComaprionsCapture error: ', err));
+              .then(async () => {
+                await dispatch(fetchAllCaptures());
+              })
+              .catch((err) => console.error('dispatch getComparisonsCapture error: ', err));
           }}
         >
           Compare

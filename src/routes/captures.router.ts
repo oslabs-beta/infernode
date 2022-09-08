@@ -12,7 +12,7 @@ const captureRouter = Router();
 
 // Create new flamegraph from a .perf
 captureRouter.post(
-  '/flamegraph',
+  '/:flamegraph',
   dbController.createEmptyRecord,
   fileController.addData,
   flamegraph.stackCollapse,
@@ -22,7 +22,7 @@ captureRouter.post(
 
 // create a new icicle chart from a .perf
 captureRouter.post(
-  '/icicle',
+  '/:icicle',
   dbController.createEmptyRecord,
   fileController.addData,
   flamegraph.stackCollapse,

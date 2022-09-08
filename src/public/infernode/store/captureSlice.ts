@@ -24,10 +24,10 @@ const initialState: CaptureState = {
 };
 
 export const getComparisonCapture = createAsyncThunk(
-  'captures/getComparionCapture',
+  'captures/getComparisonCapture',
   async (comparison: (number | null)[]) => {
     console.log('comparison id is ', comparison);
-    const id = Number(await fetch('/api/diff', {
+    const id = Number(await fetch('/api/diff/differential', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -78,17 +78,17 @@ export const captureSlice = createSlice({
       state.loading = action.payload;
     },
     setComparison: (state, action: PayloadAction<number | null>) => {
-      console.log('setComparion invoked ', state.comparison, ' is comaprison value');
+      console.log('setComparison invoked ', state.comparison, ' is comparison value');
       // Differentials page initilization
       if (!action.payload) state.comparison = [];
       // Compare two flamegraphs
       else state.comparison.push(action.payload);
-      console.log('setComparions executed ', state.comparison, ' is comaprison value');
+      console.log('setComparisons executed ', state.comparison, ' is comparison value');
     },
     removeComparison: (state, action: PayloadAction<number>) => {
-      console.log('removeComparion invoked ', state.comparison, ' is comaprison value');
+      console.log('removeComparison invoked ', state.comparison, ' is comparison value');
       state.comparison = state.comparison.filter((element) => element !== action.payload);
-      console.log('removeComparions executed ', state.comparison, ' is comaprison value');
+      console.log('removeComparisons executed ', state.comparison, ' is comparison value');
     },
   },
   extraReducers: (builder) => {
