@@ -363,8 +363,13 @@ export default function CapturePage(): JSX.Element {
                   <RunApplicationForm />
                   <hr />
                   <FixedLengthCaptureForm />
-                  <hr />
-                  { customCapLen ? <ManualCaptureForm /> : <></>}
+                  { customCapLen
+                    ? (
+                      <>
+                        <hr />
+                        <ManualCaptureForm />
+                      </>
+                    ) : <></>}
                 </Stack>
               </Tab.Pane>
             </Tab.Content>
