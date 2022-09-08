@@ -5,7 +5,7 @@ import dbController from '../controllers/db.controller';
 const diffRouter = Router();
 
 diffRouter.post(
-  '/:differential',
+  '/differential',
   dbController.createEmptyRecord,
   // dbController.updateRecord,
   diffController.flamegraphDiff,
