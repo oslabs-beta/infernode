@@ -33,7 +33,7 @@ jobs:
       if: success()
       uses: peter-evans/repository-dispatch@v1
       with:
-        token: ${{ secrets.REPO_GHA_PAT }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         repository: oslabs-beta/infernode
         event-type: trigger-workflow-2
         client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
