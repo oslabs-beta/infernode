@@ -19,7 +19,7 @@ const icicleController: IcicleControllerType = {
     );
     const script: string = path.resolve(
       __dirname,
-      '../../src/perlScripts/flamegraph.pl',
+      '../assets/perlScripts/flamegraph.pl',
     );
 
     try {

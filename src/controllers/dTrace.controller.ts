@@ -85,7 +85,7 @@ const DtraceController: DtraceControllerType = {
       if (typeof id !== 'number') {
         throw TypeError('id is incorrect type');
       }
-      const script = path.resolve(__dirname, '../../src/perlScripts/stackCollapse-Dtrace.pl');
+      const script = path.resolve(__dirname, '../assets/perlScripts/stackCollapse-Dtrace.pl');
       const input = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
       const output = path.resolve(__dirname, `../../database/folded/${id}.folded`);
       const result = spawnSync(`${script} ${input} > ${output}`, { shell: true, timeout: 10000 });

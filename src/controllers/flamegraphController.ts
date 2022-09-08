@@ -37,7 +37,7 @@ const flamegraphController: FlamegraphSVGController = {
     );
     const script: string = path.resolve(
       __dirname,
-      '../../src/perlScripts/stackCollapse-perf.pl',
+      '../assets/perlScripts/stackCollapse-perf.pl',
     );
     // run the child_process to spawn a shell and execute the given
     // command that will execute .pl files
@@ -71,7 +71,7 @@ const flamegraphController: FlamegraphSVGController = {
     );
     const script: string = path.resolve(
       __dirname,
-      '../../src/perlScripts/flamegraph.pl',
+      '../assets/perlScripts/flamegraph.pl',
     );
 
     try {
