@@ -16,7 +16,6 @@ import {
 } from '../../store/captureSlice';
 
 import { setActiveListPage } from '../../store/configSlice';
-import { current } from '@reduxjs/toolkit';
 
 type SidebarItemProps = {
   name: string,
