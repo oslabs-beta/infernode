@@ -46,9 +46,6 @@ const diffController: DiffControllerType = {
       const diffPathPl: string = path.resolve(__dirname, '../../src/perlScripts/diff-folded.pl');
       const flamePathPl: string = path.resolve(__dirname, '../../src/perlScripts/flamegraph.pl');
       const output: string = path.resolve(__dirname, `../../database/SVGs/${id}.svg`);
-      // prefixing the differential graphs with a 99 allows the front end to filter out diffs
-      // based on the first two numbers, while keeping the data types of the file ID
-      // always a number so typescript is happy!
       res.locals.diffID = Number(id);
       const result = spawnSync(`${diffPathPl} ${file1} ${file2} | ${flamePathPl} > ${output}`, { shell: true });
       console.log(`${new Date().toLocaleString()}: diffed folded files ${JSON.stringify(result.status)}`);
