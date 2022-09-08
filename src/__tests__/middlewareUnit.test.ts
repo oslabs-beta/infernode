@@ -21,16 +21,6 @@ const dataModel = {
   app_name: 'unspecified',
   data: 'flamegraph' || 'differentials' || 'icicle',
 }
-  // lets change this once we know what type it will be
-  // constructor() {
-  //   this.id = 0;
-  //   this.capture_name = 'unspecified'
-  //   this.date = new Date()
-  //   this.creator = 'unspecified'
-  //   this.app_name = 'unspecified'
-  //   this.data = 'unspecified'
-  // }
-
 
 describe('Flamegraph generating controller test: requires valid .perf in db', () => {
   // ** IF TESTS ARE FAILING WHEN THEY SHOULD BE PASSING, CHECK THIS FIRST:
