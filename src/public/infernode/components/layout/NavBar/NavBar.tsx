@@ -41,6 +41,9 @@ export default function NavBar(): JSX.Element {
             <LinkContainer to="/history">
               <Nav.Link>History</Nav.Link>
             </LinkContainer>
+            <LinkContainer to="/differential">
+              <Nav.Link>Differentials</Nav.Link>
+            </LinkContainer>
             <LinkContainer to="/capture">
               <Nav.Link>Capture</Nav.Link>
             </LinkContainer>

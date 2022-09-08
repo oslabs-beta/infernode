@@ -12,6 +12,7 @@ import HistoryPage from './views/History/HistoryPage';
 import UploadPage from './views/Upload/UploadPage';
 import { useAppDispatch } from './store/hooks';
 import { fetchAllCaptures } from './store/captureSlice';
+import DifferentialPage from './views/Differentials/DifferentialPage';
 
 export default function App(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -30,6 +31,7 @@ export default function App(): JSX.Element {
         <Routes>
           <Route index element={<HistoryPage />} />
           <Route path="history" element={<HistoryPage />} />
+          <Route path="differential" element={<DifferentialPage />} />
           <Route path="capture" element={<CapturePage />} />
           <Route path="upload" element={<UploadPage />} />
           <Route path="help" element={<HelpPage />}>
