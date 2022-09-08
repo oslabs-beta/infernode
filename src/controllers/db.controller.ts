@@ -55,8 +55,8 @@ const dbController: DbCInterface = {
 
   createEmptyRecord(req: Request, res: Response, next: NextFunction): void {
     const date = new Date();
-    let type: string = 'undefined';
-    if (req.path === '/flamegraph') { 
+    let type = 'undefined';
+    if (req.path === '/flamegraph') {
       type = 'flamegraph';
     } else if (req.path === '/icicle') {
       type = 'icicle';
