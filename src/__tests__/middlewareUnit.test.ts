@@ -19,7 +19,7 @@ const dataModel = {
   // date: Date(),
   creator: 'unspecified',
   app_name: 'unspecified',
-  data: 'unspecified'
+  data: 'flamegraph' || 'differentials' || 'icicle',
 }
   // lets change this once we know what type it will be
   // constructor() {
@@ -38,6 +38,7 @@ describe('Flamegraph generating controller test: requires valid .perf in db', ()
   const num = 123
   // ***** the test file must be a valid .perf capture *********
   // EXAMPLE: 12345.perf is in /data/captures, so num is 12345
+  mockRequest = { params: { flamegraph: 'flamegraph' } }
   mockResponse = { locals: { id: num } }
 
   describe('db controller tests', () => {

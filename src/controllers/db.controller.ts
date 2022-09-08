@@ -55,9 +55,7 @@ const dbController: DbCInterface = {
 
   createEmptyRecord(req: Request, res: Response, next: NextFunction): void {
     const date = new Date();
-    console.log(Object.values(req.params), ' is req.params');
     const type = Object.values(req.params)[0];
-    console.log(type);
     captureDB.run(
       'INSERT INTO capture (capture_name, date, creator, app_name, data) VALUES (?, ?, ?, ?, ?)',
       'unspecified',
