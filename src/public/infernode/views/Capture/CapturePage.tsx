@@ -305,6 +305,7 @@ function ManualCaptureForm(): JSX.Element {
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
   const { pid, isAppRunning } = useAppSelector((state) => state.app);
+  const { customCapLen } = useAppSelector((state) => state.config.features);
   const [appId, setAppId] = useState<number | null>(null);
   const [capId, setCapId] = useState<number | null>(null);
   useEffect(() => {
@@ -363,7 +364,7 @@ export default function CapturePage(): JSX.Element {
                   <hr />
                   <FixedLengthCaptureForm />
                   <hr />
-                  <ManualCaptureForm />
+                  { customCapLen ? <ManualCaptureForm /> : <></>}
                 </Stack>
               </Tab.Pane>
             </Tab.Content>
