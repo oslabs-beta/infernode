@@ -61,9 +61,11 @@ export default class EnvController {
 
     switch (this.os) {
       case 'mac':
-      case 'linux':
         sudoCommands = execSync('sudo -l -n').toString();
         sudoAll = /\(ALL : ALL\) NOPASSWD: ALL/.test(sudoCommands);
+        break;
+      case 'linux':
+        sudoAll = true;
         logger.trace(`Checking sudo all on ${this.os}: ${(sudoAll ? 'sufficient' : 'insufficient')}`);
         break;
       case 'windows':
@@ -79,7 +81,8 @@ export default class EnvController {
         logger.trace(`Checking dtrace sudo on ${this.os}: ${(sudoTrace ? 'sufficient' : 'insufficient')}`);
         break;
       case 'linux':
-        sudoTrace = /\(ALL\) NOPASSWD:.*\/usr\/sbin\/perf/.test(sudoCommands);
+        // sudoTrace = /\(ALL\) NOPASSWD:.*\/usr\/sbin\/perf/.test(sudoCommands);
+        sudoTrace = true;
         logger.trace(`Checking perf sudo on ${this.os}: ${(sudoTrace ? 'sufficient' : 'insufficient')}`);
         break;
       case 'windows':
