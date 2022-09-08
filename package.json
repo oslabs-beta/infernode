@@ -6,7 +6,7 @@
   "sideEffects": false,
   "scripts": {
     "commit": "git-cz",
-    "resetdb": "rimraf ./database/captures/*.perf ./database/captures/*.stacks ./database/folded/*.folded ./database/SVGs/*.svg ./database/uploads/* ./database/captureDB.db",
+    "resetdb": "rimraf ./database/",
     "clean": "rimraf ./dist/*",
     "ts-lint-server": "eslint .",
     "ts-lint-client": "eslint ./src/public/infernode/",
