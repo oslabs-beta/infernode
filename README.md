@@ -89,18 +89,7 @@ All scripts are accessible via `npm run <scriptname>`.
 
 ### Commit Messages
 
-For working branch commits a single line message is sufficient
-
-For PR commits please add a longer description of the changes
-
-Please author single line commit messages and PR commit titles to:
-
-- Start with capital letter
-- Have no trailing punctuation
-- Use imperative and present tense
-- Describe the outcome, not the process
-- Be less than 50 characters in length
-
+Infernode now uses [Semantic-Release](https://github.com/semantic-release/semantic-release/blob/master/README.md) and [Commitizen](https://github.com/commitizen/cz-cli/blob/master/README.md) to automatically handle versioning. As a result, instead of using ```git commit``` when making a commit, it is important to use ```npm run commit``` to comply with formatting implemented by Semantic-Release. Commitizen will walk the user through how to author commit messages in the command line.
 ### Pull Requests
 
 - Development should be performed on branches from `dev` and PR'd back to `dev` once complete,

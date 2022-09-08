@@ -77,7 +77,7 @@ function RunApplicationForm(): JSX.Element {
           <Form.Label>Relative Path of Entry Point</Form.Label>
           <Form.Control
             type="text"
-            defaultValue="../../src/examples/app-test.js"
+            defaultValue="../../src/examples/example-task.js"
           />
         </Form.Group>
       </Form>
@@ -248,7 +248,7 @@ function AppAndCaptureForm(): JSX.Element {
           <Form.Label>App Relative Filepath</Form.Label>
           <Form.Control
             type="text"
-            defaultValue="../../src/examples/app-test.js"
+            defaultValue="../../src/examples/example-task.js"
           />
           <Form.Text className="text-muted">
             Please enter the relative Filepath.
@@ -305,6 +305,7 @@ function ManualCaptureForm(): JSX.Element {
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
   const { pid, isAppRunning } = useAppSelector((state) => state.app);
+  const { customCapLen } = useAppSelector((state) => state.config.features);
   const [appId, setAppId] = useState<number | null>(null);
   const [capId, setCapId] = useState<number | null>(null);
   useEffect(() => {
@@ -362,8 +363,13 @@ export default function CapturePage(): JSX.Element {
                   <RunApplicationForm />
                   <hr />
                   <FixedLengthCaptureForm />
-                  <hr />
-                  <ManualCaptureForm />
+                  { customCapLen
+                    ? (
+                      <>
+                        <hr />
+                        <ManualCaptureForm />
+                      </>
+                    ) : <></>}
                 </Stack>
               </Tab.Pane>
             </Tab.Content>

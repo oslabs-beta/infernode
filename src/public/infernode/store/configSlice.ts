@@ -7,6 +7,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 
 export interface FeatureFlags {
   loginUi: boolean,
+  customCapLen: boolean,
 }
 
 export interface Filters {
@@ -31,6 +32,7 @@ const initialState: ConfigState = {
   activePage: '/history',
   features: {
     loginUi: false,
+    customCapLen: false,
   },
   filters: {
     appName: '.*',

@@ -55,9 +55,14 @@ const dbController: DbCInterface = {
 
   createEmptyRecord(req: Request, res: Response, next: NextFunction): void {
     const date = new Date();
-    console.log(Object.values(req.params), ' is req.params');
-    const type = Object.values(req.params)[0];
-    console.log(type);
+    let type = 'undefined';
+    if (req.path === '/flamegraph') {
+      type = 'flamegraph';
+    } else if (req.path === '/icicle') {
+      type = 'icicle';
+    } else if (req.path === '/differential') {
+      type = 'differential';
+    }
     captureDB.run(
       'INSERT INTO capture (capture_name, date, creator, app_name, data) VALUES (?, ?, ?, ?, ?)',
       'unspecified',
