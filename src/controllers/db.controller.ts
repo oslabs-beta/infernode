@@ -55,13 +55,15 @@ const dbController: DbCInterface = {
 
   createEmptyRecord(req: Request, res: Response, next: NextFunction): void {
     const date = new Date();
+    const type = Object.values(req.params)[0];
     captureDB.run(
       'INSERT INTO capture (capture_name, date, creator, app_name, data) VALUES (?, ?, ?, ?, ?)',
       'unspecified',
       date.toString(),
       'unspecified',
       'unspecified',
-      'unspecified',
+      /* 'unspecified', */
+      type,
       function callback(this: unknown, err: Error) {
         function isCbThis(thisObj: object | unknown): thisObj is CbThis {
           if (thisObj === null) return false;
