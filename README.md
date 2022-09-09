@@ -4,6 +4,7 @@ Flamegraph tool for node.js
 
 ![build tests](https://github.com/oslabs-beta/infernode/actions/workflows/node.js.yml/badge.svg)
 ![website deployment](https://github.com/oslabs-beta/infernode/actions/workflows/pages.yml/badge.svg)
+![publishing to npmjs.com](https://github.com/oslabs-beta/infernode/actions/workflows/publish.yml/badge.svg)
 
 Current release: 1.0.0
 
@@ -11,45 +12,62 @@ Current release: 1.0.0
 
 ## Usage
 
-Coming soon...
+1. `npm install --save-dev infernode` in your Node.JS NPM project
+1. `npx infernode` to launch INFERNOde
+1. Navigate to the **Capture** page
+1. Provide the path to your app's entrypoint, relative to the top level directory of your project (e.g. `src/index.js`)
+1. Set a time limit for your capture and hit start
+1. If necessary, interact with your app to trigger the functionality you want to trace
+1. Check out the new flame graph in the sidebar
 
 ## Interface
 
-### Overview
-
-![ui overview](/docs/images/layout-overview.png)
-
-### General Page Layout
-
-![generic page layout](/docs/images/layout-draft.png)
-
-### Page Wireframes
-
-![history page](/docs/images/history-page.png)
-![capture page](/docs/images/capture-page.png)
-![manage page](/docs/images/manage-page.png)
-![help page](/docs/images/help-page.png)
+<a href="docs/images/infernode-history-page.png"><figure><img src="docs/images/thumbs/infernode-history-page.png"><figcaption>View and Manage Existing Graphs</figcaption></figure></a>
+<a href="docs/images/infernode-diff-page.png"><figure><img src="docs/images/thumbs/infernode-diff-page.png"><figcaption>Generate Differential Graphs</figcaption></figure></a>
+<a href="docs/images/infernode-basic-capture-page.png"><figure><img src="docs/images/thumbs/infernode-basic-capture-page.png"><figcaption>One-click Captures</figcaption></figure></a>
+<a href="docs/images/infernode-advanced-capture-page.png"><figure><img src="docs/images/thumbs/infernode-advanced-capture-page.png"><figcaption>Flexible Capture Settings</figcaption></figure></a>
+<a href="docs/images/infernode-upload-page.png"><figure><img src="docs/images/thumbs/infernode-upload-page.png"><figcaption>Upload Existing `perf` Files</figcaption></figure></a>
+<a href="docs/images/infernode-help-page.png"><figure><img src="docs/images/thumbs/infernode-help-page.png"><figcaption>In-app Help</figcaption></figure></a>
 
 ## Architecture
 
-### Backend Tech Stack
+### Backend
 
 - TypeScript
 - Node.js
 - Express.js
 - SQLite3
-- Jest
+- Pino
+- Formidable
 
-### Frontend Tech Stack
+### Frontend
 
 - TypeScript
 - React
 - React-Router
 - React-Bootstrap
+- Axios
+
+### CI/CD
+
+- Github Actions
+- Jest
+- Supertest
+- Semantic-Release
+- Stylelint
+- ESLint
+- Webpack
 
 ### High Level Diagram
 
-![infernode architecture diagram](/docs/images/app-diagram.png)
+```mermaid
+graph TD;
+    Client<-->Server;
+    Server-->API Router;
+    API Router-->Controller;
+    Controller<-->Process Execution;
+    Controller-->Client;
+```
 
 ## Developing
 
@@ -59,13 +77,12 @@ Coming soon...
 
 ### Additional project scripts
 
-All scripts are accessible via `npm run <scriptname>`.
+All scripts are accessible via `npm run <scriptname>`, some key scripts are:
 
+- `resetdb`: Clean out infernode's datastore for a fresh start
 - `clean`: Remove all contents of the `./dist/` directory
 - `copy-assets`:  Copy static assets from `./src/` to `./dist/`
 - `lint`:  Run linter (ESLint) against the relevant client and server source code
-- `prebuild`: Sequentially runs `lint`, `clean`, and `copy-assets` prior to all `build`s
-- `tsc`: Performs TypeScript transpilation for the server project
 - `build`: Performs `npm run prebuild`, `npm run tsc`, and `npm run webpack` sequentially, will halt if any `prebuild` steps have non-zero exit codes
 - `test`: Performs a fresh `build` and then executes all test suites
 - `start`: Starts the `node` server in production mode, access via <http://localhost:3000>
@@ -87,9 +104,10 @@ All scripts are accessible via `npm run <scriptname>`.
 
 ## Contributing
 
-### Commit Messages
+### Committing and Commit Messages
 
-Infernode now uses [Semantic-Release](https://github.com/semantic-release/semantic-release/blob/master/README.md) and [Commitizen](https://github.com/commitizen/cz-cli/blob/master/README.md) to automatically handle versioning. As a result, instead of using ```git commit``` when making a commit, it is important to use ```npm run commit``` to comply with formatting implemented by Semantic-Release. Commitizen will walk the user through how to author commit messages in the command line.
+Infernode uses [Semantic-Release](https://github.com/semantic-release/semantic-release/blob/master/README.md) and [Commitizen](https://github.com/commitizen/cz-cli/blob/master/README.md) to automatically handle versioning. As a result, instead of using `git commit` when making a commit, it is important to use `npm run commit` to comply with formatting implemented by Semantic-Release. Commitizen will walk the user through how to author commit messages in the command line.
+
 ### Pull Requests
 
 - Development should be performed on branches from `dev` and PR'd back to `dev` once complete,
@@ -105,12 +123,33 @@ Please consider the following when filing pull requests:
 
 - Update working branch from dev
 - Test the above GHA check criteria locally
-- PR title should take the form of a commit message title
-- Body of PR should take the form of a full commit message body
+- PR title should take the form of a Commitizen commit title
+- Body of PR should take the form of a Commitizen commit body
 - Once approved, the PR author is responsible for squash merging into the destination branch
 - Branches should be deleted after merge
 
 ### Branch Names
+
+```mermaid
+gitGraph
+    commit
+    branch develop
+    checkout develop
+    branch feature/cool-graph
+    checkout feature/cool-graph
+    commit
+    commit
+    checkout dev
+    merge feature/cool-graph
+    branch bugfix/broken-graph
+    checkout bugfix/broken-graph
+    commit
+    commit
+    checkout dev
+    merge bugfix/broken-graph
+    git checkout main
+    git merge dev: tag:'v1.2.3'
+```
 
 - Use a new branch for each new feature and eventual PR
 - Use the format of "type/descriptive-outcome"
@@ -120,5 +159,5 @@ Please consider the following when filing pull requests:
   - docs
   - testing
   - refactor
+  - cicd
 - The descriptive-outcome should describe what will be achieved by merging the branch
-  
