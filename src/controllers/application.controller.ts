@@ -65,9 +65,12 @@ class ApplicationController {
       ));
     }
     try {
-      const filePath: string = path.resolve(__dirname, `${reqBody.filePath}`);
-      res.locals.filePath = filePath;
-      // refactor to match front end
+      // const filePath: string = path.resolve(__dirname, `${reqBody.filePath}`);
+      // res.locals.filePath = filePath;
+      if (reqBody.filePath[0] === '/') reqBody.filePath = reqBody.filePath.substring(1);
+      // indernode is being run from node_modules since it is an npm package
+      // this makes providing a relative path easier for the user
+      const filePath = path.join(__dirname, '../../../../', reqBody.filePath);
       if (!existsSync(filePath)) {
         logger.error(`Specified node app does not exist: ${filePath}`);
       }

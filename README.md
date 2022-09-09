@@ -145,7 +145,15 @@ All scripts are accessible via `npm run <scriptname>`, some key scripts are:
 
 ### Committing and Commit Messages
 
-Infernode uses [Semantic-Release](https://github.com/semantic-release/semantic-release/blob/master/README.md) and [Commitizen](https://github.com/commitizen/cz-cli/blob/master/README.md) to automatically handle versioning. As a result, instead of using `git commit` when making a commit, it is important to use `npm run commit` to comply with formatting implemented by Semantic-Release. Commitizen will walk the user through how to author commit messages in the command line.
+Infernode now uses [Semantic-Release](https://github.com/semantic-release/semantic-release/blob/master/README.md) and [Commitizen](https://github.com/commitizen/cz-cli/blob/master/README.md)
+to automatically handle versioning. As a result, when using `git commit` or `npm run commit` to comply with formatting implemented by Semantic-Release. Upon execution of either command,
+Commitizen will walk the user through how to author commit messages in the command line.
+
+Steps:
+
+- Run ```git add <files>``` when ready to stage changes
+- Run ```npm run commit``` or ```git commit``` to format commit messages using Commitizen
+- When ready, push changes up to a branch made for the changes
 
 ### Pull Requests
 
