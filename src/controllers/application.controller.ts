@@ -65,7 +65,10 @@ class ApplicationController {
       ));
     }
     try {
-      const filePath: string = path.resolve(__dirname, `${reqBody.filePath}`);
+      // const filePath: string = path.resolve(__dirname, `${reqBody.filePath}`);
+      // res.locals.filePath = filePath;
+      if (reqBody.filePath[0] === '/') reqBody.filePath = reqBody.filePath.substring(1);
+      const filePath = path.join(__dirname, '../../../../', reqBody.filePath);
       res.locals.filePath = filePath;
       // refactor to match front end
       if (!existsSync(filePath)) {
