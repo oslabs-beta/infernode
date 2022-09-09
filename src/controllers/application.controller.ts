@@ -3,6 +3,8 @@ import process from 'process';
 import path from 'path';
 import { spawn, execSync } from 'child_process';
 import { existsSync } from 'fs-extra';
+import fs, { Stats } from 'fs';
+import { open } from 'node:fs';
 import { InfernodeError } from '../utils/globalErrorHandler';
 import logger from '../utils/logging';
 
@@ -18,11 +20,20 @@ type BodyWithPid = {
   pid?: number;
 };
 
+interface PkgObj {
+  main?: string;
+}
+
 // note reqBody and Reqbody are not the same thing
 function isReqBody(reqBody: ReqBody | object): reqBody is ReqBody {
   const hasFilePath = 'filePath' in reqBody && typeof reqBody.filePath === 'string';
   if (hasFilePath) return true;
   return false;
+}
+
+function isPkgObject(pkgObject: PkgObj | unknown): pkgObject is PkgObj {
+  if (typeof pkgObject !== 'object' || pkgObject === null) return false;
+  return 'main' in pkgObject;
 }
 
 class ApplicationController {
@@ -53,27 +64,8 @@ class ApplicationController {
     return next();
   };
 
-  public nodeLaunch = (req: Request, res: Response, next: NextFunction): void => {
-    // recieve executable filepath and second from user
-    const reqBody = req.body as ReqBody | object;
-    if (!isReqBody(reqBody)) {
-      return next(new InfernodeError(
-        'something failed while verifying req.body',
-        'user submitted invalid file path',
-        500,
-        'Application Controller',
-      ));
-    }
+  private launch = (filePath: string, res: Response, next: NextFunction) : void => {
     try {
-      // const filePath: string = path.resolve(__dirname, `${reqBody.filePath}`);
-      // res.locals.filePath = filePath;
-      if (reqBody.filePath[0] === '/') reqBody.filePath = reqBody.filePath.substring(1);
-      // indernode is being run from node_modules since it is an npm package
-      // this makes providing a relative path easier for the user
-      const filePath = path.join(__dirname, '../../../../', reqBody.filePath);
-      if (!existsSync(filePath)) {
-        logger.error(`Specified node app does not exist: ${filePath}`);
-      }
       const nodePath = execSync('which node').toString().replace(/(\r\n|\n|\r)/gm, '');
       logger.debug(`${nodePath} ${filePath}`);
       const result = spawn(`${nodePath}`, [filePath]);
@@ -105,6 +97,49 @@ class ApplicationController {
         500,
         'nodeLaunch',
       ));
+    }
+    return undefined;
+  };
+
+  private checkDefaultEntryPath = (res: Response, next: NextFunction) : void => {
+    const defaultEntryPath = path.resolve(__dirname, '../../../../index.js');
+    if (fs.existsSync(defaultEntryPath)) this.launch(defaultEntryPath, res, next);
+    else {
+      // if neither pkg.json has main field nor root dir has index.js, invoke global err handler
+      return next(new InfernodeError(
+        'something failed while verifying req.body',
+        'user submitted invalid file path',
+        500,
+        'Application Controller',
+      ));
+    }
+    return undefined;
+  };
+
+  public nodeLaunch = (req: Request, res: Response, next: NextFunction): void => {
+    const reqBody = req.body as ReqBody | object;
+    // receive no path from the user, check the default path
+    if (!isReqBody(reqBody)) {
+      const packageJsonPath = path.resolve(__dirname, '../../../../package.json');
+      if (fs.existsSync(packageJsonPath)) {
+        const pkgDataFromBuffer = fs.readFile.toString();
+        const pkgObject: unknown | PkgObj = JSON.parse(pkgDataFromBuffer);
+        if (isPkgObject(pkgObject)) {
+          const { main } = pkgObject;
+          if (main !== undefined) {
+            const entryPath = path.resolve(__dirname, '../../../../', main);
+            this.launch(entryPath, res, next);
+          }
+        } else { this.checkDefaultEntryPath(res, next); }
+      } else { this.checkDefaultEntryPath(res, next); }
+    // recieve executable filepath and second from user
+    } else {
+      if (reqBody.filePath[0] === '/') reqBody.filePath = reqBody.filePath.substring(1);
+      const filePath = path.join(__dirname, '../../../../', reqBody.filePath);
+      if (!existsSync(filePath)) {
+        logger.error(`Specified node app does not exist: ${filePath}`);
+      }
+      this.launch(filePath, res, next);
     }
     return undefined;
   };
