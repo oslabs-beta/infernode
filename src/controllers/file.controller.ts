@@ -13,17 +13,11 @@ export default class FileController {
   addData = (req: Request, res: Response, next: NextFunction) => {
     // Get next ID
     const fileId = Number(res.locals.id);
-    // console.log('LOOK OVER HERE!', fileId);
-    // const fileId = 123;
 
     const processTempFile = (formName: string, file: formidable.File) => {
-      // console.log(
-      //   `${new Date().toLocaleString()}: Parsed POST'd file, formname ${JSON.stringify(
-      //     formName,
-      //   )}, files ${JSON.stringify(file)}`,
-      // );
+      console.log(`fileController.addData() processing ${formName} file: ${file.originalFilename || 'unknown'}`);
       const filePath: string = file.filepath;
-      const currentPath = filePath; // files.capture.filepath;
+      const currentPath = filePath;
       const renamedPath = path.resolve(
         __dirname,
         this.uploadDir,
@@ -45,12 +39,18 @@ export default class FileController {
         return next(err);
       }
     };
-
+    console.log('Invoked fileController.addData');
+    console.log(req.body);
     const uploads = new formidable.IncomingForm({
       uploadDir: path.resolve(__dirname, '../../database/uploads/'),
+      maxFileSize: 1024 * 1024 * 1240,
     });
     uploads.on('file', (fieldName: string, file: formidable.File) => {
+      console.log(`fileController.addData() recv'd ${fieldName} file: ${file.originalFilename || 'unknown'}`);
       processTempFile(fieldName, file);
+    });
+    uploads.on('field', (fieldName: string, field: string) => {
+      console.log(`fileController.addData() recv'd ${fieldName} value: ${field || 'unknown'}`);
     });
 
     uploads.parse(req);

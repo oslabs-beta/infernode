@@ -1,10 +1,13 @@
 {
   "cSpell.words": [
     "commist",
+    "flamechart",
     "Flamegraph",
     "flamegraphs",
     "immer",
     "infernode",
-    "reduxjs"
+    "pino",
+    "reduxjs",
+    "resetdb"
   ]
 }

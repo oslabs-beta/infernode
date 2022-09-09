@@ -14,7 +14,6 @@ module.exports = {
     path: path.resolve(__dirname, './dist/assets/'),
     filename: 'bundle.js',
     publicPath: '/',
-    clean: true,
   },
 
   plugins: [
@@ -40,14 +39,6 @@ module.exports = {
         test: /\.(ts|tsx)$/,
         use: 'ts-loader',
         exclude: /node_modules/,
-      },
-      {
-        test: /\.s[ac]ss$/i,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
       },
       {
         test: /\.(jpg|jpeg|png|gif|mp3)$/,

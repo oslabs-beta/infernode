@@ -1,0 +1,20 @@
+$primary: #e86415;
+$secondary: #94afb9; // alt: #C54B45
+$dark: #272633;
+$light: #faf9fa;
+$info: #272633;
+$success: #799841;
+$warning: #f78809;
+$danger: #f44336;
+
+.background-dark {
+  color: $light;
+  background-color: darken($dark, 10%);
+}
+
+.background-light {
+  color: $dark;
+  background-color: lighten($light, 10%);
+}
+
+@import "bootstrap/scss/bootstrap";

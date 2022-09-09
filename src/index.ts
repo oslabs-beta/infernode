@@ -15,4 +15,4 @@ const server = new Server(port, [apiRouter], HealthRouter, NotFoundRouter, globa
 
 /* Start server, export for use with Jest setup/teardown */
 const listener = server.listen();
-export default listener;
+export default server;

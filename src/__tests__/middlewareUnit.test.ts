@@ -3,9 +3,9 @@ import fs from 'fs';
 import path from 'path';
 
 import flamegraph from '../controllers/flamegraphController'
-import { fileController } from '../controllers/controllers.module'
-import { dbControllerInstance } from '../controllers/db.controller'
+import dbControllerInstance from '../controllers/db.controller'
 import captureDB from '../models/captureModel';
+import logger from '../utils/logging';
 
 // please see official docs for reference: https://jestjs.io/docs/using-matchers
 
@@ -19,18 +19,8 @@ const dataModel = {
   // date: Date(),
   creator: 'unspecified',
   app_name: 'unspecified',
-  data: 'unspecified'
+  data: 'flamegraph' || 'differentials' || 'icicle',
 }
-  // lets change this once we know what type it will be
-  // constructor() {
-  //   this.id = 0;
-  //   this.capture_name = 'unspecified'
-  //   this.date = new Date()
-  //   this.creator = 'unspecified'
-  //   this.app_name = 'unspecified'
-  //   this.data = 'unspecified'
-  // }
-
 
 describe('Flamegraph generating controller test: requires valid .perf in db', () => {
   // ** IF TESTS ARE FAILING WHEN THEY SHOULD BE PASSING, CHECK THIS FIRST:
@@ -38,6 +28,7 @@ describe('Flamegraph generating controller test: requires valid .perf in db', ()
   const num = 123
   // ***** the test file must be a valid .perf capture *********
   // EXAMPLE: 12345.perf is in /data/captures, so num is 12345
+  mockRequest = { params: { flamegraph: 'flamegraph' } }
   mockResponse = { locals: { id: num } }
 
   describe('db controller tests', () => {
@@ -80,9 +71,9 @@ describe('Flamegraph generating controller test: requires valid .perf in db', ()
 
     xit('creates a .folded file that is not empty', async () => {
       const test = await fs.readFile(path.resolve(__dirname, `../..database/folded/${num}.folded`), (err, data) => {
-        console.log(data)
-       })
-      console.log(`test is ${test}`)
+        logger.debug(data)
+      })
+      logger.debug(`test is ${test}`)
       expect(test).toBeTruthy()
     });
   });
