@@ -1,4 +1,5 @@
 # Simple workflow for deploying static content to GitHub Pages
+
 name: Deploy http://indfernode.dev
 
 on:
@@ -36,7 +37,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload site folder
-          path: './site'
+          path: './site/public'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1

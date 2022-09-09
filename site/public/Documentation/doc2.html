@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="INFERNOde Dev Team">
+    <meta name="generator" content="Hugo 0.101.0">
+    <title>INFERNOde Documentation</title>
+
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+
+    
+    <!-- Custom styles for this template -->
+    <link href="documentation.css" rel="stylesheet">
+  </head>
+
+  <body class="bg-light">
+
+  <header class="bd-header bg-dark py-3 d-flex align-items-stretch border-bottom border-dark">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <div class="container-fluid">
+        <img src="../images/logo-light-no-name.png" width="40">
+        <a class="navbar-brand" href="../index.html">INFERNOde</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="../index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#top">Documentation</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../About/about.html">About</a>
+            </li>
+          </ul>
+          <div>
+            <!-- <input class="div-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
+            <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+            <a href="https://github.com/oslabs-beta/infernode"  class="header-li-spacer" target="_blank">
+              <img src="../images/Github-Logo-White.png" width="35"  class="header-li-spacer">
+            </a>
+            <a href="https://www.linkedin.com/company/infernode" class="header-li-spacer" target="_blank">
+              <img src="../images/linkedin-logo.png" width="35" class="header-li-spacer">
+            </a>
+            <a href="https://twitter.com/INFERNOde_dev" class="header-li-spacer" target="_blank">
+              <img src="../images/twitter.png" width="45" class="header-li-spacer">
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+<aside class="bd-aside sticky-xl-top text-muted align-self-start mb-3 mb-xl-5 px-2">
+  <h2 class="h6 pt-4 pb-3 mb-4 border-bottom">INFERNOde Documentation</h2>
+  <nav class="small" id="toc">
+    <ul class="list-unstyled">
+      <li class="my-2">
+        <button class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Getting Started</button>
+        <ul class="list-unstyled ps-3 collapse" id="contents-collapse">
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Installation">Installation</a></li>
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#setup">Setup</a></li>
+        </ul>
+      </li>
+      <li class="my-2">
+        <button class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#forms-collapse" aria-controls="forms-collapse">Using INFERNOde</button>
+        <ul class="list-unstyled ps-3 collapse" id="forms-collapse">
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Uploading-Perf-Captures">Uploading Perf Captures</a></li>
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Dtrace">Dtrace and Perf</a></li>
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Making-Differential-Flamegraphs">Making Differential Flamegraphs</a></li>
+        </ul>
+      </li>
+      <li class="my-2">
+        <button class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#components-collapse" aria-controls="components-collapse">How to Read The Graphs</button>
+        <ul class="list-unstyled ps-3 collapse" id="components-collapse">
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Flamegraphs">Flamegraphs</a></li>
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Icicle-Charts">Icicle Graph</a></li>
+          <li><a class="d-inline-flex align-items-center rounded text-decoration-none" href="#Differential-Flamegraphs">Differential Flamegraphs</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+</aside>
+<div class="bd-cheatsheet container-fluid bg-body">
+  <section id="getting-started">
+    <h2 class="sticky-xl-top fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3">Getting Started</h2>
+
+    <article class="my-3" id="Installation">
+      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+        <h3>Installation</h3>
+      </div>
+
+      <div>
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <p class="lead">
+          INFERNOde is available to install as an npm module.
+        </p>
+        </div></div>
+
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <p>All you need to do is navigate to the root of your project repo, then <mark><code>npm install infernode</code></mark> as a development dependency for your project.
+        Using INFERNOde will require an accurate relative file path from INFERNOde to the application you are testing, 
+        so be sure it is installed at the correct level of your repo.</p>
+        </div></div>
+        
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <hr>
+        </div></div>
+
+      </div>
+
+    </article>
+    <!-- end of installation content -->
+    <!-- start of the setup content -->
+    <article class="my-3" id="setup">
+      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+        <h3>Setup</h3>
+      </div>
+
+      <div>
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <p class="lead">
+            INFERNOde uses dynamic tracing to profile your applications.
+          </p>
+          <br>
+          <p>
+            INFERNOde v2.0.0 currently can only profile applications on Linux and Mac OS X.
+            While Windows recently added
+            <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/dtrace" target="_blank">dtrace compatibility</a> 
+             to their operating systems, 
+            it requires Windows Insider Build 18342 or higher. If you are using Mac OS X, Linux, or a compatible version of Windows, keep reading. Otherwise 
+            you will need to wait for v3 to include comprehensive Windows compatibility.
+          </p>
+          <p>
+            Mac OS X has a protective feature called System Integrity Protection (SIP). SIP will normally prevent you from using dtrace, so to use our dtrace 
+            feature you will need to instruct your system not to ask for your password each time. 
+          </p>
+          <p>
+            To do this you will need to run 
+            <code>echo "$(whoami) ALL=(ALL) NOPASSWD: /usr/sbin/dtrace" | sudo tee -a /etc/sudoers</code> to add a line
+            to <code>/etc/sudoers</code> that will allow you us to run <code>sudo dtrace</code> without repeatedly entering your password. This only needs to be done once,
+            and it can be checked with the <code>sudo tail /etc/sudoers</code> command. This does not give INFERNOde your password, and it does not affect
+            any other permissions on your machine. This will only tell your system that password approval is not needed to run a dtrace.
+          </p>
+          <br>
+            <!-- start of accordian content -->
+          <article class="my-3" id="accordion">
+            <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+            </div>
+      
+            <!-- <div>
+              <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+              <div class="accordion" id="accordionExample">
+
+
+                <div class="accordion-item">
+                  <h4 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      1. Save your password in sudo
+                    </button>
+                  </h4>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <strong>This is the recommended option.</strong> To do this you will need to run 
+                      <code>echo "$(whoami) ALL=(ALL) NOPASSWD: /usr/sbin/dtrace" | sudo tee -a /etc/sudoers</code> to save your password
+                      to <code>/etc/sudoers</code> that will allow you us to run <code>sudo dtrace</code> without repeatedly entering your password. This only needs to be done once,
+                      and you can check it afterwards using the <code>sudo tail /etc/sudoers</code> command.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="accordion-item">
+                  <h4 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                      2. Manually provide your password each time
+                    </button>
+                  </h4>
+                  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                      <strong>This is the less convenient option.</strong> Before you run a dtrace with INFERNOde you will need to cd into the root directory
+                      of INFERNOde, then when you attempt to start a dtrace, you will be prompted for your password. Dtrace wont be able to run until you enter 
+                      your password, so if your app only runs for a few seconds it might end before the dtrace begins, which means you wont get a correct flamegraph.
+                      It will remember your password for a few minutes, so you wont have to enter your password every time.
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              </div></div>
+      
+            </div> -->
+            
+          </article> 
+          <!-- end of accordian content -->
+          <p>When dtrace does run, you should see something similar to the following in your terminal. <br>
+            <code>dtrace: system integrity protection is on, some features will not be available <br>
+              dtrace: description 'profile-150 ' matched 2 probes
+            </code>
+          </p>
+          <br>
+          <p>Interested in learning more about <a href="http://dtrace.org/blogs/about/" target="_blank">dtrace</a>? </p>
+          </div></div>
+
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <hr>
+        </div></div>
+      </div>
+    </article>
+
+  </section>
+<!-- end of the Getting Started section -->
+
+
+  
+  <section id="how-to-use-infernode">
+    <h2 class="sticky-xl-top fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3">Using INFERNOde</h2>
+
+    <article class="my-3" id="Uploading-Perf-Captures">
+      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+        <h3>Uploading Perf Captures</h3>
+      </div>
+
+      <div>
+
+
+
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <p class="lead">
+          Already have a perf capture you want to create a flamegraph from?
+        </p>
+        </div></div>
+
+
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <p>INFERNOde provides you with the option to create a flamegraph or an icicle graph from a perf capture. All you need to do is open the Upload page
+          of the application, select your file, and wait for a glorious graph to appear.
+        </p>
+        </div></div>
+        <br>
+
+        <article class="my-3" id="figures">
+          <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+          </div>
+    
+          <div>
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+            <figure class="figure">
+              <!-- <svg class="bd-placeholder-img figure-img img-fluid rounded" width="400" height="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 400x300" preserveAspectRatio="xMidYMid slice" focusable="false"> -->
+                <!-- <title>Placeholder</title> -->
+                <!-- <rect width="100%" height="100%" fill="#868e96"/> -->
+                <img src="../images/upload-perf-icicle-graph-2x.gif" width="800" preserveAspectRatio="xMidYMid slice" focusable="true" class="figure-img img-fluid rounded">
+                <!-- <text x="50%" y="50%" fill="#dee2e6" dy=".3em">screenshot here</text> -->
+              <!-- </svg> -->
+    
+              <figcaption class="figure-caption">Use the upload page to generate a flamegraph from your own perf capture.</figcaption>
+            </figure>
+            </div></div>
+    
+          </div>
+        </article>
+
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <hr>
+        </div></div>
+
+      </div>
+    </article> 
+    <!-- end of uploading perf captures tab-->
+<!-- start of dtrace tab -->
+    <article class="my-3" id="Dtrace">
+      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+        <h3>Dtrace</h3>
+      </div>
+
+      <div>
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <p class="lead">
+          Don't have a perf capture?
+        </p><br>
+        <p>INFERNOde can run a dtrace or perf capture on any executable Node.js application. 
+          All we need is a relative path to the application you want to test, and how long you want to run it.
+          INFENROde will automatically detect your operating system then run either a dtrace for Mac OS, or a perf capture for Linux.
+        </p>
+        </div></div>
+
+        <p>There are two ways we can profile your application. 
+        </p>
+<!-- start of accordian content -->
+        <article class="my-3" id="accordion">
+          <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+          </div>
+    
+          <div>
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+            <div class="accordion" id="accordionExample">
+
+
+              <div class="accordion-item">
+                <h4 class="accordion-header" id="headingOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    1. Start your app and a capture at the same time.
+                  </button>
+                </h4>
+                <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    This is ideal if you your app has a short runtime or you want to include the first few seconds of your application's runtime in the capture. To do this, simply use the Basic 
+                    option on the capture page. Provide a relative path to the application, the number of seconds you want the dtrace/perf to run, and choose between
+                    an icicle graph or a flamegraph. We will take care of the rest.
+                  </div>
+                </div>
+              </div>
+
+              <div class="accordion-item">
+                <h4 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    2. Start your app, then start a dtrace/perf capture at any time.
+                  </button>
+                </h4>
+                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                   This is the best option if your application requires user interaction once it has launched. We can launch the application,
+                   then start the capture whenever you're ready. To do this you will need to use the Advanced option on the capture page. Provide the 
+                   relative file path, then hit 'Start Application'. Then when you're ready to start the dtrace/perf, simply provide a time and hit 'Start'. 
+                     Don't forget to click <mark>'Stop Application'</mark> when you're done or your app will keep running in the background.
+                   
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            </div></div>
+    
+          </div>
+          
+        </article> 
+        <!-- end of accordian content -->
+
+        <div>
+          <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <figure class="figure">
+            <!-- <svg class="bd-placeholder-img figure-img img-fluid rounded" width="400" height="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 400x300" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <title>Placeholder</title>
+              <rect width="100%" height="100%" fill="#868e96"/>
+              <text x="50%" y="50%" fill="#dee2e6" dy=".3em">screenshot here</text>
+            </svg> -->
+            <img src="../images/AppandCap-flamegraph-2x.gif" width="800" preserveAspectRatio="xMidYMid slice" focusable="true" class="figure-img img-fluid rounded">
+  
+            <figcaption class="figure-caption">Use the Basic tab to start your app and dtrace at the same time, then generate a flamegraph.</figcaption>
+          </figure>
+          </div></div>
+  
+        </div>
+        <br>
+        <div>
+          <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <figure class="figure">
+            <!-- <svg class="bd-placeholder-img figure-img img-fluid rounded" width="400" height="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 400x300" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <title>Placeholder</title>
+              <rect width="100%" height="100%" fill="#868e96"/>
+              <text x="50%" y="50%" fill="#dee2e6" dy=".3em">screenshot here</text>
+            </svg> -->
+            <img src="../images/Advanced-capture-icicle-graph-2x.gif" width="800" preserveAspectRatio="xMidYMid slice" focusable="true" class="figure-img img-fluid rounded">
+  
+            <figcaption class="figure-caption">Use the Advanced tab to start your app, then begin a dtrace at any time.</figcaption>
+          </figure>
+          </div></div>
+  
+        </div>
+
+
+        <p> Make sure the file path you provide is relative to the <code>dtrace.controller.js</code> file in the <code>dist</code> folder of INFERNOde. 
+          Then choose whether you want an icicle graph or a flamegraph, and provide the number of seconds you want the dtrace to run.
+          Then then sit back and relax while we do all the work for you. If the application has a finite runtime, and the duration you provide
+          happens to be longer, there is no need to worry. Dtrace will continue running for the time you enter, but it wont affect your results.</p>
+
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <hr>
+        </div></div>
+
+      </div>
+    </article> 
+<!-- end of dtrace tab -->
+
+<!-- start of differntial flamegraph tab -->
+
+    <article class="my-3" id="Making-Differential-Flamegraphs">
+      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+        <h3>Making Differential Flamegraphs</h3>
+      </div>
+      <div>
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <p class="lead">
+          Compare two versions of your code
+        </p>
+        </div></div>
+
+
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+        <p>We can take any two flamegraphs and compare them to create a differential flamegraph that highlights what has changed.
+          All it takes is two existing flamegraphs. Navigate to the Differentials page, then select the two flamegraphs you want to compare.
+          Keep in mind that it matters which graph you choose first. Differential flamegraphs are created using a 2-1 delta. 
+          The first graph you select will provide the starting point for the comparison.
+          The second graph will be evaluated <em>relative to the first graph.</em> This means that any part of the call stack that ran slower in the second graph,
+          when compared to the first graph, will be shaded red. While parts that ran faster will be shaded blue. 
+        </p>
+<br>
+        <div>
+          <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <figure class="figure">
+            <!-- <svg class="bd-placeholder-img figure-img img-fluid rounded" width="400" height="300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 400x300" preserveAspectRatio="xMidYMid slice" focusable="false"> -->
+              <!-- <title>Placeholder</title> -->
+              <!-- <rect width="100%" height="100%" fill="#868e96"/> -->
+              <img src="../images/differential-2x.gif" width="800" preserveAspectRatio="xMidYMid slice" focusable="true" class="figure-img img-fluid rounded">
+              <!-- <text x="50%" y="50%" fill="#dee2e6" dy=".3em">screenshot here</text> -->
+            <!-- </svg> -->
+  
+            <figcaption class="figure-caption">Use the upload page to generate a flamegraph from your own perf capture.</figcaption>
+          </figure>
+          </div></div>
+  
+        </div>
+        <br>
+        For more on interpreting differential flamegraphs, check out the section below.
+        </div></div>
+        
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <hr>
+        </div>
+        </div></div>
+
+    </article> 
+<!-- end of diff charts tab -->
+
+
+
+  </section>
+<!-- start of 'how to read graphs' section -->
+  <section id="graphs">
+    <h2 class="sticky-xl-top fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3">Graphs</h2>
+    <!-- how to read flamegraphs -->
+    <article class="my-3" id="Flamegraphs">
+      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+        <h3>Flamegraphs</h3>
+      </div>
+
+      <div>
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+
+          <div>
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+            <p class="lead">
+              Interpreting Flamegraphs
+            </p><br>
+            </div></div>
+    
+    
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+            <p>
+              Flamegraphs are a visualization of stack traces of a profiled software application. They allow developers to quickly and easily identify
+              hot-spots in the code that are occupying too much time and generating excessive CPU demand. 
+              </p>
+              <p> Each rectangle on a flamegraph represents a stack frame, but not necessarily one instance of that stack frame.
+                Flamegraphs are made by taking a sample of stack traces and collapsing matching stack frames
+                 together. So a function that appears on the call stack multiple times may only be represented by one single 
+                 stack frame in a flamegraph, where the total width of the single stack frame represents the total combined width of each of those individual stack frames.
+              </p>
+              <p>
+                 Because of this, the x-axis does not represent time. But rather, a <em>percentage</em> of time. The wider a stack frame is on a flamegraph,
+                 the more time it spent on the call stack, relative to the total application run time that was captured in the stack trace. 
+                 So if the bottom call frame on your flamegraph covers the full width of the graph, that means it was present at the bottom of the call
+                 stack for the entire duration of the application profiling.
+                 The x-axis is sorted alphabetically, and the wider a stack frame is, the more often it was present in the stacks.
+            </p>
+            <p>
+              Flamegraphs are made to be interactive. Not only can you see the function names for each stack frame, but if you click on it the graph will zoom
+              in on that stack frame. This makes it easier to focus in on certain areas of the stack trace to identify hot-spots.
+            </p>
+            <p>
+              The shading in a flamegraph does not have any significance other than looking cool, and providing visual differentiation between stack frames.
+              Check out the example flamegraph below.
+            </p><br>
+
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+              <figure class="figure">
+                <!-- <image> -->
+                  <!-- <title>Placeholder</title> -->
+                  <!-- <rect width="100%" height="100%" fill="#868e96"/> -->
+                  <!-- <image href="../../images/flamegraph-2.svg"></image> -->
+                  <!-- <text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text> -->
+                  <iframe src="../images/flamegraph-2.svg" width="1000px"></iframe>
+                <!-- </image> -->
+      
+                <figcaption class="figure-caption">Click on any frame to zoom in. The plateau in the middle of this flamegraph is ripe for optimization. 
+                  Click 'reset zoom' in the top left corner to zoom back out.
+                </figcaption>
+              </figure>
+              </div></div>
+            </div></div><br><br>
+
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+              <p class="lead">
+                Now that we have this beautiful data visualization, what do we do with it?
+              </p><br>
+              <p>
+                The purpose of this visual tool is to identify areas of the call stack where your application is spending 
+                <em>too much time.</em> That means you want to look for stack frames that are particularly wide. 
+                But not just any wide frame. The bottom stack frame might be the widest, but that doesn't necessarily
+                mean it is inefficient if it is spending all of it's time calling the other functions above it. 
+                </p>
+                <p>
+                The most inefficient areas
+                are indicated by plateaus in the flamegraph. A stack frame that is wide, and <em>on top</em> of the call stack
+                is what you want to look for. That indicates a process that is taking a long time to run itself. 
+              </p>
+              <p>
+                Take the example above.
+                Looking at the plateau in the center shows several stack frames that are frequently present on the call stack. 
+                Specifically the 
+                <code>LazyCompile:*get /home/ubuntu/CodeSmith/node-example-flamegraph/node_modules/fast-levenshtein/levenshtein.js:27</code>
+                call frame, and the ones above it. If you hover over this frame, you will see that it is present on the call stack 58.79% of the time.
+                12.63% of that is just this frame itself (to the left, where there are no frames above it). There are several frames above this one 
+                that also spend a lot of time running on the call stack. These are areas that need to be improved to optimize the overall
+                efficiency of this particular application. 
+            </p>
+              <p>
+                Interested in learning more about flamegraphs? Head on over to Brendan Gregg's <a href="https://www.brendangregg.com/flamegraphs.html" target="blank">site</a>, 
+                the inventor of flamegraphs and inspiration
+                for INFERNOde.
+              </p>
+              <br>
+              </div></div>
+              <br>
+            
+              <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+                <hr>
+              </div>
+              </div>
+
+          </div>
+        </div></div>
+      </div>
+
+      
+    </article>
+
+    <article class="my-3" id="Icicle-Charts">
+      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+        <h3>Icicle Graphs</h3>
+      </div>
+
+      <div>
+        
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <p class="lead">
+            Interpreting Icicle Graphs
+          </p>
+          </div></div>
+
+
+          <div>
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+    
+              <div>
+        
+        
+                <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+                <p>Icicle Graphs are actually just flamegraphs with a cooler color scheme, flipped upside down.
+                </p>
+                <p>
+                  These are handy for especially deep stacks. The flamegraph GUI starts at the top, so it can be annoying to scroll all the way down
+                  every time a graph loads. Flamegraphs are .SVG files, and how they display will vary depending on the browser.
+                  Icicle graphs solve that problem by flipping the graph. 
+                  </p><br>
+    
+                <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+                  <figure class="figure">
+                    <!-- <image> -->
+                      <!-- <title>Placeholder</title> -->
+                      <!-- <rect width="100%" height="100%" fill="#868e96"/> -->
+                      <!-- <image href="../../images/flamegraph-2.svg"></image> -->
+                      <!-- <text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text> -->
+                      <iframe src="../images/icicle-2.svg" width="1000px"></iframe>
+                    <!-- </image> -->
+          
+                    <figcaption class="figure-caption">The call stacks on the left side of this graph are quite deep. 
+                      Using an icicle graph keeps you from having to scroll down to see the bottom of the call stack.
+                    </figcaption>
+                  </figure>
+                  </div></div>
+                </div></div><br><br>
+                
+                  <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+                    <hr>
+                  </div>
+                  </div>
+    
+              </div>
+            </div></div>
+          </div>
+
+      </div>
+    </article>
+
+    <article class="my-3" id="Differential-Flamegraphs">
+      <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+        <h3>Differential Flamegraphs</h3>
+      </div>
+
+      <div>
+        
+        <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+          <p class="lead">
+            Interpreting Differential Flamegraphs
+          </p>
+          </div></div>
+
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+            <p>INFERNOde is able to take any two of your flamegraphs and generate a differential that highlights what changed. This is especially 
+              useful if you have two different versions of your application software, and you want to know what got faster or slower. It does 
+              this by comparing the width of each frame in the graph, then assigning a new color scheme to show the differences. Unlike the 
+              other graphs, the shading of a differential graph is important.
+            </p>
+            <p>
+              In the example below, we took two different copies of the same application, and profiled them separately with INFERNOde. Then we diffed them
+              to create the differential graph you see here. 
+              </p>
+             <br>
+
+            <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+              <figure class="figure">
+                <!-- <image> -->
+                  <!-- <title>Placeholder</title> -->
+                  <!-- <rect width="100%" height="100%" fill="#868e96"/> -->
+                  <!-- <image href="../../images/flamegraph-2.svg"></image> -->
+                  <!-- <text x="50%" y="50%" fill="#dee2e6" dy=".3em"></text> -->
+                  <iframe src="../images/differential.svg" width="1000px"></iframe>
+                <!-- </image> -->
+      
+                <figcaption class="figure-caption">The stack frames that increased the total amount of time spent on the call stack are shaded red.
+                </figcaption>
+              </figure>
+              </div></div>
+              <br>
+              <p>
+                Looking at the example above, you can see the stack frames that grew are shaded red. The ones that grew the most
+                appear a darker shade of red.
+                Any frames that got faster will be shaded blue. The more they improved, the darker blue it will be.
+                White frames did not change at all.
+                </p>
+                <br>
+                <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
+                  <hr>
+                </div>
+                </div>
+                <br>
+              <p>
+                Thanks for using INFERNOde! If you're interested in contributing to the project, check us out on Github and send us <a href="mailto: team@INFERNOde.dev">message</a>!
+              </p>
+              <p>
+                If you want to know more about INFERNOde then head on over to the <a href="../About/about.html">About</a> page, or read our article on <a href="" target="blank">Medium</a>.
+              </p>
+              <br>
+              </div></div><br>
+
+    </article>
+   
+  </section>
+</div>
+
+  <div class="spacer">
+  </div>
+  <!-- FOOTER -->
+  <div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+      <li class="col-md-4 mb-0 text-muted nav-item"  id="left-side-footer">2022 
+        <a href="https://opensourcelabs.io" target="_blank" class="text-muted">Open Source Labs</a>
+      </li>
+      <ul class="nav col-md-4 justify-content-end">
+        <li class="nav-item"><a href="../index.html" class="nav-link px-2 text-muted">Home</a></li>
+        <li class="nav-item"><a href="#top" class="nav-link px-2 text-muted">Back to the top</a></li>
+        <li class="nav-item"><a href="mailto: team@INFERNOde.dev" class="nav-link px-2 text-muted">Contact Us</a></li>
+      </ul>
+    </footer>
+  </div>
+
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+
+
+      <script src="documentation.js"></script>
+  </body>
+</html>
