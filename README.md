@@ -47,9 +47,10 @@ A process tracing and flame graph tool for node.js development
 
 ```mermaid
 graph TD;
-    C("INFERNOde Web Client") -.-> |"POST /api/dtrace/run/flamegraph"| S["INFERNOde Server"];
-    S --> RA{"REST API Router"};
-    RA --> RRC{"Run and Capture Router"};
+    C("INFERNOde Web Client") -.-> |"HTTP Request"| S["INFERNOde Server"];
+    S --> |"/api"| RA{"API Router"};
+    RA --> |"/api/captures/*"| RC{"Capture Router"};
+    RC --> |"POST /api/dtrace/run/flamegraph"| RRC{{"Run and Capture Route"}};
     subgraph "Run and Capture";
     RRC --> ME[["Env MW: Validate"]];
     ME --> MDB[["DB MW: Create Record"]];
@@ -63,8 +64,16 @@ graph TD;
     MPT2 --> MFG;
     MFG --> MA2[["App MW: Terminate Node Sub-App"]];
     MA2 --> RRC;
-    end
+    end;
     RRC -.-> |"HTTP Response"| C;
+    linkStyle 0 stroke:green,color:green,stroke-dasharray: 5 5;
+    linkStyle 16 stroke:red,color:red,stroke-dasharray: 5 5;
+    RC --> |"GET /api/captures/1"| RCG1{"Retrieve Capture by ID Route"};
+    subgraph "Retrieve Capture by ID ";
+    RCG1 --> MFD[["File MW: Deliver SVG"]];
+    end;
+    MFD -.-> |"HTTP Response"| C;
+    linkStyle 19 stroke:red,color:red,stroke-dasharray: 5 5;
 ```
 
 ### Key Dependencies
