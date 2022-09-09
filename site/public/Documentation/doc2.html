@@ -200,7 +200,7 @@
             and it can be checked with the <code>sudo tail /etc/sudoers</code> command. This does not give INFERNOde your password, and it does not affect
             any other permissions on your machine. This will only tell your system that password approval is not needed to run a dtrace.
           </p>
-          <br>
+          <!-- <br> -->
             <!-- start of accordian content -->
           <article class="my-3" id="accordion">
             <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
@@ -254,6 +254,9 @@
             <code>dtrace: system integrity protection is on, some features will not be available <br>
               dtrace: description 'profile-150 ' matched 2 probes
             </code>
+          </p>
+          <p>
+            Once you have that setup, just run <mark><code>npx infernode</code></mark> to launch INFERNOde.
           </p>
           <br>
           <p>Interested in learning more about <a href="http://dtrace.org/blogs/about/" target="_blank">dtrace</a>? </p>
@@ -426,7 +429,7 @@
         </div>
 
 
-        <p> Make sure the file path you provide is relative to the <code>dtrace.controller.js</code> file in the <code>dist</code> folder of INFERNOde. 
+        <p> Make sure the file path you provide is <em><mark>relative to the root of your application directory</mark></em> where you have INFERNOde installed. 
           Then choose whether you want an icicle graph or a flamegraph, and provide the number of seconds you want the dtrace to run.
           Then then sit back and relax while we do all the work for you. If the application has a finite runtime, and the duration you provide
           happens to be longer, there is no need to worry. Dtrace will continue running for the time you enter, but it wont affect your results.</p>
