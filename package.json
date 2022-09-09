@@ -1,6 +1,6 @@
 {
   "name": "infernode",
-  "version": "1.0.2-development",
+  "version": "1.0.5-development",
   "description": "flamegraph tool for node.js",
   "main": "dist/index.js",
   "bin": {
