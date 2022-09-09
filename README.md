@@ -1,12 +1,12 @@
 # infernode
 
-Flamegraph tool for node.js
+A process tracing and flame graph tool for node.js development
 
 ![build tests](https://github.com/oslabs-beta/infernode/actions/workflows/node.js.yml/badge.svg)
 ![website deployment](https://github.com/oslabs-beta/infernode/actions/workflows/pages.yml/badge.svg)
 ![publishing to npmjs.com](https://github.com/oslabs-beta/infernode/actions/workflows/publish.yml/badge.svg)
 
-Current release: 1.0.0
+[infernode.dev](http://www.infernode.dev)
 
 [Contact the developers](mailto:team@infernode.dev)
 
@@ -22,16 +22,54 @@ Current release: 1.0.0
 
 ## Interface
 
-<a href="docs/images/infernode-history-page.png"><figure><img src="docs/images/thumbs/infernode-history-page.png"><figcaption>View and Manage Existing Graphs</figcaption></figure></a>
-<a href="docs/images/infernode-diff-page.png"><figure><img src="docs/images/thumbs/infernode-diff-page.png"><figcaption>Generate Differential Graphs</figcaption></figure></a>
-<a href="docs/images/infernode-basic-capture-page.png"><figure><img src="docs/images/thumbs/infernode-basic-capture-page.png"><figcaption>One-click Captures</figcaption></figure></a>
-<a href="docs/images/infernode-advanced-capture-page.png"><figure><img src="docs/images/thumbs/infernode-advanced-capture-page.png"><figcaption>Flexible Capture Settings</figcaption></figure></a>
-<a href="docs/images/infernode-upload-page.png"><figure><img src="docs/images/thumbs/infernode-upload-page.png"><figcaption>Upload Existing `perf` Files</figcaption></figure></a>
-<a href="docs/images/infernode-help-page.png"><figure><img src="docs/images/thumbs/infernode-help-page.png"><figcaption>In-app Help</figcaption></figure></a>
+<a href="docs/images/infernode-history-page.png"><figure><img src="docs/images/thumbs/infernode-history-page.png">
+<figcaption>View and Manage Existing Graphs</figcaption></figure></a>
+
+<a href="docs/images/infernode-diff-page.png"><figure><img src="docs/images/thumbs/infernode-diff-page.png">
+<figcaption>Generate Differential Graphs</figcaption></figure></a>
+
+<a href="docs/images/infernode-basic-capture-page.png"><figure><img src="docs/images/thumbs/infernode-basic-capture-page.png">
+<figcaption>One-click Captures</figcaption></figure></a>
+
+<a href="docs/images/infernode-advanced-capture-page.png"><figure><img src="docs/images/thumbs/infernode-advanced-capture-page.png">
+<figcaption>Flexible Capture Settings</figcaption></figure></a>
+
+<a href="docs/images/infernode-upload-page.png"><figure><img src="docs/images/thumbs/infernode-upload-page.png">
+<figcaption>Upload Existing `perf` Files</figcaption></figure></a>
+
+<a href="docs/images/infernode-help-page.png"><figure><img src="docs/images/thumbs/infernode-help-page.png">
+<figcaption>In-app Help</figcaption></figure></a>
 
 ## Architecture
 
-### Backend
+
+### Live App Capture Request
+
+```mermaid
+graph TD;
+    C("INFERNOde Web Client") -.-> |"POST /api/dtrace/run/flamegraph"| S["INFERNOde Server"];
+    S --> RA{"REST API Router"};
+    RA --> RRC{"Run and Capture Router"};
+    subgraph "Run and Capture";
+    RRC --> ME[["Env MW: Validate"]];
+    ME --> MDB[["DB MW: Create Record"]];
+    MDB --> SQL[("SQLite3 DB")];
+    MDB --> MA1[["App MW: Spawn Node Sub-App"]];
+    MA1 --> MDT1[["Dtrace MW: Capture Trace"]];
+    MA1 --> MPT1[["Perf MW: Capture Trace"]];
+    MDT1 --> MDT2[["Dtrace MW: Fold Trace"]];
+    MPT1 --> MPT2[["PERFe MW: Fold Trace"]];
+    MDT2 --> MFG[["Flame Graph MW: Generate SVG"]];
+    MPT2 --> MFG;
+    MFG --> MA2[["App MW: Terminate Node Sub-App"]];
+    MA2 --> RRC;
+    end
+    RRC -.-> |"HTTP Response"| C;
+```
+
+### Key Dependencies
+
+#### Backend
 
 - TypeScript
 - Node.js
@@ -40,7 +78,7 @@ Current release: 1.0.0
 - Pino
 - Formidable
 
-### Frontend
+#### Frontend
 
 - TypeScript
 - React
@@ -48,7 +86,7 @@ Current release: 1.0.0
 - React-Bootstrap
 - Axios
 
-### CI/CD
+#### CI/CD
 
 - Github Actions
 - Jest
@@ -58,16 +96,6 @@ Current release: 1.0.0
 - ESLint
 - Webpack
 
-### High Level Diagram
-
-```mermaid
-graph TD;
-    Client<-->Server;
-    Server-->API Router;
-    API Router-->Controller;
-    Controller<-->Process Execution;
-    Controller-->Client;
-```
 
 ## Developing
 
