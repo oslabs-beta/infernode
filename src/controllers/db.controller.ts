@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import captureDB, { Capture } from '../models/captureModel';
 import { DbCInterface, CbThis } from '../interfaces/dbcontroller.interface';
 import { InfernodeError } from '../utils/globalErrorHandler';
+import logger from '../utils/logging';
 
 function isNumber(id: number | unknown): id is number {
   if (typeof id === 'number') return true;
@@ -19,7 +20,7 @@ async function selectRow(id: number): Promise<Capture> {
       selectSQL,
       (err: Error, rows: object[]): void => {
         if (err) {
-          // console.log(`dbController.selectRow error: ${JSON.stringify(err)}`);
+          logger.error(`dbController.selectRow error: ${JSON.stringify(err)}`);
           reject(new Error(`dbController.selectRow error: ${JSON.stringify(err)}`));
         }
         if (rows.length === 1) {
@@ -38,8 +39,7 @@ const dbController: DbCInterface = {
       'SELECT * FROM capture',
       (err, rows: []) => {
         if (err) {
-          // console.table(err);
-          // console.log(err);
+          logger.error(err);
           return next(new InfernodeError(
             'Unable to retrieve row information',
             'An error occurred when trying to retrieve row info',
@@ -55,22 +55,30 @@ const dbController: DbCInterface = {
 
   createEmptyRecord(req: Request, res: Response, next: NextFunction): void {
     const date = new Date();
+    let type = 'undefined';
+    if (req.path === '/flamegraph') {
+      type = 'flamegraph';
+    } else if (req.path === '/icicle') {
+      type = 'icicle';
+    } else if (req.path === '/differential') {
+      type = 'differential';
+    }
     captureDB.run(
       'INSERT INTO capture (capture_name, date, creator, app_name, data) VALUES (?, ?, ?, ?, ?)',
       'unspecified',
       date.toString(),
       'unspecified',
       'unspecified',
-      'unspecified',
+      /* 'unspecified', */
+      type,
       function callback(this: unknown, err: Error) {
         function isCbThis(thisObj: object | unknown): thisObj is CbThis {
           if (thisObj === null) return false;
           if (typeof thisObj === 'object' && 'lastID' in thisObj) return true;
           return false;
         }
-        // console.log('CHECK CREATEEMPTYRECORD THIS', this, err);
         if (err) {
-          // console.log(err);
+          logger.error(err);
           return next(new InfernodeError(
             'Unable to create empty record',
             'An error occurred when trying to create an empty record',

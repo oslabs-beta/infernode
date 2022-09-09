@@ -13,13 +13,34 @@ export interface CaptureState {
   captureList: Capture[];
   current: number | null;
   loading: boolean;
+  comparison: (number | null)[];
 }
 
 const initialState: CaptureState = {
   captureList: [],
   current: null,
   loading: false,
+  comparison: [],
 };
+
+export const getComparisonCapture = createAsyncThunk(
+  'captures/getComparisonCapture',
+  async (comparison: (number | null)[]) => {
+    console.log('comparison id is ', comparison);
+    const id = Number(await fetch('/api/diff/differential', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id1: comparison[0],
+        id2: comparison[1],
+      }),
+    }).then((res) => res.json()).catch((err) => console.error(err)));
+    console.log('compare capture id is ', id);
+    return id;
+  },
+);
 
 export const fetchAllCaptures = createAsyncThunk<Capture[]>(
   'captures/fetchAll',
@@ -56,12 +77,29 @@ export const captureSlice = createSlice({
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
+    setComparison: (state, action: PayloadAction<number | null>) => {
+      console.log('setComparison invoked ', state.comparison, ' is comparison value');
+      // Differentials page initilization
+      if (!action.payload) state.comparison = [];
+      // Compare two flamegraphs
+      else state.comparison.push(action.payload);
+      console.log('setComparisons executed ', state.comparison, ' is comparison value');
+    },
+    removeComparison: (state, action: PayloadAction<number>) => {
+      console.log('removeComparison invoked ', state.comparison, ' is comparison value');
+      state.comparison = state.comparison.filter((element) => element !== action.payload);
+      console.log('removeComparisons executed ', state.comparison, ' is comparison value');
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllCaptures.fulfilled, (state, action) => {
       console.log('fulfilled', JSON.stringify(action));
       state.captureList = action.payload;
-      state.current = state.captureList[state.captureList.length - 1].id;
+      if (state.captureList.length > 0) {
+        state.current = state.captureList[state.captureList.length - 1].id;
+      } else {
+        state.current = null;
+      }
     });
     builder.addCase(fetchAllCaptures.rejected, (state, action) => {
       console.log('REJECTED', JSON.stringify(action));
@@ -84,8 +122,18 @@ export const captureSlice = createSlice({
       console.log('REJECTED', JSON.stringify(action));
       console.log('deleteCapture resolved to error: ', action.payload || action.error);
     });
+    builder.addCase(getComparisonCapture.fulfilled, (state, action) => {
+      console.log('fullfulled', JSON.stringify(action));
+      state.current = action.payload;
+    });
+    builder.addCase(getComparisonCapture.rejected, (state, action) => {
+      console.log('rejected', JSON.stringify(action));
+      console.log('getComparisonCapture resolved to error: ', action.payload || action.error);
+    });
   },
 });
 
-export const { setCurrent, setLoading } = captureSlice.actions;
+export const {
+  setCurrent, setLoading, setComparison, removeComparison,
+} = captureSlice.actions;
 export default captureSlice.reducer;

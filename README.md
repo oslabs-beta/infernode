@@ -1,49 +1,122 @@
 # infernode
-Current version: 1.0.0
 
-Flamegraph tool for node.js
+A process tracing and flame graph tool for node.js development
+
+![build tests](https://github.com/oslabs-beta/infernode/actions/workflows/node.js.yml/badge.svg)
+![website deployment](https://github.com/oslabs-beta/infernode/actions/workflows/pages.yml/badge.svg)
+![publishing to npmjs.com](https://github.com/oslabs-beta/infernode/actions/workflows/publish.yml/badge.svg)
+
+[INFERNOde Website](https://www.infernode.dev)
+
+[Documentation and Features](https://www.infernode.dev/Documentation/doc2.html)
+
+[Contact the developers](mailto:team@infernode.dev)
 
 ## Usage
 
-Coming soon...
+1. `npm install --save-dev infernode` in your Node.JS NPM project
+1. `npx infernode` to launch INFERNOde
+1. Navigate to the **Capture** page
+1. Provide the path to your app's entrypoint, relative to the top level directory of your project (e.g. `src/index.js`)
+1. Set a time limit for your capture and hit start
+1. If necessary, interact with your app to trigger the functionality you want to trace
+1. Check out the new flame graph in the sidebar
 
 ## Interface
 
-### Overview
+<a href="docs/images/infernode-history-page.png"><figure><img src="docs/images/thumbs/infernode-history-page.png">
+<figcaption>View and Manage Existing Graphs</figcaption></figure></a>
 
-![ui overview](/docs/images/layout-overview.png)
+<a href="docs/images/infernode-diff-page.png"><figure><img src="docs/images/thumbs/infernode-diff-page.png">
+<figcaption>Generate Differential Graphs</figcaption></figure></a>
 
-### General Page Layout
+<a href="docs/images/infernode-basic-capture-page.png"><figure><img src="docs/images/thumbs/infernode-basic-capture-page.png">
+<figcaption>One-click Captures</figcaption></figure></a>
 
-![generic page layout](/docs/images/layout-draft.png)
+<a href="docs/images/infernode-advanced-capture-page.png"><figure><img src="docs/images/thumbs/infernode-advanced-capture-page.png">
+<figcaption>Flexible Capture Settings</figcaption></figure></a>
 
-### Page Wireframes
+<a href="docs/images/infernode-upload-page.png"><figure><img src="docs/images/thumbs/infernode-upload-page.png">
+<figcaption>Upload Existing `perf` Files</figcaption></figure></a>
 
-![history page](/docs/images/history-page.png)
-![capture page](/docs/images/capture-page.png)
-![manage page](/docs/images/manage-page.png)
-![help page](/docs/images/help-page.png)
+<a href="docs/images/infernode-help-page.png"><figure><img src="docs/images/thumbs/infernode-help-page.png">
+<figcaption>In-app Help</figcaption></figure></a>
 
 ## Architecture
 
-### Backend Tech Stack
+
+### Live App Capture Request
+
+```mermaid
+graph TD;
+    C("INFERNOde Web Client") -.-> |"HTTP Request"| S["INFERNOde Server"];
+    linkStyle 0 stroke:green,color:green,stroke-dasharray: 5 5;
+    CM("Monitoring Tool") -.-> |"HTTP Request"| S
+    linkStyle 1 stroke:green,color:green,stroke-dasharray: 5 5;
+    S --> |"GET /health"| RH{"Health Router"};
+    S --> |"/api"| RA{"API Router"};
+    S --> |"404"| RNF{"Not Found Router"};
+    RNF --> MNF[["Not Found MW"]];
+    MNF -.-> |"404 HTTP Response"| C;
+    linkStyle 6 stroke:red,color:red,stroke-dasharray: 5 5;
+    RA --> |"/api/captures/*"| RC{"Capture Router"};
+    RA --> |"/api/dtrace/*"| RT{"Dtrace Router"};
+    RA --> |"/api/diff/*"| RD{"Diff Router"};
+    RA --> |"/api/app/*"| RA{"App Router"};
+    RT --> |"POST /api/dtrace/run/flamegraph"|RRC{{"Run and Capture Route: Flame Graph"}};
+    subgraph "Run and Capture";
+    RRC --> ME[["Env MW: Validate"]];
+    ME --> MDB[["DB MW: Create Record"]];
+    MDB --> SQL[("SQLite3 DB")];
+    MDB --> MA1[["App MW: Spawn Node Sub-App"]];
+    MA1 --> MDT1[["Dtrace MW: Capture Trace"]];
+    MA1 --> MPT1[["Perf MW: Capture Trace"]];
+    MDT1 --> MDT2[["Dtrace MW: Fold Trace"]];
+    MPT1 --> MPT2[["PERF MW: Fold Trace"]];
+    MDT2 --> MFG[["Flame Graph MW: Generate SVG"]];
+    MPT2 --> MFG;
+    MFG --> MA2[["App MW: Terminate Node Sub-App"]];
+    MA2 --> RRC;
+    end;
+    RRC -.-> |"HTTP Response"| C;
+    linkStyle 24 stroke:red,color:red,stroke-dasharray: 5 5;
+    RC --> |"GET /api/captures/1"| RCG1{"Retrieve Capture by ID Route"};
+    subgraph "Retrieve Capture by ID ";
+    RCG1 --> MFD[["File MW: Deliver SVG"]];
+    end;
+    MFD -.-> |"HTTP Response"| C;
+    linkStyle 27 stroke:red,color:red,stroke-dasharray: 5 5;
+```
+
+### Key Dependencies
+
+#### Backend
 
 - TypeScript
 - Node.js
 - Express.js
 - SQLite3
-- Jest
+- Pino
+- Formidable
 
-### Frontend Tech Stack
+#### Frontend
 
 - TypeScript
 - React
 - React-Router
 - React-Bootstrap
+- Axios
 
-### High Level Diagram
+#### CI/CD
 
-![infernode architecture diagram](/docs/images/app-diagram.png)
+- Github Actions
+- Jest
+- Supertest
+- Semantic-Release
+- Stylelint
+- ESLint
+- Webpack
+
 
 ## Developing
 
@@ -53,13 +126,12 @@ Coming soon...
 
 ### Additional project scripts
 
-All scripts are accessible via `npm run <scriptname>`.
+All scripts are accessible via `npm run <scriptname>`, some key scripts are:
 
+- `resetdb`: Clean out infernode's datastore for a fresh start
 - `clean`: Remove all contents of the `./dist/` directory
 - `copy-assets`:  Copy static assets from `./src/` to `./dist/`
 - `lint`:  Run linter (ESLint) against the relevant client and server source code
-- `prebuild`: Sequentially runs `lint`, `clean`, and `copy-assets` prior to all `build`s
-- `tsc`: Performs TypeScript transpilation for the server project
 - `build`: Performs `npm run prebuild`, `npm run tsc`, and `npm run webpack` sequentially, will halt if any `prebuild` steps have non-zero exit codes
 - `test`: Performs a fresh `build` and then executes all test suites
 - `start`: Starts the `node` server in production mode, access via <http://localhost:3000>
@@ -81,19 +153,17 @@ All scripts are accessible via `npm run <scriptname>`.
 
 ## Contributing
 
-### Commit Messages
+### Committing and Commit Messages
 
-For working branch commits a single line message is sufficient
+Infernode now uses [Semantic-Release](https://github.com/semantic-release/semantic-release/blob/master/README.md) and [Commitizen](https://github.com/commitizen/cz-cli/blob/master/README.md)
+to automatically handle versioning. As a result, when using `git commit` or `npm run commit` to comply with formatting implemented by Semantic-Release. Upon execution of either command,
+Commitizen will walk the user through how to author commit messages in the command line.
 
-For PR commits please add a longer description of the changes
+Steps:
 
-Please author single line commit messages and PR commit titles to:
-
-- Start with capital letter
-- Have no trailing punctuation
-- Use imperative and present tense
-- Describe the outcome, not the process
-- Be less than 50 characters in length
+- Run ```git add <files>``` when ready to stage changes
+- Run ```npm run commit``` or ```git commit``` to format commit messages using Commitizen
+- When ready, push changes up to a branch made for the changes
 
 ### Pull Requests
 
@@ -110,12 +180,42 @@ Please consider the following when filing pull requests:
 
 - Update working branch from dev
 - Test the above GHA check criteria locally
-- PR title should take the form of a commit message title
-- Body of PR should take the form of a full commit message body
+- PR title should take the form of a Commitizen commit title
+- Body of PR should take the form of a Commitizen commit body
 - Once approved, the PR author is responsible for squash merging into the destination branch
 - Branches should be deleted after merge
 
 ### Branch Names
+
+```mermaid
+gitGraph
+    commit
+    branch dev
+    checkout dev
+    branch feature/coolgraph
+    checkout feature/coolgraph
+    commit
+    checkout dev
+    branch feature/graphapi
+    checkout feature/graphapi
+    commit
+    checkout feature/coolgraph
+    commit
+    checkout dev
+    merge feature/coolgraph
+    branch bugfix/brokengraph
+    checkout bugfix/brokengraph
+    checkout feature/graphapi
+    commit
+    checkout dev
+    merge feature/graphapi
+    checkout bugfix/brokengraph
+    commit
+    checkout dev
+    merge bugfix/brokengraph
+    checkout main
+    merge dev tag: "v1.2.3"
+```
 
 - Use a new branch for each new feature and eventual PR
 - Use the format of "type/descriptive-outcome"
@@ -125,5 +225,5 @@ Please consider the following when filing pull requests:
   - docs
   - testing
   - refactor
+  - cicd
 - The descriptive-outcome should describe what will be achieved by merging the branch
-  
