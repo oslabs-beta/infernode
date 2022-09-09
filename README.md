@@ -50,9 +50,20 @@ A process tracing and flame graph tool for node.js development
 ```mermaid
 graph TD;
     C("INFERNOde Web Client") -.-> |"HTTP Request"| S["INFERNOde Server"];
+    linkStyle 0 stroke:green,color:green,stroke-dasharray: 5 5;
+    CM("Monitoring Tool") -.-> |"HTTP Request"| S
+    linkStyle 1 stroke:green,color:green,stroke-dasharray: 5 5;
+    S --> |"GET /health"| RH{"Health Router"};
     S --> |"/api"| RA{"API Router"};
+    S --> |"404"| RNF{"Not Found Router"};
+    RNF --> MNF[["Not Found MW"]];
+    MNF -.-> |"404 HTTP Response"| C;
+    linkStyle 6 stroke:red,color:red,stroke-dasharray: 5 5;
     RA --> |"/api/captures/*"| RC{"Capture Router"};
-    RC --> |"POST /api/dtrace/run/flamegraph"| RRC{{"Run and Capture Route"}};
+    RA --> |"/api/dtrace/*"| RT{"Dtrace Router"};
+    RA --> |"/api/diff/*"| RD{"Diff Router"};
+    RA --> |"/api/app/*"| RA{"App Router"};
+    RT --> |"POST /api/dtrace/run/flamegraph"|RRC{{"Run and Capture Route: Flame Graph"}};
     subgraph "Run and Capture";
     RRC --> ME[["Env MW: Validate"]];
     ME --> MDB[["DB MW: Create Record"]];
@@ -68,14 +79,13 @@ graph TD;
     MA2 --> RRC;
     end;
     RRC -.-> |"HTTP Response"| C;
-    linkStyle 0 stroke:green,color:green,stroke-dasharray: 5 5;
-    linkStyle 16 stroke:red,color:red,stroke-dasharray: 5 5;
+    linkStyle 24 stroke:red,color:red,stroke-dasharray: 5 5;
     RC --> |"GET /api/captures/1"| RCG1{"Retrieve Capture by ID Route"};
     subgraph "Retrieve Capture by ID ";
     RCG1 --> MFD[["File MW: Deliver SVG"]];
     end;
     MFD -.-> |"HTTP Response"| C;
-    linkStyle 19 stroke:red,color:red,stroke-dasharray: 5 5;
+    linkStyle 27 stroke:red,color:red,stroke-dasharray: 5 5;
 ```
 
 ### Key Dependencies
