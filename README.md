@@ -58,7 +58,7 @@ graph TD;
     MA1 --> MDT1[["Dtrace MW: Capture Trace"]];
     MA1 --> MPT1[["Perf MW: Capture Trace"]];
     MDT1 --> MDT2[["Dtrace MW: Fold Trace"]];
-    MPT1 --> MPT2[["PERFe MW: Fold Trace"]];
+    MPT1 --> MPT2[["PERF MW: Fold Trace"]];
     MDT2 --> MFG[["Flame Graph MW: Generate SVG"]];
     MPT2 --> MFG;
     MFG --> MA2[["App MW: Terminate Node Sub-App"]];
@@ -161,22 +161,31 @@ Please consider the following when filing pull requests:
 ```mermaid
 gitGraph
     commit
-    branch develop
-    checkout develop
-    branch feature/cool-graph
-    checkout feature/cool-graph
-    commit
+    branch dev
+    checkout dev
+    branch feature/coolgraph
+    checkout feature/coolgraph
     commit
     checkout dev
-    merge feature/cool-graph
-    branch bugfix/broken-graph
-    checkout bugfix/broken-graph
+    branch feature/graphapi
+    checkout feature/graphapi
     commit
+    checkout feature/coolgraph
     commit
     checkout dev
-    merge bugfix/broken-graph
-    git checkout main
-    git merge dev: tag:'v1.2.3'
+    merge feature/coolgraph
+    branch bugfix/brokengraph
+    checkout bugfix/brokengraph
+    checkout feature/graphapi
+    commit
+    checkout dev
+    merge feature/graphapi
+    checkout bugfix/brokengraph
+    commit
+    checkout dev
+    merge bugfix/brokengraph
+    checkout main
+    merge dev tag: "v1.2.3"
 ```
 
 - Use a new branch for each new feature and eventual PR
