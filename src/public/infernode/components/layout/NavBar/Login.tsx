@@ -13,8 +13,10 @@ import {
 } from '../../../store/userSlice';
 
 export function LoginButton(): JSX.Element {
+  const { features } = useAppSelector((state) => state.config);
   const { popover } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  if (!features.loginUi) return <div />;
 
   return (
     <OverlayTrigger
@@ -50,8 +52,10 @@ export function LoginButton(): JSX.Element {
 }
 
 export function LogoutButton(): JSX.Element {
+  const { features } = useAppSelector((state) => state.config);
   const { popover, username } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  if (!features.loginUi) return <div />;
 
   return (
     <OverlayTrigger

@@ -11,9 +11,7 @@
 
 // exec() method: This method creates a shell first and then executes the command.
 import { Request, Response, NextFunction } from 'express';
-
 import { spawnSync } from 'child_process';
-
 import path from 'path';
 
 type FlamegraphSVGController = {
@@ -39,7 +37,7 @@ const flamegraphController: FlamegraphSVGController = {
     );
     const script: string = path.resolve(
       __dirname,
-      '../../src/perlScripts/stackCollapse-perf.pl',
+      '../assets/perlScripts/stackCollapse-perf.pl',
     );
     // run the child_process to spawn a shell and execute the given
     // command that will execute .pl files
@@ -73,11 +71,12 @@ const flamegraphController: FlamegraphSVGController = {
     );
     const script: string = path.resolve(
       __dirname,
-      '../../src/perlScripts/flamegraph.pl',
+      '../assets/perlScripts/flamegraph.pl',
     );
 
     try {
       const result = spawnSync(`${script} ${inputPath} > ${outputPath}`, { shell: true, timeout: 10000 });
+      console.log(result.stderr.toString());
       console.log(`${new Date().toLocaleString()}: Converted folded perf file ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       return next({

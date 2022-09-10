@@ -1,6 +1,9 @@
 import sqlite3 from 'sqlite3';
 import path from 'path';
 import fs from 'fs';
+import makeDataDirs from '../utils/makeDataDirs';
+
+makeDataDirs();
 
 // Captures stack traces when handling queries. Makes it easier to debug errors resulting from
 // bad queries.
