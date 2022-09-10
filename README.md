@@ -192,27 +192,27 @@ gitGraph
     commit
     branch dev
     checkout dev
-    branch feature/coolgraph
-    checkout feature/coolgraph
+    branch feature/add-flame-graph
+    checkout feature/add-flame-graph
     commit
     checkout dev
-    branch feature/graphapi
-    checkout feature/graphapi
+    branch feature/add-graphing-api
+    checkout feature/add-graphing-api
     commit
-    checkout feature/coolgraph
-    commit
-    checkout dev
-    merge feature/coolgraph
-    branch bugfix/brokengraph
-    checkout bugfix/brokengraph
-    checkout feature/graphapi
+    checkout feature/add-flame-graph
     commit
     checkout dev
-    merge feature/graphapi
-    checkout bugfix/brokengraph
+    merge feature/add-flame-graph
+    branch bugfix/correct-axis-labels
+    checkout bugfix/correct-axis-labels
+    checkout feature/add-graphing-api
     commit
     checkout dev
-    merge bugfix/brokengraph
+    merge feature/add-graphing-api
+    checkout bugfix/correct-axis-labels
+    commit
+    checkout dev
+    merge bugfix/correct-axis-labels
     checkout main
     merge dev tag: "v1.2.3"
 ```
