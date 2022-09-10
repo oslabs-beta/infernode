@@ -157,7 +157,7 @@
 
         <div class="bd-example-snippet bd-code-snippet"><div class="bd-example">
         <p>All you need to do is navigate to the root of your project repo, then <mark><code>npm install infernode</code></mark> as a development dependency for your project.
-        Using INFERNOde will require an accurate relative file path from the root of your project repo to the application you are testing, 
+        Using INFERNOde will require an accurate relative file path from INFERNOde to the application you are testing, 
         so be sure it is installed at the correct level of your repo.</p>
         </div></div>
         
@@ -182,12 +182,12 @@
           </p>
           <br>
           <p>
-            INFERNOde currently can only profile applications on Linux and Mac OS X.
+            INFERNOde v2.0.0 currently can only profile applications on Linux and Mac OS X.
             While Windows recently added
             <a href="https://docs.microsoft.com/en-us/windows-hardware/drivers/devtest/dtrace" target="_blank">dtrace compatibility</a> 
              to their operating systems, 
             it requires Windows Insider Build 18342 or higher. If you are using Mac OS X, Linux, or a compatible version of Windows, keep reading. Otherwise 
-            you will need to wait for the next release to include comprehensive Windows compatibility.
+            you will need to wait for v3 to include comprehensive Windows compatibility.
           </p>
           <p>
             Mac OS X has a protective feature called System Integrity Protection (SIP). SIP will normally prevent you from using dtrace, so to use our dtrace 
@@ -200,9 +200,9 @@
             and it can be checked with the <code>sudo tail /etc/sudoers</code> command. This does not give INFERNOde your password, and it does not affect
             any other permissions on your machine. This will only tell your system that password approval is not needed to run a dtrace.
           </p>
-          <!-- <br> -->
+          <br>
             <!-- start of accordian content -->
-          <!-- <article class="my-3" id="accordion">
+          <article class="my-3" id="accordion">
             <div class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
             </div>
       
@@ -248,15 +248,12 @@
       
             </div> -->
             
-          </article>  -->
+          </article> 
           <!-- end of accordian content -->
           <p>When dtrace does run, you should see something similar to the following in your terminal. <br>
             <code>dtrace: system integrity protection is on, some features will not be available <br>
               dtrace: description 'profile-150 ' matched 2 probes
             </code>
-          </p>
-          <p>
-            Once you have that setup, just run <mark><code>npx infernode</code></mark> to launch INFERNOde.
           </p>
           <br>
           <p>Interested in learning more about <a href="http://dtrace.org/blogs/about/" target="_blank">dtrace</a>? </p>
@@ -358,7 +355,7 @@
 
               <div class="accordion-item">
                 <h4 class="accordion-header" id="headingOne">
-                  <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                     1. Start your app and a capture at the same time.
                   </button>
                 </h4>
@@ -429,8 +426,7 @@
         </div>
 
 
-
-        <p> Make sure the file path you provide is <em><mark>relative to the root of your application directory</mark></em> where you have INFERNOde installed. 
+        <p> Make sure the file path you provide is relative to the <code>dtrace.controller.js</code> file in the <code>dist</code> folder of INFERNOde. 
           Then choose whether you want an icicle graph or a flamegraph, and provide the number of seconds you want the dtrace to run.
           Then then sit back and relax while we do all the work for you. If the application has a finite runtime, and the duration you provide
           happens to be longer, there is no need to worry. Dtrace will continue running for the time you enter, but it wont affect your results.</p>
