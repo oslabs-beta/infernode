@@ -45,7 +45,7 @@ A process tracing and flame graph tool for node.js development
 ## Architecture
 
 
-### Live App Capture Request
+### Backend Route Overview
 
 ```mermaid
 graph TD;
@@ -62,9 +62,22 @@ graph TD;
     RA --> |"/api/captures/*"| RC{"Capture Router"};
     RA --> |"/api/dtrace/*"| RT{"Dtrace Router"};
     RA --> |"/api/diff/*"| RD{"Diff Router"};
-    RA --> |"/api/app/*"| RA{"App Router"};
-    RT --> |"POST /api/dtrace/run/flamegraph"|RRC{{"Run and Capture Route: Flame Graph"}};
-    subgraph "Run and Capture";
+    RA --> |"/api/app/*"| RAP{"App Router"};
+    RT --> |"POST /api/dtrace/run/flamegraph"| RRC{{"Run and Capture Route: Flame Graph"}};
+    RRC -.-> |"HTTP Response"| C;
+    linkStyle 12 stroke:red,color:red,stroke-dasharray: 5 5;
+    RC --> |"GET /api/captures/1"| RCG1{"Retrieve Capture by ID Route"};
+    subgraph "Retrieve Capture by ID ";
+    RCG1 --> MFD[["File MW: Deliver SVG"]];
+    end;
+    MFD -.-> |"HTTP Response"| C;
+    linkStyle 15 stroke:red,color:red,stroke-dasharray: 5 5;
+```
+
+```mermaid
+graph TD;
+    RT{"Dtrace Router"} --> |"POST /api/dtrace/run/flamegraph"| RRC{{"Run and Capture Route: Flame Graph"}};
+    subgraph "Run and Capture Route";
     RRC --> ME[["Env MW: Validate"]];
     ME --> MDB[["DB MW: Create Record"]];
     MDB --> SQL[("SQLite3 DB")];
@@ -78,14 +91,7 @@ graph TD;
     MFG --> MA2[["App MW: Terminate Node Sub-App"]];
     MA2 --> RRC;
     end;
-    RRC -.-> |"HTTP Response"| C;
-    linkStyle 24 stroke:red,color:red,stroke-dasharray: 5 5;
-    RC --> |"GET /api/captures/1"| RCG1{"Retrieve Capture by ID Route"};
-    subgraph "Retrieve Capture by ID ";
-    RCG1 --> MFD[["File MW: Deliver SVG"]];
-    end;
-    MFD -.-> |"HTTP Response"| C;
-    linkStyle 27 stroke:red,color:red,stroke-dasharray: 5 5;
+    RRC -.-> |"HTTP Response"| C("INFERNOde Web Client");
 ```
 
 ### Key Dependencies
