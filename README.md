@@ -6,6 +6,8 @@ A process tracing and flame graph tool for node.js development
 ![website deployment](https://github.com/oslabs-beta/infernode/actions/workflows/pages.yml/badge.svg)
 ![publishing to npmjs.com](https://github.com/oslabs-beta/infernode/actions/workflows/publish.yml/badge.svg)
 
+[INFERNOde NPM Package](https://www.npmjs.com/package/infernode)
+
 [INFERNOde Website](https://www.infernode.dev)
 
 [Documentation and Features](https://www.infernode.dev/Documentation/doc2.html)
