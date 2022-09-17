@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import { spawnSync } from 'child_process';
+import logger from '../utils/logging';
 
 // user has to create flamegraphs to have anything to compare
 // so we can assume that the .folded files already exist in the db
@@ -48,7 +49,7 @@ const diffController: DiffControllerType = {
       const output: string = path.resolve(__dirname, `../../database/SVGs/${id}.svg`);
       res.locals.diffID = Number(id);
       const result = spawnSync(`${diffPathPl} ${file1} ${file2} | ${flamePathPl} > ${output}`, { shell: true });
-      console.log(`${new Date().toLocaleString()}: diffed folded files ${JSON.stringify(result.status)}`);
+      logger.debug(`diffed folded files ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       return next({
         userMessage: 'Error diffing folded files',

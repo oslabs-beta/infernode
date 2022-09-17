@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Button, Form, Stack, Card, Col, Tab, Nav,
 } from 'react-bootstrap';
@@ -9,6 +9,8 @@ import {
   checkIsAppRunning,
   setAppCapturing,
   startAppAndCapture,
+  setAppId,
+  // setCapId,
 } from '../../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import LabeledSpinner from '../../components/LabeledSpinner';
@@ -304,10 +306,14 @@ function ManualCaptureForm(): JSX.Element {
 
 export default function CapturePage(): JSX.Element {
   const dispatch = useAppDispatch();
-  const { pid, isAppRunning } = useAppSelector((state) => state.app);
+  const {
+    pid, isAppRunning, appId, capId,
+  } = useAppSelector(
+    (state) => state.app,
+  );
   const { customCapLen } = useAppSelector((state) => state.config.features);
-  const [appId, setAppId] = useState<number | null>(null);
-  const [capId, setCapId] = useState<number | null>(null);
+  // const [appId, setAppId] = useState<number | null>(null);
+  // const [capId, setCapId] = useState<number | null>(null);]
   useEffect(() => {
     dispatch(setActivePage('/capture'));
   });
@@ -363,13 +369,12 @@ export default function CapturePage(): JSX.Element {
                   <RunApplicationForm />
                   <hr />
                   <FixedLengthCaptureForm />
-                  { customCapLen
-                    ? (
-                      <>
-                        <hr />
-                        <ManualCaptureForm />
-                      </>
-                    ) : <></>}
+                  {customCapLen && (
+                    <>
+                      <hr />
+                      <ManualCaptureForm />
+                    </>
+                  )}
                 </Stack>
               </Tab.Pane>
             </Tab.Content>
