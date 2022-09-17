@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import e, { NextFunction, Request, Response } from 'express';
 import { execSync } from 'child_process';
 import os from 'os';
 import logger from '../utils/logging';
@@ -18,8 +18,17 @@ export default class EnvController {
     this.detectOS();
     this.detectSupport();
     this.detectSudo();
-    logger.debug(`envController startup: detected ${(this.supported ? 'supported' : 'unsupported')} OS: ${this.os}`);
-    logger.debug(`envController startup: sudo configuration is ${(this.sudo ? 'sufficient' : 'insufficient')}`);
+    if (this.supported) {
+      logger.info(`detected supported OS: ${this.os}`);
+    } else {
+      logger.error(`detected unsupported OS: ${this.os}`);
+    }
+
+    if (this.sudo) {
+      logger.info('sudo configuration is sufficient');
+    } else {
+      logger.warn('sudo configuration is insufficient');
+    }
   }
 
   private detectOS() {

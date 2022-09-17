@@ -49,12 +49,12 @@ class ApplicationController {
       ));
     }
     res.locals.status = reqBody.pid in this.runningProcesses;
-    console.log(res.locals.status);
+    logger.debug(`Answering request for getStatus of process ${reqBody.pid}: ${JSON.stringify(res.locals?.status)}`);
     return next();
   };
 
   public nodeLaunch = (req: Request, res: Response, next: NextFunction): void => {
-    // recieve executable filepath and second from user
+    // receive executable filepath and second from user
     const reqBody = req.body as ReqBody | object;
     if (!isReqBody(reqBody)) {
       return next(new InfernodeError(
@@ -72,7 +72,7 @@ class ApplicationController {
       // this makes providing a relative path easier for the user
       const filePath = path.join(__dirname, '../../../../', reqBody.filePath);
       if (!existsSync(filePath)) {
-        logger.error(`Specified node app does not exist: ${filePath}`);
+        logger.warn(`specified node app does not exist: ${filePath}`);
       }
       const nodePath = execSync('which node').toString().replace(/(\r\n|\n|\r)/gm, '');
       logger.debug(`${nodePath} ${filePath}`);
@@ -81,7 +81,7 @@ class ApplicationController {
       result.on('spawn', () => {
         const { pid } = result;
         res.locals.pid = pid;
-        console.log('child process started pid:', pid);
+        logger.debug('child process started - pid:', pid);
         if (pid === undefined) throw new Error('Something is wrong with the pid');
         this.startProcess(pid);
         return next();
@@ -92,11 +92,11 @@ class ApplicationController {
         // this will run when the child process terminates
         if (typeof res.locals.pid !== 'number') throw new Error();
         this.endProcess(res.locals.pid);
-        console.log('child process exited gracefully - pid:', res.locals.pid);
+        logger.debug('child process exited gracefully - pid:', res.locals.pid);
       });
       result.on('error', (err) => {
-        logger.error('error spawning child process');
-        console.log(err);
+        logger.warn('failed to spawn child process');
+        logger.warn(err);
       });
     } catch (err) {
       return next(new InfernodeError(
@@ -129,7 +129,7 @@ class ApplicationController {
       if (typeof pid !== 'number') throw new TypeError('Incorrect type passed in to req.body');
       if (pid in this.runningProcesses) {
         const result = process.kill(pid);
-        console.log('child process killed?', result, ' - pid: ', pid);
+        logger.debug('child process killed?', result, ' - pid: ', pid);
         return next();
       }
       return next({
