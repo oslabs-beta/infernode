@@ -63,7 +63,7 @@ const DtraceController: DtraceControllerType = {
       const predicate = `profile-150 /pid == ${pid} && arg1/ { @[ustack()] = count(); } tick-${duration}s { exit(0); }`;
       const output = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
       const result = execSync(`sudo dtrace ${probe} '${predicate}' -o ${output}`);
-      console.log(result.toString());
+      logger.debug(result.toString());
       return next();
     } catch (err) {
       return next(new InfernodeError(
@@ -77,7 +77,7 @@ const DtraceController: DtraceControllerType = {
 
   foldDtrace: (req: Request, res: Response, next: NextFunction) => {
     if (res.locals?.envOS !== 'mac') {
-      console.log('Skipping dtrace folding due to OS');
+      logger.debug('skipping dtrace folding due to OS');
       return next();
     }
     try {
@@ -89,7 +89,7 @@ const DtraceController: DtraceControllerType = {
       const input = path.resolve(__dirname, `../../database/captures/${id}.stacks`);
       const output = path.resolve(__dirname, `../../database/folded/${id}.folded`);
       const result = spawnSync(`${script} ${input} > ${output}`, { shell: true, timeout: 10000 });
-      console.log(`${new Date().toLocaleString()}: Folded perf file ${JSON.stringify(result.status)}`);
+      logger.debug(`folded perf file ${JSON.stringify(result.status)}`);
       if (result.status === 0) return next();
       throw Error(`Error occurred in spawnSync: ${String(result.status)}`);
     } catch (err) {

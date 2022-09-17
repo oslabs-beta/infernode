@@ -86,7 +86,7 @@ export default class Server {
     this.app.listen(this.port, () => {
       // eslint-disable-next-line no-console
       logger.info(
-        `Express.js listening on port ${this.port}`,
+        `listening on port ${this.port}`,
       );
     });
   }
