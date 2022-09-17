@@ -3,8 +3,11 @@
 ```mermaid
 graph TD;
     C("INFERNOde Web Client") -.-> |"HTTP Request"| S["INFERNOde Server"];
+    style C fill:#D6F5D8
+    style S fill: #C1EFF5
     linkStyle 0 stroke:green,color:green,stroke-dasharray: 5 5;
     CM("Monitoring Tool") -.-> |"HTTP Request"| S
+    style CM fill:#D6F5D8
     linkStyle 1 stroke:green,color:green,stroke-dasharray: 5 5;
     S --> |"GET /health"| RH{"Health Router"};
     S --> |"/api"| RA{"API Router"};
@@ -30,6 +33,7 @@ graph TD;
 ```mermaid
 graph TD;
     RT{"Dtrace Router"} --> |"POST /api/dtrace/run/flamegraph"| RRC{{"Run and Capture Route: Flame Graph"}};
+    linkStyle 0 stroke:green,color:green,stroke-dasharray: 5 5;
     subgraph "Run and Capture Route";
     RRC --> ME[["Env MW: Validate"]];
     ME --> MDB[["DB MW: Create Record"]];
@@ -44,5 +48,7 @@ graph TD;
     MFG --> MA2[["App MW: Terminate Node Sub-App"]];
     MA2 --> RRC;
     end;
+    style C fill:#D6F5D8
     RRC -.-> |"HTTP Response"| C("INFERNOde Web Client");
+    linkStyle 13 stroke:red,color:red,stroke-dasharray: 5 5;
 ```
