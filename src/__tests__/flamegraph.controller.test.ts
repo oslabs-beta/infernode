@@ -30,6 +30,7 @@ describe('Flamegraph generating controller test: requires valid .perf in db', ()
   // EXAMPLE: 12345.perf is in /data/captures, so num is 12345
   mockRequest = { params: { flamegraph: 'flamegraph' } }
   mockResponse = { locals: { id: num } }
+  mockResponse = { locals: { id: num } }
 
   describe('db controller tests', () => {
     //run the function
@@ -37,13 +38,13 @@ describe('Flamegraph generating controller test: requires valid .perf in db', ()
     //create a new instance of the db
     dbTest.createEmptyRecord(mockRequest as Request, mockResponse as Response, nextFunction)
 
-    it('saves the uploaded document to the local DB', async () => {
+    xit('saves the uploaded document to the local DB', async () => {
       //query the db to see if it exists
       const data = await captureDB.all(`SELECT * FROM capture`, (err, rows: typeof dataModel[]) => {
         expect(rows[0].id).toEqual(0) 
       })
     })
-    it('creates a db entry with the correct format', async () => {
+    xit('creates a db entry with the correct format', async () => {
       const data = await captureDB.all(`SELECT * FROM capture`, (err, rows: typeof dataModel[]) => {
         // expect(rows[0]).toBeInstanceOf(dataModel) 
         expect(rows[0]).toMatchObject(dataModel)
