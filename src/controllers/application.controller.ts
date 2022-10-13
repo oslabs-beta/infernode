@@ -56,6 +56,7 @@ class ApplicationController {
   public nodeLaunch = (req: Request, res: Response, next: NextFunction): void => {
     // receive executable filepath and second from user
     const reqBody = req.body as ReqBody | object;
+    // console.log('req.body: ', req.body);
     if (!isReqBody(reqBody)) {
       return next(new InfernodeError(
         'something failed while verifying req.body',
@@ -70,7 +71,7 @@ class ApplicationController {
       if (reqBody.filePath[0] === '/') reqBody.filePath = reqBody.filePath.substring(1);
       // indernode is being run from node_modules since it is an npm package
       // this makes providing a relative path easier for the user
-      const filePath = path.join(__dirname, '../../../../', reqBody.filePath);
+      const filePath = path.join(__dirname, '/../../', reqBody.filePath);
       if (!existsSync(filePath)) {
         logger.warn(`specified node app does not exist: ${filePath}`);
       }
