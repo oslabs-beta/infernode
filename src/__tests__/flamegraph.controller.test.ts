@@ -30,35 +30,7 @@ describe('Flamegraph generating controller test: requires valid .perf in db', ()
   // EXAMPLE: 12345.perf is in /data/captures, so num is 12345
   mockRequest = { params: { flamegraph: 'flamegraph' } }
   mockResponse = { locals: { id: num } }
-
-  describe('db controller tests', () => {
-    //run the function
-    const dbTest = dbControllerInstance
-    //create a new instance of the db
-    dbTest.createEmptyRecord(mockRequest as Request, mockResponse as Response, nextFunction)
-
-    it('saves the uploaded document to the local DB', async () => {
-      //query the db to see if it exists
-      const data = await captureDB.all(`SELECT * FROM capture`, (err, rows: typeof dataModel[]) => {
-        expect(rows[0].id).toEqual(0) 
-      })
-    })
-    it('creates a db entry with the correct format', async () => {
-      const data = await captureDB.all(`SELECT * FROM capture`, (err, rows: typeof dataModel[]) => {
-        // expect(rows[0]).toBeInstanceOf(dataModel) 
-        expect(rows[0]).toMatchObject(dataModel)
-      })
-    })
-  })
-
-  describe('file controller tests', () => {
-    // run the function
-    // fileController.addData(mockRequest as Request, mockResponse as Response, nextFunction)
-  
-    xit('adds the uploaded file to the database', async () => {
-      // const test = await 
-    })
-  })
+  mockResponse = { locals: { id: num } }
   
   describe('stack Collapse middleware', () => {
     //run the function
